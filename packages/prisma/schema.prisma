@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator typegraphql {
+  provider = "typegraphql-prisma"
+  output   = "./../../node_modules/@generated/type-graphql"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  role      Role     @default(USER)
+  username  String   @unique
+  password  String
+  posts     Post[]
+}
+
+model Post {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  isComment   Boolean  @default(false)
+  content     String   @db.VarChar(500)
+  isAnonymous Boolean  @default(false)
+  upvotes     Upvote[]
+  tags        Tag[]
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  parentId String?
+  parent   Post?   @relation("PostComments", fields: [parentId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  comments Post[]  @relation("PostComments")
+
+  @@index([authorId])
+  @@index([parentId, isComment, createdAt(sort: Desc)])
+}
+
+model Upvote {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  userId    String
+
+  postId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([postId])
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  posts     Post[]
+}
+
+enum Role {
+  USER
+  MODERATOR
+  ADMIN
+}

@@ -1,0 +1,23 @@
+{
+  "name": "@tf/prisma",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "prisma generate && tsc",
+    "build": "prisma generate && tsc",
+    "generate": "prisma generate && tsc",
+    "db:push": "prisma db push"
+  },
+  "devDependencies": {
+    "prisma": "^5.7.1",
+    "typegraphql-prisma": "^0.27.1",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@prisma/client": "5.7.1",
+    "@types/graphql-fields": "^1.3.9",
+    "graphql-fields": "^2.0.3",
+    "graphql-scalars": "^1.22.2",
+    "tslib": "^2.6.2"
+  }
+}

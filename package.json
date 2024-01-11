@@ -1,0 +1,18 @@
+{
+  "name": "the-forum",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "start": "turbo run start --filter=./apps/web",
+    "generate": "turbo run generate",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "docker:down": "docker-compose down",
+    "docker:up": "docker-compose up -d"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.3",
+    "turbo": "^1.11.1"
+  },
+  "packageManager": "pnpm@7.15.0"
+}
