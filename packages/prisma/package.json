@@ -6,10 +6,17 @@
     "dev": "prisma generate && tsc",
     "build": "prisma generate && tsc",
     "generate": "prisma generate && tsc",
+    "seed": "prisma db seed",
     "db:push": "prisma db push"
   },
+  "prisma": {
+    "seed": "ts-node seed.ts"
+  },
   "devDependencies": {
+    "@faker-js/faker": "^8.3.1",
+    "@types/node": "20.5.7",
     "prisma": "^5.7.1",
+    "ts-node": "^10.9.2",
     "typegraphql-prisma": "^0.27.1",
     "typescript": "^4.7.4"
   },
