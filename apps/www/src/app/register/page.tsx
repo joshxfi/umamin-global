@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@apollo/client";
-import { gql } from "@tf/codegen/__generated__";
+import { gql } from "@ummx/codegen/__generated__";
 import { signIn, useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";

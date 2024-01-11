@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import "next-auth";
 import prisma from "@/utils/db";
-import { Role } from "@tf/codegen/__generated__/graphql";
+import { Role } from "@ummx/codegen/__generated__/graphql";
 
 declare module "next-auth" {
   interface Session {
