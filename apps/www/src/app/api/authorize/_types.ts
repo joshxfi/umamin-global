@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Role } from "@tf/codegen/__generated__/graphql";
+import { Role } from "@ummx/codegen/__generated__/graphql";
 
 export const userSchema = z.object({
   id: z.string(),

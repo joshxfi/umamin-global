@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useMutation } from "@apollo/client";
-import { gql } from "@tf/codegen/__generated__";
+import { gql } from "@ummx/codegen/__generated__";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
 import { Icons } from "@/components/icons";

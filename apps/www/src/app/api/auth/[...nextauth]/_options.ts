@@ -2,7 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import type { AuthedUser } from "../../authorize/_types";
-import { Role } from "@tf/codegen/__generated__/graphql";
+import { Role } from "@ummx/codegen/__generated__/graphql";
 
 export const authOptions: NextAuthOptions = {
   debug: process.env.NODE_ENV === "development",

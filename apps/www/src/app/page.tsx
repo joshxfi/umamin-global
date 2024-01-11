@@ -2,7 +2,7 @@
 
 import { nanoid } from "nanoid";
 import { useEffect } from "react";
-import { gql } from "@tf/codegen/__generated__";
+import { gql } from "@ummx/codegen/__generated__";
 import { useInView } from "react-intersection-observer";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 

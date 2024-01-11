@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { gql } from "@tf/codegen/__generated__/";
+import { gql } from "@ummx/codegen/__generated__/";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
