@@ -1,11 +1,14 @@
 {
-  "name": "the-forum",
+  "name": "ummx",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-    "start": "turbo run start --filter=./apps/web",
+    "start": "turbo run start --filter=www",
     "generate": "turbo run generate",
+    "generate:gql": "turbo run generate --filter=@ummx/codegen",
+    "generate:db": "turbo run generate --filter=@ummx/prisma",
+    "db:push": "pnpm --filter @ummx/prisma db:push",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "docker:down": "docker-compose down",
     "docker:up": "docker-compose up -d"

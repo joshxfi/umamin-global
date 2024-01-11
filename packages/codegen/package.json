@@ -1,5 +1,5 @@
 {
-  "name": "@tf/codegen",
+  "name": "@ummx/codegen",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsc",

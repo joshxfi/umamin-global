@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "www",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -21,8 +21,8 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-toast": "^1.1.4",
-    "@tf/codegen": "workspace:*",
-    "@tf/prisma": "workspace:*",
+    "@ummx/codegen": "workspace:*",
+    "@ummx/prisma": "workspace:*",
     "@types/node": "20.5.7",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
