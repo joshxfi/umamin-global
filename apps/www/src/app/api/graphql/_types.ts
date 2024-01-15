@@ -2,15 +2,16 @@
 import "next-auth";
 import prisma from "@/utils/db";
 import { Role } from "@ummx/codegen/__generated__/graphql";
+import { type DefaultSession } from "next-auth";
 
 declare module "next-auth" {
-  interface Session {
-    user?: {
-      id?: string;
-      username?: string;
+  interface Session extends DefaultSession {
+    user: {
+      id: string;
       role?: Role;
+      username?: string;
       createdAt?: any;
-    };
+    } & DefaultSession["user"];
   }
 
   interface User {
