@@ -1,24 +1,15 @@
-"use client";
-
-import { useRouter } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
-import { signOut, useSession } from "next-auth/react";
+import { getServerAuthSession } from "../api/auth/[...nextauth]/_options";
+import { SignInComponent, SignOutComponent } from "./login-button";
 
-import { Icons } from "@/components/icons";
-import { Button } from "@/components/ui/button";
+export default async function Profile() {
+  const session = await getServerAuthSession();
 
-export default function Profile() {
-  const { push } = useRouter();
-  const { data: session, status } = useSession();
-
-  if (status === "unauthenticated") {
-    push("/login");
-  }
-
-  if (status === "loading") {
+  if (!session) {
     return (
-      <div className="grid place-items-center pt-40">
-        <Icons.spinner className="w-12 h-12" />
+      <div>
+        <p>Not logged in</p>
+        <SignInComponent />
       </div>
     );
   }
@@ -26,7 +17,7 @@ export default function Profile() {
   return (
     <div className="text-sm flex justify-between items-center container">
       <div>
-        <h2 className="font-semibold">{session?.user?.username}</h2>
+        <h2 className="font-semibold">{session.user?.name}</h2>
         {session?.user?.createdAt && (
           <p className="text-muted-foreground mt-1">
             Joined{" "}
@@ -36,9 +27,8 @@ export default function Profile() {
           </p>
         )}
       </div>
-      <Button type="button" onClick={() => signOut()} className="mt-4">
-        Logout
-      </Button>
+
+      <SignOutComponent />
     </div>
   );
 }

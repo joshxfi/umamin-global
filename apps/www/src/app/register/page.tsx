@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@apollo/client";
 import { gql } from "@ummx/codegen/__generated__";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -135,13 +135,28 @@ export default function Register() {
               htmlFor="terms"
               className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-muted-foreground"
             >
-              I agree to the <Link href="/terms" className="underline">terms of service</Link>
+              I agree to the{" "}
+              <Link href="/terms" className="underline">
+                terms of service
+              </Link>
             </label>
           </div>
         </CardContent>
 
         <CardFooter className="flex flex-col items-start">
-          <Button disabled={loading} type="submit" className="w-full">
+          <Button
+            disabled={loading}
+            onClick={() => signIn("google")}
+            className="w-full"
+          >
+            Create Account
+          </Button>
+
+          <Button
+            disabled={loading}
+            onClick={() => signOut()}
+            className="w-full"
+          >
             Create Account
           </Button>
 
