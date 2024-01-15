@@ -1,6 +1,6 @@
 import { formatDistanceToNow } from "date-fns";
 import { getServerAuthSession } from "../api/auth/[...nextauth]/_options";
-import { SignInComponent, SignOutComponent } from "./login-button";
+import { SignInButton, SignOutButton } from "../../components/auth-button";
 
 export default async function Profile() {
   const session = await getServerAuthSession();
@@ -9,7 +9,7 @@ export default async function Profile() {
     return (
       <div>
         <p>Not logged in</p>
-        <SignInComponent />
+        <SignInButton />
       </div>
     );
   }
@@ -28,7 +28,7 @@ export default async function Profile() {
         )}
       </div>
 
-      <SignOutComponent />
+      <SignOutButton />
     </div>
   );
 }
