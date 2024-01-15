@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -62,19 +59,17 @@ enum Role {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  role      Role     @default(USER)
-
-  username      String    @unique
-  password      String
+  id            String    @id @default(cuid())
+  name          String?
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  username      String?   @unique
+  createdAt     DateTime  @default(now())
 
-  posts Post[]
+  role Role @default(USER)
 
+  posts    Post[]
   accounts Account[]
   sessions Session[]
 }
@@ -92,7 +87,8 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@index([userId])
