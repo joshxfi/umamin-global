@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import "next-auth";
-import prisma from "@/utils/db";
+import prisma from "@/lib/db";
 import { Role } from "@ummx/codegen/__generated__/graphql";
 import { type DefaultSession } from "next-auth";
 

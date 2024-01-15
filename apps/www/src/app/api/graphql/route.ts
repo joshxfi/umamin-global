@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth/next";
 import responseCachePlugin from "@apollo/server-plugin-response-cache";
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
 
-import prisma from "@/utils/db";
+import prisma from "@/lib/db";
 import { TagResolver } from "@/schema/tag/tag.resolvers";
 import { UserResolver } from "@/schema/user/user.resolvers";
 import { PostResolver } from "@/schema/post/post.resolvers";
