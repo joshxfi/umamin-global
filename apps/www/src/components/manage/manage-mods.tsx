@@ -40,29 +40,30 @@ export function ManageMods() {
 
   const [username, setUsername] = useState("");
 
-  const handleUserRole = (username: string, role: Role) => {
-    setUserRole({
-      variables: {
-        username,
-        role,
-      },
-      onCompleted: () => {
-        setUsername("");
-        refetch();
-        toast({
-          title: "Success",
-          description: `Added ${username} as content moderator`,
-        });
-      },
-      onError: (err) => {
-        console.log(err);
+  const handleUserRole = (role: Role, username?: string | null) => {
+    if (username)
+      setUserRole({
+        variables: {
+          username,
+          role,
+        },
+        onCompleted: () => {
+          setUsername("");
+          refetch();
+          toast({
+            title: "Success",
+            description: `Added ${username} as content moderator`,
+          });
+        },
+        onError: (err) => {
+          console.log(err);
 
-        toast({
-          title: "Error",
-          description: "Something went wrong",
-        });
-      },
-    });
+          toast({
+            title: "Error",
+            description: "Something went wrong",
+          });
+        },
+      });
   };
 
   return (
@@ -71,18 +72,21 @@ export function ManageMods() {
       <p className="text-muted-foreground text-sm">Click on a user to revoke</p>
       <div className="flex flex-wrap gap-2 mt-4">
         {!data?.getUsers.length && <Badge name="none" />}
-        {data?.getUsers.map((user) => (
-          <ConfirmButton
-            key={user.id}
-            title="Remove content moderator"
-            body={`Are you sure you want to remove "${user.username}"?`}
-            onConfirm={() => handleUserRole(user.username, Role.User)}
-          >
-            <button disabled={loading}>
-              <Badge name={user.username} />
-            </button>
-          </ConfirmButton>
-        ))}
+        {data?.getUsers.map(
+          (user) =>
+            user.username && (
+              <ConfirmButton
+                key={user.id}
+                title="Remove content moderator"
+                body={`Are you sure you want to remove "${user.username}"?`}
+                onConfirm={() => handleUserRole(Role.User, user.username)}
+              >
+                <button disabled={loading}>
+                  <Badge name={user.username} />
+                </button>
+              </ConfirmButton>
+            )
+        )}
       </div>
 
       <div className="space-y-4 mt-12">
@@ -99,7 +103,7 @@ export function ManageMods() {
         <ConfirmButton
           title="Assign content moderator"
           body={`Are you sure you want to assign the user "${username}"?`}
-          onConfirm={() => handleUserRole(username, Role.Moderator)}
+          onConfirm={() => handleUserRole(Role.Moderator, username)}
         >
           <Button disabled={!username || loading}>Proceed</Button>
         </ConfirmButton>
