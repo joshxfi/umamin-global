@@ -1,6 +1,5 @@
 import { Resolver, Query, Mutation, Ctx, Arg, Directive } from "type-graphql";
 
-import { hashPassword } from "@/utils/helpers";
 import { User, Role } from "@generated/type-graphql";
 import type { TContext } from "@/app/api/graphql/_types";
 
@@ -50,7 +49,7 @@ export class UserResolver {
   }
 
   @Query(() => [User])
-  @Directive('@cacheControl(maxAge: 60)')
+  @Directive("@cacheControl(maxAge: 60)")
   async getUsers(
     @Arg("role", () => Role) role: Role,
     @Ctx() ctx: TContext
@@ -59,40 +58,6 @@ export class UserResolver {
       return await ctx.prisma.user.findMany({
         where: {
           role,
-        },
-      });
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
-  }
-
-  @Mutation(() => User)
-  async createUser(
-    @Arg("username", () => String) username: string,
-    @Arg("password", () => String) password: string,
-    @Ctx() { prisma }: TContext
-  ): Promise<User> {
-    const usernameRegex = /^[a-zA-Z0-9]+$/;
-    const hashedPassword = hashPassword(password);
-
-    try {
-      if (!usernameRegex.test(username)) {
-        throw new Error("Username must be alphanumeric");
-      }
-
-      const user = await prisma.user.findUnique({
-        where: { username },
-      });
-
-      if (user) {
-        throw new Error("Username already taken");
-      }
-
-      return await prisma.user.create({
-        data: {
-          username,
-          password: hashedPassword,
         },
       });
     } catch (err) {
