@@ -8,7 +8,7 @@ export class UserResolver {
   @Query(() => User)
   async getUser(
     @Arg("username", () => String) username: string,
-    @Ctx() ctx: TContext
+    @Ctx() ctx: TContext,
   ): Promise<User> {
     try {
       const user = await ctx.prisma.user.findUniqueOrThrow({
@@ -52,7 +52,7 @@ export class UserResolver {
   @Directive("@cacheControl(maxAge: 60)")
   async getUsers(
     @Arg("role", () => Role) role: Role,
-    @Ctx() ctx: TContext
+    @Ctx() ctx: TContext,
   ): Promise<User[]> {
     try {
       return await ctx.prisma.user.findMany({
@@ -66,11 +66,31 @@ export class UserResolver {
     }
   }
 
+  @Mutation(() => String)
+  async setUsername(
+    @Arg("username", () => String) username: string,
+    @Ctx() ctx: TContext,
+  ): Promise<String> {
+    try {
+      await ctx.prisma.user.update({
+        where: { id: ctx.id },
+        data: {
+          username,
+        },
+      });
+
+      return "Success";
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
+
   @Mutation(() => User)
   async setUserRole(
     @Arg("username", () => String) username: string,
     @Arg("role", () => Role) role: Role,
-    @Ctx() ctx: TContext
+    @Ctx() ctx: TContext,
   ): Promise<User> {
     try {
       return await ctx.prisma.user.update({
@@ -80,7 +100,7 @@ export class UserResolver {
         },
       });
     } catch (err) {
-      console.error(err);
+      console.log(err);
       throw err;
     }
   }
