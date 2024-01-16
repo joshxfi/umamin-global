@@ -470,6 +470,7 @@ export type User = {
   image?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   role: Role;
+  updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
   username?: Maybe<Scalars['String']['output']>;
 };
 
@@ -514,6 +515,7 @@ export type UserWhereInput = {
   posts?: InputMaybe<PostListRelationFilter>;
   role?: InputMaybe<EnumRoleFilter>;
   sessions?: InputMaybe<SessionListRelationFilter>;
+  updatedAt?: InputMaybe<DateTimeNullableFilter>;
   username?: InputMaybe<StringNullableFilter>;
 };
 

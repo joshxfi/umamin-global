@@ -1,5 +1,5 @@
 {
-  "name": "@ummx/prisma",
+  "name": "@umamin-global/prisma",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

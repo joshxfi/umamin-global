@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { gql } from "@ummx/codegen/__generated__";
-import { Role } from "@ummx/codegen/__generated__/graphql";
+import { gql } from "@umamin-global/codegen/__generated__";
+import { Role } from "@umamin-global/codegen/__generated__/graphql";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
 import { Input } from "@/components/ui/input";

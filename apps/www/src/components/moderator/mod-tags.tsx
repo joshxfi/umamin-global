@@ -1,9 +1,9 @@
 import { nanoid } from "nanoid";
 import { produce } from "immer";
 import { useMutation } from "@apollo/client";
-import { gql } from "@ummx/codegen/__generated__";
 import { usePostStore } from "@/store/usePostStore";
 import { useCallback, useMemo, useState } from "react";
+import { gql } from "@umamin-global/codegen/__generated__";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
 import { Badge } from "../ui/badge";

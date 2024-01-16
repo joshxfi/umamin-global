@@ -4,8 +4,8 @@ import { formatDistanceToNow } from "date-fns";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 
 import { PostData } from "@/types";
-import { gql } from "@ummx/codegen/__generated__";
 import { usePostStore } from "@/store/usePostStore";
+import { gql } from "@umamin-global/codegen/__generated__";
 
 import { ModTags } from "./mod-tags";
 import { useToast } from "../ui/use-toast";

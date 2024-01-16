@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -65,10 +65,10 @@ importers:
       '@types/react-dom':
         specifier: 18.2.7
         version: 18.2.7
-      '@ummx/codegen':
+      '@umamin-global/codegen':
         specifier: workspace:*
         version: link:../../packages/codegen
-      '@ummx/prisma':
+      '@umamin-global/prisma':
         specifier: workspace:*
         version: link:../../packages/prisma
       autoprefixer:

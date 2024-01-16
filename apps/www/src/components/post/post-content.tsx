@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { PostData } from "@/types";
 import { usePostStore } from "@/store/usePostStore";
-import { Role } from "@ummx/codegen/__generated__/graphql";
+import { Role } from "@umamin-global/codegen/__generated__/graphql";
 
 import { Icons } from "../icons";
 import { Badge } from "../ui/badge";
