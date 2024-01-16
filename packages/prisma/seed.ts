@@ -7,8 +7,6 @@ async function main() {
     await prisma.user.create({
       data: {
         username: faker.internet.userName(),
-        // password: faker.internet.password(),
-
         posts: {
           createMany: {
             data: [
