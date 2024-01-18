@@ -9,15 +9,23 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
+    session: ({ session, user, trigger, newSession }) => {
+      const _user = {
         ...session.user,
         id: user.id,
         username: user.username,
         role: user.role,
-      },
-    }),
+      };
+
+      if (trigger === "update" && newSession?.name) {
+        _user.username = newSession.user.username;
+      }
+
+      return {
+        ...session,
+        user: _user,
+      };
+    },
   },
 
   adapter: PrismaAdapter(prisma),

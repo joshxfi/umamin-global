@@ -1,11 +1,18 @@
+"use client";
+
+import { useState } from "react";
+import { useSession } from "next-auth/react";
 import { formatDistanceToNow } from "date-fns";
-import { getServerAuthSession } from "../api/auth/[...nextauth]/_options";
+
+import { Button } from "@/components/ui/button";
+import { Settings } from "@/components/profile/settings";
 import { SignInButton, SignOutButton } from "../../components/auth-button";
 
-export default async function Profile() {
-  const session = await getServerAuthSession();
+export default function Profile() {
+  const { data: session, status } = useSession();
+  const [open, setOpen] = useState(false);
 
-  if (!session) {
+  if (status === "unauthenticated") {
     return (
       <div>
         <p>Not logged in</p>
@@ -17,7 +24,8 @@ export default async function Profile() {
   return (
     <div className="text-sm flex justify-between items-center container">
       <div>
-        <h2 className="font-semibold">{session.user?.name}</h2>
+        <h2 className="font-semibold">{session?.user.name}</h2>
+        <h2 className="text-blue-400">@{session?.user.username || "user"}</h2>
         {session?.user?.createdAt && (
           <p className="text-muted-foreground mt-1">
             Joined{" "}
@@ -28,7 +36,13 @@ export default async function Profile() {
         )}
       </div>
 
-      <SignOutButton />
+      <div className="space-x-2">
+        <SignOutButton />
+        <Button type="button" className="mt-4" onClick={() => setOpen(true)}>
+          Settings
+        </Button>
+      </div>
+      <Settings open={open} setOpen={setOpen} />
     </div>
   );
 }
