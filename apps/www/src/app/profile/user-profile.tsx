@@ -10,6 +10,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { signOut, useSession } from "next-auth/react";
+import { Settings } from "@/components/profile/settings";
 
 const GET_USER = gql(`
 query GetUser($username: String!) {
@@ -24,13 +26,25 @@ query GetUser($username: String!) {
 `);
 
 export default function UserProfile({ username }: { username: string }) {
-  const { toast } = useToast();
-  const [mounted, setMounted] = useState(false);
-
   // Remove @ character from username
-  const removeSlug = (param: string) => {
+  const removeSlug = (param: string | undefined) => {
+    if (!param) return;
     return param.startsWith("%40") ? param.split("%40").at(1) : param;
   };
+
+  const { data: session } = useSession();
+  const isCurrentUser = username === session?.user.username;
+
+  const { toast } = useToast();
+  const { data } = useQuery(GET_USER, {
+    skip: isCurrentUser,
+    variables: { username: removeSlug(username)! },
+  });
+
+  const _user = isCurrentUser ? session?.user : data?.getUser;
+
+  const [openSettings, setOpenSettings] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -47,10 +61,6 @@ export default function UserProfile({ username }: { username: string }) {
     }
   }, [username]);
 
-  const { data } = useQuery(GET_USER, {
-    variables: { username: removeSlug(username)! },
-  });
-
   return (
     mounted && (
       <main className="container">
@@ -58,12 +68,12 @@ export default function UserProfile({ username }: { username: string }) {
           <div className="flex items-center justify-between py-5">
             <div>
               <span className="font-semibold text-2xl">
-                @{data?.getUser.username}
+                @{_user?.username ?? "Umamin User"}
               </span>
-              {data?.getUser.createdAt && (
+              {_user?.createdAt && (
                 <p className="text-muted-foreground mt-1">
                   Joined{" "}
-                  {formatDistanceToNow(new Date(data?.getUser.createdAt), {
+                  {formatDistanceToNow(new Date(_user?.createdAt), {
                     addSuffix: true,
                   })}
                 </p>
@@ -72,11 +82,11 @@ export default function UserProfile({ username }: { username: string }) {
             <Avatar className="h-24 w-24">
               <AvatarImage
                 className="rounded-full"
-                src={data?.getUser.image as string | undefined}
-                alt={`${data?.getUser.username}'s avatar`}
+                src={_user?.image as string | undefined}
+                alt={`${_user?.username}'s avatar`}
               />
               <AvatarFallback className="text-xs">
-                {data?.getUser.username?.split(" ").at(0)}
+                {_user?.username?.split(" ").at(0)}
               </AvatarFallback>
             </Avatar>
           </div>
@@ -84,41 +94,67 @@ export default function UserProfile({ username }: { username: string }) {
           {/**
            * Change user button if profile is current user
            */}
-          {/* {isCurrentUser ? (
-            <EditUserModal user={user} />
-          ) : ( */}
-          <div className="flex gap-2">
-            <Button
-              title="Follow"
-              type="button"
-              variant="outline"
-              onClick={() =>
-                toast({
-                  title: "Follow User",
-                  description: "Feature coming soon!",
-                })
-              }
-              className=" w-full"
-            >
-              Follow
-            </Button>
+          {isCurrentUser ? (
+            <div className="flex gap-2">
+              <Settings open={openSettings} setOpen={setOpenSettings} />
+              <Button
+                title="Update Profile"
+                type="button"
+                variant="outline"
+                onClick={() => setOpenSettings(true)}
+                className=" w-full"
+              >
+                Update Profile
+              </Button>
 
-            <Button
-              title="Mention"
-              type="button"
-              variant="outline"
-              onClick={() =>
-                toast({
-                  title: "Mention User",
-                  description: "Feature coming soon!",
-                })
-              }
-              className=" w-full"
-            >
-              Mention
-            </Button>
-          </div>
-          {/* )} */}
+              <Button
+                title="Sign Out"
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  signOut();
+                  toast({
+                    title: "Signed Out",
+                  });
+                }}
+                className=" w-full"
+              >
+                Sign Out
+              </Button>
+            </div>
+          ) : (
+            <div className="flex gap-2">
+              <Button
+                title="Follow"
+                type="button"
+                variant="outline"
+                onClick={() =>
+                  toast({
+                    title: "Follow User",
+                    description: "Feature coming soon!",
+                  })
+                }
+                className=" w-full"
+              >
+                Follow
+              </Button>
+
+              <Button
+                title="Mention"
+                type="button"
+                variant="outline"
+                onClick={() =>
+                  toast({
+                    title: "Mention User",
+                    description: "Feature coming soon!",
+                  })
+                }
+                className=" w-full"
+              >
+                Mention
+              </Button>
+            </div>
+          )}
         </section>
 
         <Tabs defaultValue="posts" className="mt-5 w-full">
