@@ -54,7 +54,7 @@ export function Settings({
   return (
     <DialogDrawer open={open} setOpen={setOpen}>
       <div className="py-12 px-4 ">
-        <p className="text-sm mb-4">@{session?.user.username}</p>
+        <p className="text-sm mb-4">@{session?.user.username || "user"}</p>
         <form className="flex space-x-4" onSubmit={handleSetUsername}>
           <Input
             type="text"

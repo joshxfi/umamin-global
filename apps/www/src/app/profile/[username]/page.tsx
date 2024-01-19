@@ -1,6 +1,8 @@
-import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
-import { gql } from "@umamin-global/codegen/__generated__";
+"use client"
+
 import { formatDistanceToNow } from "date-fns";
+import { gql } from "@umamin-global/codegen/__generated__";
+import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
 const GET_USER = gql(`
 query GetUser($username: String!) {
