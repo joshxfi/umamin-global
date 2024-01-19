@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { signOut, useSession } from "next-auth/react";
 import { Settings } from "@/components/profile/settings";
+import Loading from "@/app/profile/loading";
 
 const GET_USER = gql(`
 query GetUser($username: String!) {
@@ -37,7 +38,7 @@ export default function UserProfile({ username }: { username: string }) {
   const isCurrentUser = username === session?.user.username;
 
   const { toast } = useToast();
-  const { data } = useQuery(GET_USER, {
+  const { data, loading } = useQuery(GET_USER, {
     skip: isCurrentUser,
     variables: { username: removeSlug(username)! },
   });
@@ -64,6 +65,7 @@ export default function UserProfile({ username }: { username: string }) {
     }
   }, [username, isCurrentUser]);
 
+  if (loading) return <Loading />;
   if (!data?.getUser && !isCurrentUser) return <NotFound />;
 
   return (
