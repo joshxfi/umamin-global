@@ -3,6 +3,7 @@
 import { formatDistanceToNow } from "date-fns";
 import { gql } from "@umamin-global/codegen/__generated__";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
+import NotFound from "@/app/not-found";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -49,6 +50,8 @@ export default function UserProfile({ username }: { username: string }) {
   useEffect(() => {
     setMounted(true);
 
+    if (isCurrentUser) return;
+
     if (username && !username.startsWith("%40")) {
       const newUrl = `@${username}`;
 
@@ -59,7 +62,9 @@ export default function UserProfile({ username }: { username: string }) {
         newUrl
       );
     }
-  }, [username]);
+  }, [username, isCurrentUser]);
+
+  if (!data?.getUser && !isCurrentUser) return <NotFound />;
 
   return (
     mounted && (
