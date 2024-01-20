@@ -17,11 +17,57 @@ export class PostResolver {
   @Directive("@cacheControl(maxAge: 60)")
   async getPosts(
     @Ctx() ctx: TContext,
-    @Arg("cursorId", () => ID, { nullable: true }) cursorId?: string | null
+    @Arg("cursorId", () => ID, { nullable: true }) cursorId?: string | null,
   ): Promise<PostsWithCursor> {
     try {
       const posts = await ctx.prisma.post.findMany({
         where: { isComment: false },
+        orderBy: { createdAt: "desc" },
+        take: 10,
+        include: {
+          author: true,
+          tags: true,
+          upvotes: true,
+          comments: {
+            include: { author: true, upvotes: true },
+          },
+        },
+        ...(cursorId && {
+          skip: 1,
+          cursor: {
+            id: cursorId,
+          },
+        }),
+      });
+
+      if (posts.length === 0) {
+        return {
+          data: [],
+          cursorId: "",
+        };
+      }
+
+      return {
+        data: posts,
+        cursorId: posts[posts.length - 1].id,
+      };
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
+
+  @Query(() => PostsWithCursor)
+  @Directive("@cacheControl(maxAge: 60)")
+  async getUserPosts(
+    @Ctx() ctx: TContext,
+    @Arg("isComment", () => Boolean) isComment: boolean,
+    @Arg("authorId", () => String) authorId: string,
+    @Arg("cursorId", () => ID, { nullable: true }) cursorId?: string | null,
+  ): Promise<PostsWithCursor> {
+    try {
+      const posts = await ctx.prisma.post.findMany({
+        where: { isComment, authorId },
         orderBy: { createdAt: "desc" },
         take: 10,
         include: {
@@ -62,7 +108,7 @@ export class PostResolver {
   async addPost(
     @Arg("content", () => String) content: string,
     @Arg("isAnonymous", () => Boolean) isAnonymous: boolean,
-    @Ctx() ctx: TContext
+    @Ctx() ctx: TContext,
   ): Promise<PostData> {
     try {
       return await ctx.prisma.post.create({
@@ -85,7 +131,7 @@ export class PostResolver {
     @Arg("content", () => String) content: string,
     @Arg("isAnonymous", () => Boolean) isAnonymous: boolean,
     @Arg("postId", () => ID) postId: string,
-    @Ctx() ctx: TContext
+    @Ctx() ctx: TContext,
   ): Promise<PostData> {
     try {
       const commentData = await ctx.prisma.post.create({
@@ -112,7 +158,7 @@ export class PostResolver {
   @Directive("@cacheControl(maxAge: 60)")
   async removePost(
     @Arg("postId", () => ID) postId: string,
-    @Ctx() ctx: TContext
+    @Ctx() ctx: TContext,
   ): Promise<String> {
     try {
       const post = await ctx.prisma.post.findUnique({
@@ -154,7 +200,7 @@ export class PostResolver {
   @Directive("@cacheControl(maxAge: 60)")
   async addUpvote(
     @Arg("postId", () => ID) postId: string,
-    @Ctx() ctx: TContext
+    @Ctx() ctx: TContext,
   ): Promise<Upvote> {
     try {
       return await ctx.prisma.upvote.create({
@@ -173,7 +219,7 @@ export class PostResolver {
   @Directive("@cacheControl(maxAge: 60)")
   async removeUpvote(
     @Arg("id", () => ID) id: string,
-    @Ctx() ctx: TContext
+    @Ctx() ctx: TContext,
   ): Promise<String> {
     try {
       await ctx.prisma.upvote.delete({

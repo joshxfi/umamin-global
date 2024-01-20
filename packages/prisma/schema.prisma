@@ -85,8 +85,9 @@ model Post {
     parent   Post?   @relation("PostComments", fields: [parentId], references: [id], onUpdate: NoAction, onDelete: NoAction)
     comments Post[]  @relation("PostComments")
 
-    @@index([authorId])
-    @@index([parentId, isComment, createdAt(sort: Desc)])
+    @@index([parentId])
+    @@index([isComment, createdAt(sort: Desc)])
+    @@index([authorId, isComment, createdAt(sort: Desc)])
 }
 
 model Upvote {
