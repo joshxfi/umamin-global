@@ -75,7 +75,7 @@ export function UserPosts({ isComment = false, authorId }: Props) {
         },
       });
     }
-  }, [inView, fetchMore, data?.getUserPosts.cursorId]);
+  }, [inView, fetchMore, data?.getUserPosts.cursorId, authorId, isComment]);
 
   return (
     <section className="pb-24 pt-12">
