@@ -21,7 +21,7 @@ export class PostResolver {
   ): Promise<PostsWithCursor> {
     try {
       const posts = await ctx.prisma.post.findMany({
-        where: { isComment: false },
+        where: { parentId: null },
         orderBy: { createdAt: "desc" },
         take: 10,
         include: {
@@ -67,7 +67,7 @@ export class PostResolver {
   ): Promise<PostsWithCursor> {
     try {
       const posts = await ctx.prisma.post.findMany({
-        where: { isComment, authorId },
+        where: { parentId: isComment ? { not: null } : null, authorId },
         orderBy: { createdAt: "desc" },
         take: 10,
         include: {
@@ -138,7 +138,6 @@ export class PostResolver {
         data: {
           content,
           isAnonymous,
-          isComment: true,
           author: { connect: { id: ctx.id } },
           parent: { connect: { id: postId } },
         },

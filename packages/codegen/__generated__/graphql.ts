@@ -268,7 +268,6 @@ export type PostData = {
   createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['String']['output'];
   isAnonymous: Scalars['Boolean']['output'];
-  isComment: Scalars['Boolean']['output'];
   parentId?: Maybe<Scalars['String']['output']>;
   updatedAt: Scalars['DateTimeISO']['output'];
   upvotes?: Maybe<Array<Upvote>>;
@@ -301,7 +300,6 @@ export type PostWhereInput = {
   createdAt?: InputMaybe<DateTimeFilter>;
   id?: InputMaybe<StringFilter>;
   isAnonymous?: InputMaybe<BoolFilter>;
-  isComment?: InputMaybe<BoolFilter>;
   parent?: InputMaybe<PostNullableRelationFilter>;
   parentId?: InputMaybe<StringNullableFilter>;
   tags?: InputMaybe<TagListRelationFilter>;
@@ -319,7 +317,6 @@ export type PostWithComments = {
   createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['String']['output'];
   isAnonymous: Scalars['Boolean']['output'];
-  isComment: Scalars['Boolean']['output'];
   parentId?: Maybe<Scalars['String']['output']>;
   tags?: Maybe<Array<Tag>>;
   updatedAt: Scalars['DateTimeISO']['output'];
