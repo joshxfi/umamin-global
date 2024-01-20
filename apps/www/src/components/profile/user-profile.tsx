@@ -14,6 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { signOut, useSession } from "next-auth/react";
 import { Settings } from "@/components/profile/settings";
 import Loading from "@/app/profile/loading";
+import { UserPosts } from "./user-posts";
 
 const GET_USER = gql(`
 query GetUser($username: String!) {
@@ -60,7 +61,7 @@ export default function UserProfile({ username }: { username: string }) {
       window.history.replaceState(
         { ...window.history.state, as: newUrl, url: newUrl },
         "",
-        newUrl
+        newUrl,
       );
     }
   }, [username, isCurrentUser]);
@@ -178,16 +179,11 @@ export default function UserProfile({ username }: { username: string }) {
           </TabsList>
 
           <TabsContent value="posts">
-            {/* 
-                Fetch posts by user
-            */}
-            {/* <Posts authorId={user.id} /> */}
+            {_user?.id && <UserPosts authorId={_user.id} />}
           </TabsContent>
 
           <TabsContent value="replies">
-            <div className="flex justify-center pt-10 text-xl font-semibold">
-              Replies tab coming soon..
-            </div>
+            {_user?.id && <UserPosts isComment={true} authorId={_user.id} />}
           </TabsContent>
 
           <TabsContent value="likes">
