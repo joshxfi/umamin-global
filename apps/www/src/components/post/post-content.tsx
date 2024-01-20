@@ -27,20 +27,18 @@ export function PostContent({ additionalTags, ...rest }: Props) {
             hide: v,
           }))
         : [],
-    [_tempTags, rest.id]
+    [_tempTags, rest.id],
   );
   const { data: session } = useSession();
 
   const tagsToDisplay = useMemo(
     () => [
       ...(rest.tags
-        ?.filter(
-          (t) => !tempTags.some((_t) => t.name === _t.name && _t.hide)
-        )
+        ?.filter((t) => !tempTags.some((_t) => t.name === _t.name && _t.hide))
         .map((t) => t.name) ?? []),
-      ...tempTags?.filter((t) => t.hide).map((t) => t.name),
+      ...tempTags?.filter((t) => !t.hide).map((t) => t.name),
     ],
-    [rest.tags, tempTags]
+    [rest.tags, tempTags],
   );
 
   const [hideNsfw, setHideNsfw] = useState(true);
@@ -88,17 +86,19 @@ export function PostContent({ additionalTags, ...rest }: Props) {
         >
           {rest.content}
         </p>
-        {tagsToDisplay.includes("nsfw") && !tagsToDisplay.includes("quarantine") && hideNsfw && (
-          <button
-            type="button"
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center"
-            onClick={() => setHideNsfw(false)}
-          >
-            <Icons.exclamationCircle className="w-5 h-5 text-red-500" />
-            <p className="font-semibold mt-2">NSFW Content</p>
-            <p className="text-xs mt-1">Tap to view</p>
-          </button>
-        )}
+        {tagsToDisplay.includes("nsfw") &&
+          !tagsToDisplay.includes("quarantine") &&
+          hideNsfw && (
+            <button
+              type="button"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center"
+              onClick={() => setHideNsfw(false)}
+            >
+              <Icons.exclamationCircle className="w-5 h-5 text-red-500" />
+              <p className="font-semibold mt-2">NSFW Content</p>
+              <p className="text-xs mt-1">Tap to view</p>
+            </button>
+          )}
       </div>
 
       <div className="flex gap-2 flex-wrap">
