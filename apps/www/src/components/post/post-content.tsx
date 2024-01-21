@@ -11,6 +11,7 @@ import { Role } from "@umamin-global/codegen/__generated__/graphql";
 import { Icons } from "../icons";
 import { Badge } from "../ui/badge";
 import { ContentMod } from "../moderator/mod-dialog";
+import Link from "next/link";
 
 type Props = {
   additionalTags?: React.ReactNode;
@@ -44,7 +45,7 @@ export function PostContent({ additionalTags, ...rest }: Props) {
   const [hideNsfw, setHideNsfw] = useState(true);
 
   return (
-    <section className="space-y-2">
+    <Link href={`/post/${rest.id}`} className="space-y-2">
       <div className="flex justify-between items-center">
         <div className="flex gap-x-2">
           <h2 className="font-semibold">
@@ -107,6 +108,6 @@ export function PostContent({ additionalTags, ...rest }: Props) {
           <Badge key={nanoid()} name={tag} />
         ))}
       </div>
-    </section>
+    </Link>
   );
 }
