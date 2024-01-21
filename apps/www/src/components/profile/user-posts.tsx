@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 import { useInView } from "react-intersection-observer";
 import { gql } from "@umamin-global/codegen/__generated__";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
@@ -57,6 +58,7 @@ query GetUserPosts($cursorId: ID, $authorId: String!, $isComment: Boolean!) {
 
 export function UserPosts({ isComment = false, authorId }: Props) {
   const { ref, inView } = useInView();
+  const { data: session } = useSession();
   const removedPosts = usePostStore((state) => state.removedPosts);
   const { data, fetchMore } = useQuery(GET_USER_POSTS, {
     variables: {
@@ -81,6 +83,7 @@ export function UserPosts({ isComment = false, authorId }: Props) {
     <section className="pb-24 pt-12">
       {data?.getUserPosts.data
         ?.filter((m) => !removedPosts.includes(m.id))
+        ?.filter((m) => !(authorId !== session?.user.id && m.isAnonymous))
         .map((m) => <PostContainer key={m.id} {...m} />)}
 
       {!!data?.getUserPosts.data && data.getUserPosts.data.length >= 10 && (
