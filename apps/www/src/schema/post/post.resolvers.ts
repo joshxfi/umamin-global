@@ -1,6 +1,6 @@
 import { Post, Upvote } from "@generated/type-graphql";
 import type { TContext } from "@/app/api/graphql/_types";
-import { PostData, PostsWithCursor } from "./post.types";
+import { PostData, PostWithComments, PostsWithCursor } from "./post.types";
 import {
   Resolver,
   Query,
@@ -52,6 +52,30 @@ export class PostResolver {
         data: posts,
         cursorId: posts[posts.length - 1].id,
       };
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
+
+  @Query(() => PostWithComments)
+  @Directive("@cacheControl(maxAge: 60)")
+  async getPost(
+    @Arg("postId", () => ID) postId: string,
+    @Ctx() ctx: TContext,
+  ): Promise<PostWithComments> {
+    try {
+      return await ctx.prisma.post.findUniqueOrThrow({
+        where: { id: postId },
+        include: {
+          author: true,
+          tags: true,
+          upvotes: true,
+          comments: {
+            include: { author: true, upvotes: true },
+          },
+        },
+      });
     } catch (err) {
       console.log(err);
       throw err;
