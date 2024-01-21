@@ -61,10 +61,10 @@ export function Menu() {
       },
     },
     {
-      route: status === "unauthenticated" ? "/login" : "/profile",
+      route: status === "unauthenticated" ? "/login" : "/user",
       icon: "user",
-      path: "/profile",
-    },
+      path: "/user",
+    }
   ];
 
   return (

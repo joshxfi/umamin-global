@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { signOut, useSession } from "next-auth/react";
 import { Settings } from "@/components/profile/settings";
-import Loading from "@/app/profile/loading";
+import Loading from "@/app/user/loading";
 import { UserPosts } from "./user-posts";
 
 const GET_USER = gql(`
