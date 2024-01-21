@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { faker } from "@faker-js/faker";
+import { nanoid } from "nanoid";
 
 const prisma = new PrismaClient();
 async function main() {
@@ -11,6 +12,7 @@ async function main() {
           createMany: {
             data: [
               ...Array.from({ length: 2 }).map(() => ({
+                id: nanoid(11),
                 content: faker.lorem.paragraph({ min: 1, max: 5 }),
                 isAnonymous: faker.datatype.boolean(),
               })),

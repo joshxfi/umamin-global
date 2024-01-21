@@ -10,6 +10,7 @@ import {
   ID,
   Directive,
 } from "type-graphql";
+import { nanoid } from "nanoid";
 
 @Resolver(() => Post)
 export class PostResolver {
@@ -113,6 +114,7 @@ export class PostResolver {
     try {
       return await ctx.prisma.post.create({
         data: {
+          id: nanoid(11),
           content,
           isAnonymous,
           author: { connect: { id: ctx.id } },
@@ -136,6 +138,7 @@ export class PostResolver {
     try {
       const commentData = await ctx.prisma.post.create({
         data: {
+          id: nanoid(11),
           content,
           isAnonymous,
           author: { connect: { id: ctx.id } },
