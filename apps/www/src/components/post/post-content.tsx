@@ -1,4 +1,3 @@
-import { nanoid } from "nanoid";
 import { useMemo, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { useSession } from "next-auth/react";
@@ -12,6 +11,7 @@ import { Icons } from "../icons";
 import { Badge } from "../ui/badge";
 import { ContentMod } from "../moderator/mod-dialog";
 import Link from "next/link";
+import { useNanoid } from "@/hooks/use-nanoid";
 
 type Props = {
   additionalTags?: React.ReactNode;
@@ -41,6 +41,8 @@ export function PostContent({ additionalTags, ...rest }: Props) {
     ],
     [rest.tags, tempTags],
   );
+
+  const ids = useNanoid(tagsToDisplay.length);
 
   const [hideNsfw, setHideNsfw] = useState(true);
 
@@ -104,8 +106,8 @@ export function PostContent({ additionalTags, ...rest }: Props) {
 
       <div className="flex gap-2 flex-wrap">
         {additionalTags}
-        {tagsToDisplay.map((tag) => (
-          <Badge key={nanoid()} name={tag} />
+        {tagsToDisplay.map((tag, i) => (
+          <Badge key={ids[i]} name={tag} />
         ))}
       </div>
     </Link>

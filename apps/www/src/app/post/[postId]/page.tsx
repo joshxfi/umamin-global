@@ -1,11 +1,10 @@
-"use client"
+"use client";
 
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import { gql } from "@umamin-global/codegen/__generated__";
 
 import { PostContainer } from "@/components/post/post-container";
 import { Skeleton } from "@/components/ui/skeleton";
-import { nanoid } from "nanoid";
 
 const GET_POST = gql(`
 query GetPost($postId: ID!) {
@@ -54,7 +53,7 @@ export default function Post({ params }: { params: { postId: string } }) {
   if (loading) {
     return (
       <div className="space-y-12 container">
-        <div className="space-y-2" key={nanoid()}>
+        <div className="space-y-2">
           <div className="flex space-x-2">
             <Skeleton className="h-4 w-[80px]" />
             <Skeleton className="h-4 w-[100px]" />
