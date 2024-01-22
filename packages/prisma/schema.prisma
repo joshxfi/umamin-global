@@ -69,10 +69,9 @@ model VerificationToken {
 }
 
 model Post {
-    id          String   @id @default(cuid())
+    id          String   @id
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
-    isComment   Boolean  @default(false)
     content     String   @db.VarChar(500)
     isAnonymous Boolean  @default(false)
     upvotes     Upvote[]
@@ -85,8 +84,8 @@ model Post {
     parent   Post?   @relation("PostComments", fields: [parentId], references: [id], onUpdate: NoAction, onDelete: NoAction)
     comments Post[]  @relation("PostComments")
 
-    @@index([authorId])
-    @@index([parentId, isComment, createdAt(sort: Desc)])
+    @@index([parentId, createdAt(sort: Desc)])
+    @@index([authorId, parentId, createdAt(sort: Desc)])
 }
 
 model Upvote {

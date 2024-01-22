@@ -1,6 +1,5 @@
 "use client";
 
-import { nanoid } from "nanoid";
 import { useEffect } from "react";
 import { gql } from "@umamin-global/codegen/__generated__";
 import { useInView } from "react-intersection-observer";
@@ -9,6 +8,7 @@ import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePostStore } from "@/store/usePostStore";
 import { PostContainer } from "@/components/post/post-container";
+import { useNanoid } from "@/hooks/use-nanoid";
 
 const GET_POSTS = gql(`
 query GetPosts($cursorId: ID) {
@@ -56,6 +56,8 @@ export default function Home() {
   const tempPosts = usePostStore((state) => state.posts);
   const removedPosts = usePostStore((state) => state.removedPosts);
 
+  const ids = useNanoid(6);
+
   useEffect(() => {
     if (inView) {
       fetchMore({
@@ -69,8 +71,8 @@ export default function Home() {
   if (loading) {
     return (
       <div className="space-y-12 container">
-        {Array.from({ length: 6 }).map((_) => (
-          <div className="space-y-2" key={nanoid()}>
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div className="space-y-2" key={ids[i]}>
             <div className="flex space-x-2">
               <Skeleton className="h-4 w-[80px]" />
               <Skeleton className="h-4 w-[100px]" />
@@ -93,9 +95,7 @@ export default function Home() {
 
       {data?.getPosts.data
         ?.filter((m) => !removedPosts.includes(m.id))
-        .map((m) => (
-          <PostContainer key={m.id} {...m} />
-        ))}
+        .map((m) => <PostContainer key={m.id} {...m} />)}
 
       {!!data?.getPosts.data && data.getPosts.data.length >= 10 && (
         <div ref={ref}></div>

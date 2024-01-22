@@ -13,9 +13,8 @@ import { ApolloWrapper } from "./ApolloWrapper";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "TheForum",
-  description:
-    "For the voices unheard — stories, confessions, rants, and more.",
+  title: "Umamin Global",
+  description: "A global channel for the umam.in ecosystem.",
 };
 
 export default function RootLayout({
