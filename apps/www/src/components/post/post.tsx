@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useSession } from "next-auth/react";
 import { useMutation } from "@apollo/client";
-import { gql } from "@ummx/codegen/__generated__";
+import { gql } from "@umamin-global/codegen/__generated__";
 
 import { PostData } from "@/types";
 import { usePostStore } from "@/store/usePostStore";

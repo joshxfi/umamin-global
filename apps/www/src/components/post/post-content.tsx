@@ -1,4 +1,3 @@
-import { nanoid } from "nanoid";
 import { useMemo, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { useSession } from "next-auth/react";
@@ -6,11 +5,13 @@ import { useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { PostData } from "@/types";
 import { usePostStore } from "@/store/usePostStore";
-import { Role } from "@ummx/codegen/__generated__/graphql";
+import { Role } from "@umamin-global/codegen/__generated__/graphql";
 
 import { Icons } from "../icons";
 import { Badge } from "../ui/badge";
 import { ContentMod } from "../moderator/mod-dialog";
+import Link from "next/link";
+import { useNanoid } from "@/hooks/use-nanoid";
 
 type Props = {
   additionalTags?: React.ReactNode;
@@ -27,26 +28,26 @@ export function PostContent({ additionalTags, ...rest }: Props) {
             hide: v,
           }))
         : [],
-    [_tempTags, rest.id]
+    [_tempTags, rest.id],
   );
   const { data: session } = useSession();
 
   const tagsToDisplay = useMemo(
     () => [
       ...(rest.tags
-        ?.filter(
-          (t) => !tempTags.some((_t) => t.name === _t.name && _t.hide)
-        )
+        ?.filter((t) => !tempTags.some((_t) => t.name === _t.name && _t.hide))
         .map((t) => t.name) ?? []),
-      ...tempTags?.filter((t) => t.hide).map((t) => t.name),
+      ...tempTags?.filter((t) => !t.hide).map((t) => t.name),
     ],
-    [rest.tags, tempTags]
+    [rest.tags, tempTags],
   );
+
+  const ids = useNanoid(tagsToDisplay.length);
 
   const [hideNsfw, setHideNsfw] = useState(true);
 
   return (
-    <section className="space-y-2">
+    <Link href={`/post/${rest.id}`} className="space-y-2">
       <div className="flex justify-between items-center">
         <div className="flex gap-x-2">
           <h2 className="font-semibold">
@@ -88,25 +89,27 @@ export function PostContent({ additionalTags, ...rest }: Props) {
         >
           {rest.content}
         </p>
-        {tagsToDisplay.includes("nsfw") && !tagsToDisplay.includes("quarantine") && hideNsfw && (
-          <button
-            type="button"
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center"
-            onClick={() => setHideNsfw(false)}
-          >
-            <Icons.exclamationCircle className="w-5 h-5 text-red-500" />
-            <p className="font-semibold mt-2">NSFW Content</p>
-            <p className="text-xs mt-1">Tap to view</p>
-          </button>
-        )}
+        {tagsToDisplay.includes("nsfw") &&
+          !tagsToDisplay.includes("quarantine") &&
+          hideNsfw && (
+            <button
+              type="button"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center"
+              onClick={() => setHideNsfw(false)}
+            >
+              <Icons.exclamationCircle className="w-5 h-5 text-red-500" />
+              <p className="font-semibold mt-2">NSFW Content</p>
+              <p className="text-xs mt-1">Tap to view</p>
+            </button>
+          )}
       </div>
 
       <div className="flex gap-2 flex-wrap">
         {additionalTags}
-        {tagsToDisplay.map((tag) => (
-          <Badge key={nanoid()} name={tag} />
+        {tagsToDisplay.map((tag, i) => (
+          <Badge key={ids[i]} name={tag} />
         ))}
       </div>
-    </section>
+    </Link>
   );
 }

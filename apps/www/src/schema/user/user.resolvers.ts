@@ -1,6 +1,5 @@
 import { Resolver, Query, Mutation, Ctx, Arg, Directive } from "type-graphql";
 
-import { hashPassword } from "@/utils/helpers";
 import { User, Role } from "@generated/type-graphql";
 import type { TContext } from "@/app/api/graphql/_types";
 
@@ -9,7 +8,7 @@ export class UserResolver {
   @Query(() => User)
   async getUser(
     @Arg("username", () => String) username: string,
-    @Ctx() ctx: TContext
+    @Ctx() ctx: TContext,
   ): Promise<User> {
     try {
       const user = await ctx.prisma.user.findUniqueOrThrow({
@@ -50,10 +49,10 @@ export class UserResolver {
   }
 
   @Query(() => [User])
-  @Directive('@cacheControl(maxAge: 60)')
+  @Directive("@cacheControl(maxAge: 60)")
   async getUsers(
     @Arg("role", () => Role) role: Role,
-    @Ctx() ctx: TContext
+    @Ctx() ctx: TContext,
   ): Promise<User[]> {
     try {
       return await ctx.prisma.user.findMany({
@@ -67,34 +66,20 @@ export class UserResolver {
     }
   }
 
-  @Mutation(() => User)
-  async createUser(
+  @Mutation(() => String)
+  async setUsername(
     @Arg("username", () => String) username: string,
-    @Arg("password", () => String) password: string,
-    @Ctx() { prisma }: TContext
-  ): Promise<User> {
-    const usernameRegex = /^[a-zA-Z0-9]+$/;
-    const hashedPassword = hashPassword(password);
-
+    @Ctx() ctx: TContext,
+  ): Promise<String> {
     try {
-      if (!usernameRegex.test(username)) {
-        throw new Error("Username must be alphanumeric");
-      }
-
-      const user = await prisma.user.findUnique({
-        where: { username },
-      });
-
-      if (user) {
-        throw new Error("Username already taken");
-      }
-
-      return await prisma.user.create({
+      await ctx.prisma.user.update({
+        where: { id: ctx.id },
         data: {
           username,
-          password: hashedPassword,
         },
       });
+
+      return "Success";
     } catch (err) {
       console.log(err);
       throw err;
@@ -105,7 +90,7 @@ export class UserResolver {
   async setUserRole(
     @Arg("username", () => String) username: string,
     @Arg("role", () => Role) role: Role,
-    @Ctx() ctx: TContext
+    @Ctx() ctx: TContext,
   ): Promise<User> {
     try {
       return await ctx.prisma.user.update({
@@ -115,7 +100,7 @@ export class UserResolver {
         },
       });
     } catch (err) {
-      console.error(err);
+      console.log(err);
       throw err;
     }
   }

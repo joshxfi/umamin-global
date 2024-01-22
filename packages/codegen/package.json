@@ -1,5 +1,5 @@
 {
-  "name": "@ummx/codegen",
+  "name": "@umamin-global/codegen",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsc",

@@ -1,22 +1,22 @@
 {
-  "name": "ummx",
+  "name": "umamin-global",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "start": "turbo run start --filter=www",
     "generate": "turbo run generate",
-    "generate:gql": "turbo run generate --filter=@ummx/codegen",
-    "generate:db": "turbo run generate --filter=@ummx/prisma",
-    "db:push": "pnpm --filter @ummx/prisma db:push",
-    "db:seed": "pnpm --filter @ummx/prisma seed",
+    "generate:gql": "turbo run generate --filter=@umamin-global/codegen",
+    "generate:db": "turbo run generate --filter=@umamin-global/prisma",
+    "db:push": "pnpm --filter @umamin-global/prisma db:push",
+    "db:seed": "pnpm --filter @umamin-global/prisma seed",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "docker:down": "docker-compose down",
     "docker:up": "docker-compose up -d"
   },
   "devDependencies": {
     "prettier": "^3.0.3",
-    "turbo": "^1.11.1"
+    "turbo": "^1.11.3"
   },
   "packageManager": "pnpm@7.15.0"
 }

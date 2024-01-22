@@ -1,63 +1,43 @@
-import { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import { NextAuthOptions, getServerSession } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
 
-import type { AuthedUser } from "../../authorize/_types";
-import { Role } from "@ummx/codegen/__generated__/graphql";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import prisma from "@/lib/db";
 
 export const authOptions: NextAuthOptions = {
   debug: process.env.NODE_ENV === "development",
   secret: process.env.NEXTAUTH_SECRET,
+
+  callbacks: {
+    session: ({ session, user, trigger, newSession }) => {
+      const _user = {
+        ...session.user,
+        id: user.id,
+        username: user.username,
+        role: user.role,
+      };
+
+      if (trigger === "update" && newSession?.name) {
+        _user.username = newSession.user.username;
+      }
+
+      return {
+        ...session,
+        user: _user,
+      };
+    },
+  },
+
+  adapter: PrismaAdapter(prisma),
   providers: [
-    CredentialsProvider({
-      id: "credentials",
-      name: "credentials",
-      credentials: {
-        username: {
-          label: "Username",
-          type: "text",
-        },
-        password: { label: "Password", type: "password" },
-      },
-      authorize: async (credentials) => {
-        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/authorize`, {
-          method: "POST",
-          body: JSON.stringify({
-            username: credentials?.username,
-            password: credentials?.password,
-          }),
-        });
-
-        if (res.ok) {
-          const user = (await res.json()) as AuthedUser;
-          return user;
-        }
-
-        return Promise.reject(new Error("Invalid credentials"));
-      },
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
   pages: {
     signIn: "/register",
   },
-  callbacks: {
-    jwt({ token, user }) {
-      if (user) {
-        token.username = user.username;
-        token.role = user.role;
-        token.createdAt = user.createdAt;
-        return token;
-      }
-      return token;
-    },
-
-    session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.sub;
-        session.user.username = token.username as string;
-        session.user.role = token.role as Role;
-        session.user.createdAt = token.createdAt;
-      }
-      return session;
-    },
-  },
 };
+
+export const getServerAuthSession = () => getServerSession(authOptions);

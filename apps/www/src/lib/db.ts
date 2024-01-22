@@ -1,4 +1,4 @@
-import { PrismaClient } from "@ummx/prisma";
+import { PrismaClient } from "@umamin-global/prisma";
 
 const prismaClientSingleton = () => {
   return new PrismaClient();
