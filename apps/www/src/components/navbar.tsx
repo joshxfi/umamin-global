@@ -5,8 +5,8 @@ import Link from "next/link";
 export function Navbar() {
   return (
     <nav className="mb-16 pt-12 container">
-      <Link href="/" className="uppercase text-sm text-muted-foreground">
-        The<span className="font-bold text-white">Forum</span>
+      <Link href="/" className="text-sm text-muted-foreground">
+        <span className="font-semibold text-white">global</span>.umam.in
       </Link>
     </nav>
   );
