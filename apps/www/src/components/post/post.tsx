@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { useSession } from "next-auth/react";
 import { useMutation } from "@apollo/client";
 import { gql } from "@umamin-global/codegen/__generated__";
@@ -38,7 +38,7 @@ export const Post = ({
   type,
   isAuthor,
   isUserAuthor,
-  commentCount,
+  commentCount = 0,
   upvoteCount = 0,
   setShowComments,
   ...rest
@@ -55,17 +55,17 @@ export const Post = ({
 
   const isUpvoted = useMemo(
     () => rest.upvotes?.some((u) => u.userId === session?.user?.id),
-    [rest.upvotes, session?.user]
+    [rest.upvotes, session?.user],
   );
 
   const upvoteId = useMemo(
     () =>
       tempUpvote ??
       rest.upvotes?.find((u) => u.userId === session?.user?.id)?.id,
-    [tempUpvote, rest.upvotes, session?.user]
+    [tempUpvote, rest.upvotes, session?.user],
   );
 
-  const displayUpvoteCount = useCallback(() => {
+  const displayUpvoteCount = useMemo(() => {
     if (!!tempUpvote) {
       if (isUpvoted) return !isTempUpvoted ? upvoteCount - 1 : upvoteCount;
       return isTempUpvoted ? upvoteCount + 1 : upvoteCount;
@@ -162,36 +162,45 @@ export const Post = ({
         />
 
         <div className="mt-4 flex gap-x-2 items-center">
-          <div className="flex gap-x-1 items-center">
-            {!!isTempUpvoted || (isUpvoted && !tempUpvote) ? (
-              <button
-                type="button"
-                disabled={removeUpvoteLoading}
-                onClick={handleRemoveUpvote}
-              >
-                <Icons.arrowUpSolid className="w-6 h-6" />
-              </button>
-            ) : (
-              <button
-                type="button"
-                disabled={addUpvoteLoading}
-                onClick={() => handleAddUpvote(rest.id)}
-              >
-                <Icons.arrowUp className="w-6 h-6" />
-              </button>
-            )}
-
-            <p className="text-muted-foreground">{displayUpvoteCount()}</p>
-          </div>
+          {!!isTempUpvoted || (isUpvoted && !tempUpvote) ? (
+            <button
+              type="button"
+              disabled={removeUpvoteLoading}
+              onClick={handleRemoveUpvote}
+            >
+              <Icons.arrowUpSolid className="w-6 h-6" />
+            </button>
+          ) : (
+            <button
+              type="button"
+              disabled={addUpvoteLoading}
+              onClick={() => handleAddUpvote(rest.id)}
+            >
+              <Icons.arrowUp className="w-6 h-6" />
+            </button>
+          )}
 
           {setShowComments && (
-            <div className="flex gap-x-1 items-center">
-              <button type="button" onClick={() => setShowComments((p) => !p)}>
-                <Icons.reply className="w-6 h-6" />
-              </button>
+            <button type="button" onClick={() => setShowComments((p) => !p)}>
+              <Icons.reply className="w-6 h-6" />
+            </button>
+          )}
+        </div>
 
-              <p className="text-muted-foreground">{commentCount}</p>
-            </div>
+        <div className="flex space-x-2 text-muted-foreground font-light mt-3">
+          {commentCount > 0 && (
+            <>
+              <p>
+                {commentCount} comment{commentCount > 1 && "s"}
+              </p>
+              {displayUpvoteCount > 0 && <p>&#183;</p>}
+            </>
+          )}
+
+          {displayUpvoteCount > 0 && (
+            <p>
+              {displayUpvoteCount} upvote{displayUpvoteCount > 1 && "s"}
+            </p>
           )}
         </div>
       </div>
