@@ -8,8 +8,8 @@ import { usePostStore } from "@/store/usePostStore";
 import { gql } from "@umamin-global/codegen/__generated__";
 
 import { ModTags } from "./mod-tags";
-import { useToast } from "../ui/use-toast";
 import { ConfirmButton } from "../confirm-button";
+import { toast } from "sonner";
 
 type Props = {
   open: boolean;
@@ -34,30 +34,19 @@ export function ContentMod({ open, setOpen, existingTags, ...rest }: Props) {
     },
   });
 
-  const { toast } = useToast();
   const tempRemovePost = usePostStore((state) => state.removePost);
 
   const handleRemovePost = () => {
-    toast({
-      title: "Deleting Post",
-      description: "Please wait",
-    });
+    toast.loading("Deleting Post");
 
     removePost({
       onCompleted: () => {
         tempRemovePost(rest.id);
-        toast({
-          title: "Success",
-          description: "Post removed permanently",
-        });
+        toast.success("Post removed permanently");
       },
       onError: (err) => {
         console.log(err);
-
-        toast({
-          title: "Error",
-          description: "Something went wrong",
-        });
+        toast.error("Something went wrong");
       },
     });
   };

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { toast } from "sonner";
 import { useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useMutation } from "@apollo/client";
@@ -13,9 +14,9 @@ import { Badge } from "../ui/badge";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
 import { Textarea } from "../ui/textarea";
-import { useToast } from "../ui/use-toast";
 import { PostContent } from "./post-content";
 import { DialogDrawer } from "../dialog-drawer";
+import { useRouter } from "next/navigation";
 
 type Props = {
   type: "post" | "comment";
@@ -62,10 +63,10 @@ export const Post = ({
   upvoteCount = 0,
   ...props
 }: Props & Omit<PostData, "comments">) => {
+  const router = useRouter();
   const [addUpvote, { loading: addUpvoteLoading }] = useMutation(ADD_UPVOTE);
   const [removeUpvote, { loading: removeUpvoteLoading }] =
     useMutation(REMOVE_UPVOTE);
-  const { toast } = useToast();
   const { data: session, status } = useSession();
   const [addComment, { loading }] = useMutation(ADD_COMMENT);
   const [commentDialog, setCommentDialog] = useState(false);
@@ -79,14 +80,14 @@ export const Post = ({
 
   const isUpvoted = useMemo(
     () => props.upvotes?.some((u) => u.userId === session?.user?.id),
-    [props.upvotes, session?.user],
+    [props.upvotes, session?.user]
   );
 
   const upvoteId = useMemo(
     () =>
       tempUpvote ??
       props.upvotes?.find((u) => u.userId === session?.user?.id)?.id,
-    [tempUpvote, props.upvotes, session?.user],
+    [tempUpvote, props.upvotes, session?.user]
   );
 
   const displayUpvoteCount = useMemo(() => {
@@ -100,19 +101,19 @@ export const Post = ({
 
   const handleAddUpvote = (postId: string) => {
     if (status === "unauthenticated") {
-      toast({
-        title: "Oops!",
-        description: "You are not logged in",
+      toast.message("Oops!", {
+        description: "You need to be logged in to upvote",
+        action: {
+          label: "Login",
+          onClick: () => router.push("/login"),
+        },
       });
 
       return;
     }
 
     if (isUserAuthor) {
-      toast({
-        title: "Oops!",
-        description: "You can't upvote your own post",
-      });
+      toast.error("You can't upvote your own post");
 
       return;
     }
@@ -121,30 +122,21 @@ export const Post = ({
         postId,
       },
       onCompleted: (data) => {
-        toast({
-          title: "Success",
-          description: "Upvoted successfully",
-        });
+        toast.success("Upvoted successfully");
 
         updateTempUpvotes(props.id, data.addUpvote.id);
       },
       onError: (err) => {
         console.log(err);
 
-        toast({
-          title: "Error",
-          description: "Something went wrong",
-        });
+        toast.error("Something went wrong");
       },
     });
   };
 
   const handleRemoveUpvote = () => {
     if (!upvoteId) {
-      toast({
-        title: "Oops!",
-        description: "Something went wrong",
-      });
+      toast.error("Something went wrong");
 
       return;
     }
@@ -154,20 +146,14 @@ export const Post = ({
         upvoteId,
       },
       onCompleted: () => {
-        toast({
-          title: "Success",
-          description: "Upvote removed",
-        });
+        toast.success("Upvote removed");
 
         updateTempUpvotes(props.id, "temp");
       },
       onError: (err) => {
         console.log(err);
 
-        toast({
-          title: "Error",
-          description: "Something went wrong",
-        });
+        toast.error("Something went wrong");
       },
     });
   };
@@ -186,10 +172,8 @@ export const Post = ({
         postId: props.id,
       },
       onCompleted: (data) => {
-        toast({
-          title: "Success",
-          description: "Your comment has been added",
-        });
+        toast.success("Your comment has been added");
+
         setComment("");
         updateTempComments(props.id, data?.addComment);
 
@@ -198,10 +182,7 @@ export const Post = ({
       onError: (err) => {
         console.log(err);
 
-        toast({
-          title: "Error",
-          description: "Something went wrong",
-        });
+        toast.error("Something went wrong");
       },
     });
   };

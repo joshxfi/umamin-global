@@ -4,7 +4,7 @@ import NextTopLoader from "nextjs-toploader";
 
 import { Menu } from "@/components/menu";
 import { Navbar } from "@/components/navbar";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 import NextAuthProvider from "@/context/NextAuthProvider";
 
 import "./globals.css";
