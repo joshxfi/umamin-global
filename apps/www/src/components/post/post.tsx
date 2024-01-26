@@ -16,6 +16,7 @@ import { Switch } from "../ui/switch";
 import { Textarea } from "../ui/textarea";
 import { PostContent } from "./post-content";
 import { DialogDrawer } from "../dialog-drawer";
+import { useRouter } from "next/navigation";
 
 type Props = {
   type: "post" | "comment";
@@ -62,6 +63,7 @@ export const Post = ({
   upvoteCount = 0,
   ...props
 }: Props & Omit<PostData, "comments">) => {
+  const router = useRouter();
   const [addUpvote, { loading: addUpvoteLoading }] = useMutation(ADD_UPVOTE);
   const [removeUpvote, { loading: removeUpvoteLoading }] =
     useMutation(REMOVE_UPVOTE);
@@ -78,14 +80,14 @@ export const Post = ({
 
   const isUpvoted = useMemo(
     () => props.upvotes?.some((u) => u.userId === session?.user?.id),
-    [props.upvotes, session?.user],
+    [props.upvotes, session?.user]
   );
 
   const upvoteId = useMemo(
     () =>
       tempUpvote ??
       props.upvotes?.find((u) => u.userId === session?.user?.id)?.id,
-    [tempUpvote, props.upvotes, session?.user],
+    [tempUpvote, props.upvotes, session?.user]
   );
 
   const displayUpvoteCount = useMemo(() => {
@@ -99,7 +101,13 @@ export const Post = ({
 
   const handleAddUpvote = (postId: string) => {
     if (status === "unauthenticated") {
-      toast.error("You are not logged in");
+      toast.message("Oops!", {
+        description: "You need to be logged in to upvote",
+        action: {
+          label: "Login",
+          onClick: () => router.push("/login"),
+        },
+      });
 
       return;
     }
