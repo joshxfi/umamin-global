@@ -6,14 +6,13 @@ import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { Icons } from "@/components/icons";
-import { useToast } from "@/components/ui/use-toast";
 
 import { PostForm } from "./post/post-form";
 import { DialogDrawer } from "./dialog-drawer";
 import { useNanoid } from "@/hooks/use-nanoid";
+import { toast } from "sonner";
 
 export function Menu() {
-  const { toast } = useToast();
   const router = useRouter();
   const pathname = usePathname();
   const { status } = useSession();
@@ -56,8 +55,7 @@ export function Menu() {
     {
       icon: "bell",
       onClick: () => {
-        toast({
-          title: "Notifications 🔔",
+        toast("Notifications 🔔", {
           description: "Coming soon!",
         });
       },

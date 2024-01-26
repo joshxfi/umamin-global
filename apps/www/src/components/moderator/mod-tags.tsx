@@ -8,8 +8,8 @@ import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { useToast } from "../ui/use-toast";
 import { Skeleton } from "../ui/skeleton";
+import { toast } from "sonner";
 
 const ADD_TAG_TO_POST = gql(`
 mutation AddTagToPost($postId: ID!, $tagName: String!) {
@@ -42,7 +42,6 @@ type Props = {
 };
 
 export function ModTags({ setOpen, postId, existingTags }: Props) {
-  const { toast } = useToast();
   const [selectedTags, setSelectedTags] = useState<
     {
       name: string;
@@ -58,10 +57,7 @@ export function ModTags({ setOpen, postId, existingTags }: Props) {
   const updateTempTags = usePostStore((state) => state.updateTags);
 
   const handleSave = () => {
-    toast({
-      title: "Please wait",
-      description: "Modifying tags on post...",
-    });
+    toast.loading("Modifying tags on post...");
 
     selectedTags.forEach((tag) => {
       const exists = existingTags.includes(tag.name);

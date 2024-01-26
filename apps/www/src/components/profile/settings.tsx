@@ -4,9 +4,9 @@ import { useMutation } from "@apollo/client";
 
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useToast } from "../ui/use-toast";
 import { DialogDrawer } from "../dialog-drawer";
 import { gql } from "@umamin-global/codegen/__generated__";
+import { toast } from "sonner";
 
 const SET_USERNAME = gql(`
 mutation SetUsername($username: String!) {
@@ -22,7 +22,6 @@ export function Settings({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const { data: session, update } = useSession();
-  const { toast } = useToast();
   const [username, setUsername] = useState(session?.user.username ?? "");
 
   const [setUsernameFn, { loading }] = useMutation(SET_USERNAME);
@@ -36,17 +35,11 @@ export function Settings({
       },
       onCompleted: () => {
         update({ user: { username } });
-        toast({
-          title: "Success",
-          description: "Username set successfully",
-        });
+        toast.success("Username set successfully");
       },
       onError: (err) => {
         console.log(err);
-        toast({
-          title: "Error",
-          description: err.message,
-        });
+        toast.error(err.message);
       },
     });
   };

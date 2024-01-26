@@ -6,7 +6,6 @@ import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import NotFound from "@/app/not-found";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -15,6 +14,7 @@ import { signOut, useSession } from "next-auth/react";
 import { Settings } from "@/components/profile/settings";
 import Loading from "@/app/user/loading";
 import { UserPosts } from "./user-posts";
+import { toast } from "sonner";
 
 const GET_USER = gql(`
 query GetUser($username: String!) {
@@ -38,7 +38,6 @@ export default function UserProfile({ username }: { username: string }) {
   const { data: session } = useSession();
   const isCurrentUser = username === session?.user.username;
 
-  const { toast } = useToast();
   const { data, loading } = useQuery(GET_USER, {
     skip: isCurrentUser,
     variables: { username: removeSlug(username)! },
@@ -61,7 +60,7 @@ export default function UserProfile({ username }: { username: string }) {
       window.history.replaceState(
         { ...window.history.state, as: newUrl, url: newUrl },
         "",
-        newUrl,
+        newUrl
       );
     }
   }, [username, isCurrentUser]);
@@ -121,8 +120,8 @@ export default function UserProfile({ username }: { username: string }) {
                 variant="outline"
                 onClick={() => {
                   signOut();
-                  toast({
-                    title: "Signed Out",
+                  toast.message("Signed Out", {
+                    description: "You have been signed out successfully",
                   });
                 }}
                 className=" w-full"
@@ -137,8 +136,7 @@ export default function UserProfile({ username }: { username: string }) {
                 type="button"
                 variant="outline"
                 onClick={() =>
-                  toast({
-                    title: "Follow User",
+                  toast.message("Follow User", {
                     description: "Feature coming soon!",
                   })
                 }
@@ -152,8 +150,7 @@ export default function UserProfile({ username }: { username: string }) {
                 type="button"
                 variant="outline"
                 onClick={() =>
-                  toast({
-                    title: "Mention User",
+                  toast.message("Mention User", {
                     description: "Feature coming soon!",
                   })
                 }

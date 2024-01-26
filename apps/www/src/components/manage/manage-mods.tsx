@@ -8,8 +8,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+
 import { ConfirmButton } from "@/components/confirm-button";
+import { toast } from "sonner";
 
 const GET_USERS = gql(`
 query GetUsers($role: Role!) {
@@ -30,7 +31,6 @@ mutation setUserRole($role: Role!, $username: String!) {
 `);
 
 export function ManageMods() {
-  const { toast } = useToast();
   const { data, refetch } = useQuery(GET_USERS, {
     variables: {
       role: Role.Moderator,
@@ -50,18 +50,11 @@ export function ManageMods() {
         onCompleted: () => {
           setUsername("");
           refetch();
-          toast({
-            title: "Success",
-            description: `Added ${username} as content moderator`,
-          });
+          toast.success(`Added ${username} as content moderator`);
         },
         onError: (err) => {
           console.log(err);
-
-          toast({
-            title: "Error",
-            description: "Something went wrong",
-          });
+          toast.error("Something went wrong");
         },
       });
   };

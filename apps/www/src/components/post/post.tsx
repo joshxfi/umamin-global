@@ -8,8 +8,8 @@ import { usePostStore } from "@/store/usePostStore";
 
 import { Icons } from "../icons";
 import { Badge } from "../ui/badge";
-import { useToast } from "../ui/use-toast";
 import { PostContent } from "./post-content";
+import { toast } from "sonner";
 
 type Props = {
   type: "post" | "comment";
@@ -46,7 +46,6 @@ export const Post = ({
   const [addUpvote, { loading: addUpvoteLoading }] = useMutation(ADD_UPVOTE);
   const [removeUpvote, { loading: removeUpvoteLoading }] =
     useMutation(REMOVE_UPVOTE);
-  const { toast } = useToast();
   const { data: session, status } = useSession();
 
   const tempUpvote = usePostStore((state) => state.upvotes[rest.id]);
@@ -76,19 +75,13 @@ export const Post = ({
 
   const handleAddUpvote = (postId: string) => {
     if (status === "unauthenticated") {
-      toast({
-        title: "Oops!",
-        description: "You are not logged in",
-      });
+      toast.error("You are not logged in");
 
       return;
     }
 
     if (isUserAuthor) {
-      toast({
-        title: "Oops!",
-        description: "You can't upvote your own post",
-      });
+      toast.error("You can't upvote your own post");
 
       return;
     }
@@ -97,30 +90,21 @@ export const Post = ({
         postId,
       },
       onCompleted: (data) => {
-        toast({
-          title: "Success",
-          description: "Upvoted successfully",
-        });
+        toast.success("Upvoted successfully");
 
         updateTempUpvotes(rest.id, data.addUpvote.id);
       },
       onError: (err) => {
         console.log(err);
 
-        toast({
-          title: "Error",
-          description: "Something went wrong",
-        });
+        toast.error("Something went wrong");
       },
     });
   };
 
   const handleRemoveUpvote = () => {
     if (!upvoteId) {
-      toast({
-        title: "Oops!",
-        description: "Something went wrong",
-      });
+      toast.error("Something went wrong");
 
       return;
     }
@@ -130,20 +114,14 @@ export const Post = ({
         upvoteId,
       },
       onCompleted: () => {
-        toast({
-          title: "Success",
-          description: "Upvote removed",
-        });
+        toast.success("Upvote removed");
 
         updateTempUpvotes(rest.id, "temp");
       },
       onError: (err) => {
         console.log(err);
 
-        toast({
-          title: "Error",
-          description: "Something went wrong",
-        });
+        toast.error("Something went wrong");
       },
     });
   };

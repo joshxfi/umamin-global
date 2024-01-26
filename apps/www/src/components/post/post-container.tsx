@@ -15,9 +15,9 @@ import { Badge } from "../ui/badge";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
 import { Textarea } from "../ui/textarea";
-import { useToast } from "../ui/use-toast";
 import { PostContent } from "./post-content";
 import { DialogDrawer } from "../dialog-drawer";
+import { toast } from "sonner";
 
 const ADD_COMMENT = gql(`
 mutation AddComment($postId: ID!, $isAnonymous: Boolean!, $content: String!) {
@@ -35,7 +35,6 @@ mutation AddComment($postId: ID!, $isAnonymous: Boolean!, $content: String!) {
 `);
 
 export function PostContainer({ ...props }: PostData) {
-  const { toast } = useToast();
   const { data: session, status } = useSession();
   const [comment, setComment] = useState("");
   const [showComments, setShowComments] = useState(false);
@@ -70,10 +69,7 @@ export function PostContainer({ ...props }: PostData) {
         postId: props.id,
       },
       onCompleted: (data) => {
-        toast({
-          title: "Success",
-          description: "Your comment has been added",
-        });
+        toast.success("Your comment has been added");
         setComment("");
         updateTempComments(props.id, data?.addComment);
         setShowDialog(false);
@@ -81,10 +77,7 @@ export function PostContainer({ ...props }: PostData) {
       onError: (err) => {
         console.log(err);
 
-        toast({
-          title: "Error",
-          description: "Something went wrong",
-        });
+        toast.error("Something went wrong");
       },
     });
   };
@@ -106,10 +99,7 @@ export function PostContainer({ ...props }: PostData) {
             <button
               onClick={() => {
                 if (status === "unauthenticated") {
-                  toast({
-                    title: "Oops!",
-                    description: "You are not logged in",
-                  });
+                  toast.warning("You are not logged in");
 
                   return;
                 }
