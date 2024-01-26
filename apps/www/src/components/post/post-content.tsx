@@ -1,17 +1,17 @@
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { useSession } from "next-auth/react";
 
 import { cn } from "@/lib/utils";
-import { PostData } from "@/types";
+import type { PostData } from "@/types";
+import { useNanoid } from "@/hooks/use-nanoid";
 import { usePostStore } from "@/store/usePostStore";
 import { Role } from "@umamin-global/codegen/__generated__/graphql";
 
 import { Icons } from "../icons";
 import { Badge } from "../ui/badge";
 import { ContentMod } from "../moderator/mod-dialog";
-import Link from "next/link";
-import { useNanoid } from "@/hooks/use-nanoid";
 
 type Props = {
   additionalTags?: React.ReactNode;
