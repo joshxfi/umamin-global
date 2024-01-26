@@ -238,9 +238,11 @@ export const Post = ({
             </button>
           )}
 
-          <button type="button" onClick={() => setCommentDialog(true)}>
-            <Icons.reply className="w-6 h-6" />
-          </button>
+          {type === "post" && (
+            <button type="button" onClick={() => setCommentDialog(true)}>
+              <Icons.reply className="w-6 h-6" />
+            </button>
+          )}
         </div>
 
         <div className="flex space-x-2 text-muted-foreground font-light mt-3">
