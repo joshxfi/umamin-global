@@ -90,7 +90,7 @@ export function PostContainer({ ...props }: PostData) {
   };
 
   return (
-    <div className="pb-8">
+    <div className="pb-8 container">
       <Post
         {...props}
         type="post"
