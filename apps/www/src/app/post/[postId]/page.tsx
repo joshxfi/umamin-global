@@ -66,5 +66,11 @@ export default function Post({ params }: { params: { postId: string } }) {
 
   if (!data) return null;
 
-  return <PostContainer key={data?.getPost.id} {...data?.getPost} />;
+  return (
+    <PostContainer
+      showComments={true}
+      key={data?.getPost.id}
+      {...data?.getPost}
+    />
+  );
 }
