@@ -24,7 +24,7 @@ export function PostContainer({
   );
 
   return (
-    <div className="pb-8 container">
+    <div className="pb-8">
       <Post
         {...props}
         type="post"

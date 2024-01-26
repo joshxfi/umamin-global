@@ -207,8 +207,8 @@ export const Post = ({
   };
 
   return (
-    <div className="border-b border-muted pb-8 max-w-screen-sm mx-auto text-sm">
-      <div className={`${type === "comment" && "pl-16 pt-8"}`}>
+    <div className="border-b border-muted pb-8 text-sm">
+      <div className={`${type === "comment" && "pl-16 pt-8"} container`}>
         <PostContent
           {...props}
           additionalTags={
