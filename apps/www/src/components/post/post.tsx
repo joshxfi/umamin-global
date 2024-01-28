@@ -16,7 +16,7 @@ import { Switch } from "../ui/switch";
 import { Textarea } from "../ui/textarea";
 import { PostContent } from "./post-content";
 import { DialogDrawer } from "../dialog-drawer";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 type Props = {
   type: "post" | "comment";
@@ -60,6 +60,8 @@ export const Post = ({
   ...props
 }: Props & Omit<PostData, "comments">) => {
   const router = useRouter();
+  const pathname = usePathname();
+
   const [addUpvote, { loading: addUpvoteLoading }] = useMutation(ADD_UPVOTE);
   const [removeUpvote, { loading: removeUpvoteLoading }] =
     useMutation(REMOVE_UPVOTE);
@@ -175,9 +177,11 @@ export const Post = ({
       },
       onCompleted: (data) => {
         toast.success("Your comment has been added");
-
         setComment("");
-        updateTempComments(props.id, data?.addComment);
+
+        if (pathname === `/post/${props.id}`) {
+          updateTempComments(props.id, data?.addComment);
+        }
 
         setCommentDialog(false);
         router.push(`/post/${props.id}`);
