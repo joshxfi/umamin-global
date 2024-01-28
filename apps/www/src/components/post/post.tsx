@@ -180,6 +180,7 @@ export const Post = ({
         updateTempComments(props.id, data?.addComment);
 
         setCommentDialog(false);
+        router.push(`/post/${props.id}`);
       },
       onError: (err) => {
         console.log(err);
