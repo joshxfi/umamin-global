@@ -16,7 +16,12 @@ import { Switch } from "../ui/switch";
 import { Textarea } from "../ui/textarea";
 import { PostContent } from "./post-content";
 import { DialogDrawer } from "../dialog-drawer";
-import { usePathname, useRouter } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 
 type Props = {
   type: "post" | "comment";
@@ -61,13 +66,18 @@ export const Post = ({
 }: Props & Omit<PostData, "comments">) => {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const params = useParams<{ postId: string }>();
 
   const [addUpvote, { loading: addUpvoteLoading }] = useMutation(ADD_UPVOTE);
   const [removeUpvote, { loading: removeUpvoteLoading }] =
     useMutation(REMOVE_UPVOTE);
   const { data: session, status } = useSession();
   const [addComment, { loading }] = useMutation(ADD_COMMENT);
-  const [commentDialog, setCommentDialog] = useState(false);
+  const [commentDialog, setCommentDialog] = useState(
+    searchParams.get("comment") === "true" && params.postId === props.id,
+  );
+
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [comment, setComment] = useState("");
   const updateTempComments = usePostStore((state) => state.updateComments);
@@ -177,14 +187,13 @@ export const Post = ({
       },
       onCompleted: (data) => {
         toast.success("Your comment has been added");
+
         setComment("");
-
-        if (pathname === `/post/${props.id}`) {
-          updateTempComments(props.id, data?.addComment);
-        }
-
+        updateTempComments(props.id, data?.addComment);
         setCommentDialog(false);
-        router.push(`/post/${props.id}`);
+
+        if (searchParams.get("comment") === "true")
+          router.push(`/post/${props.id}`);
       },
       onError: (err) => {
         console.log(err);
@@ -239,6 +248,11 @@ export const Post = ({
                     },
                   });
 
+                  return;
+                }
+
+                if (pathname !== `/post/${props.id}`) {
+                  router.push(`/post/${props.id}?comment=true`);
                   return;
                 }
 
