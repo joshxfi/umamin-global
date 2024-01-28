@@ -33,7 +33,6 @@ export const usePostStore = create<State & Action>()(
       set((state) => {
         state.posts[postData.id] = {
           ...postData,
-          comments: [],
         };
       }),
 

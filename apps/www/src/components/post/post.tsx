@@ -216,7 +216,7 @@ export const Post = ({
           }
         />
 
-        <div className="mt-4 flex gap-x-2 items-center">
+        <div className="mt-3 flex gap-x-2 items-center">
           {!!isTempUpvoted || (isUpvoted && !tempUpvote) ? (
             <button
               type="button"
