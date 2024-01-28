@@ -16,14 +16,17 @@ import { Switch } from "../ui/switch";
 import { Textarea } from "../ui/textarea";
 import { PostContent } from "./post-content";
 import { DialogDrawer } from "../dialog-drawer";
-import { useRouter } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 
 type Props = {
   type: "post" | "comment";
   isAuthor?: boolean;
   isUserAuthor?: boolean;
-  upvoteCount?: number;
-  commentCount?: number;
 };
 
 const ADD_UPVOTE = gql(`
@@ -59,17 +62,22 @@ export const Post = ({
   type,
   isAuthor,
   isUserAuthor,
-  commentCount = 0,
-  upvoteCount = 0,
   ...props
 }: Props & Omit<PostData, "comments">) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const params = useParams<{ postId: string }>();
+
   const [addUpvote, { loading: addUpvoteLoading }] = useMutation(ADD_UPVOTE);
   const [removeUpvote, { loading: removeUpvoteLoading }] =
     useMutation(REMOVE_UPVOTE);
   const { data: session, status } = useSession();
   const [addComment, { loading }] = useMutation(ADD_COMMENT);
-  const [commentDialog, setCommentDialog] = useState(false);
+  const [commentDialog, setCommentDialog] = useState(
+    searchParams.get("comment") === "true" && params.postId === props.id,
+  );
+
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [comment, setComment] = useState("");
   const updateTempComments = usePostStore((state) => state.updateComments);
@@ -78,16 +86,22 @@ export const Post = ({
   const isTempUpvoted = tempUpvote && tempUpvote !== "temp";
   const updateTempUpvotes = usePostStore((state) => state.updateUpvotes);
 
+  const commentCount = props._count?.comments ?? 0;
+  const upvoteCount = useMemo(
+    () => props.upvotes?.length ?? 0,
+    [props.upvotes],
+  );
+
   const isUpvoted = useMemo(
     () => props.upvotes?.some((u) => u.userId === session?.user?.id),
-    [props.upvotes, session?.user]
+    [props.upvotes, session?.user],
   );
 
   const upvoteId = useMemo(
     () =>
       tempUpvote ??
       props.upvotes?.find((u) => u.userId === session?.user?.id)?.id,
-    [tempUpvote, props.upvotes, session?.user]
+    [tempUpvote, props.upvotes, session?.user],
   );
 
   const displayUpvoteCount = useMemo(() => {
@@ -176,8 +190,10 @@ export const Post = ({
 
         setComment("");
         updateTempComments(props.id, data?.addComment);
-
         setCommentDialog(false);
+
+        if (searchParams.get("comment") === "true")
+          router.push(`/post/${props.id}`);
       },
       onError: (err) => {
         console.log(err);
@@ -188,8 +204,8 @@ export const Post = ({
   };
 
   return (
-    <div className="border-b border-muted pb-8 text-sm">
-      <div className={`${type === "comment" && "pl-16 pt-8"} container`}>
+    <div className="border-b border-muted py-8 text-sm">
+      <div className={`${type === "comment" && "pl-16"} container`}>
         <PostContent
           {...props}
           additionalTags={
@@ -200,7 +216,7 @@ export const Post = ({
           }
         />
 
-        <div className="mt-4 flex gap-x-2 items-center">
+        <div className="mt-3 flex gap-x-2 items-center">
           {!!isTempUpvoted || (isUpvoted && !tempUpvote) ? (
             <button
               type="button"
@@ -220,28 +236,52 @@ export const Post = ({
           )}
 
           {type === "post" && (
-            <button type="button" onClick={() => setCommentDialog(true)}>
+            <button
+              type="button"
+              onClick={() => {
+                if (status === "unauthenticated") {
+                  toast.message("Oops!", {
+                    description: "You need to be logged in to comment",
+                    action: {
+                      label: "Login",
+                      onClick: () => router.push("/login"),
+                    },
+                  });
+
+                  return;
+                }
+
+                if (pathname !== `/post/${props.id}`) {
+                  router.push(`/post/${props.id}?comment=true`);
+                  return;
+                }
+
+                setCommentDialog(true);
+              }}
+            >
               <Icons.reply className="w-6 h-6" />
             </button>
           )}
         </div>
 
-        <div className="flex space-x-2 text-muted-foreground font-light mt-3">
-          {commentCount > 0 && (
-            <>
-              <Link href={`/post/${props.id}`}>
-                {commentCount} comment{commentCount > 1 && "s"}
-              </Link>
-              {displayUpvoteCount > 0 && <p>&#183;</p>}
-            </>
-          )}
+        {(commentCount > 0 || displayUpvoteCount > 0) && (
+          <div className="flex space-x-2 text-muted-foreground font-light mt-3">
+            {commentCount > 0 && (
+              <>
+                <Link href={`/post/${props.id}`}>
+                  {commentCount} comment{commentCount > 1 && "s"}
+                </Link>
+                {displayUpvoteCount > 0 && <p>&#183;</p>}
+              </>
+            )}
 
-          {displayUpvoteCount > 0 && (
-            <p>
-              {displayUpvoteCount} upvote{displayUpvoteCount > 1 && "s"}
-            </p>
-          )}
-        </div>
+            {displayUpvoteCount > 0 && (
+              <p>
+                {displayUpvoteCount} upvote{displayUpvoteCount > 1 && "s"}
+              </p>
+            )}
+          </div>
+        )}
       </div>
 
       <DialogDrawer open={commentDialog} setOpen={setCommentDialog}>

@@ -4,13 +4,13 @@ import { useSession } from "next-auth/react";
 import React, { useMemo } from "react";
 
 import { Post } from "./post";
-import type { PostData } from "@/types";
 import { usePostStore } from "@/store/usePostStore";
+import { GetPostQuery } from "@umamin-global/codegen/__generated__/graphql";
 
 export function PostContainer({
   showComments = false,
   ...props
-}: { showComments?: boolean } & PostData) {
+}: { showComments?: boolean } & GetPostQuery["getPost"]) {
   const { data: session } = useSession();
   const isUserAuthor = props.author.id === session?.user?.id;
   const _tempComments = usePostStore((state) => state.comments);
@@ -24,23 +24,16 @@ export function PostContainer({
   );
 
   return (
-    <div className="pb-8">
-      <Post
-        {...props}
-        type="post"
-        isUserAuthor={isUserAuthor}
-        commentCount={(props.comments?.length ?? 0) + tempComments.length}
-        upvoteCount={props.upvotes?.length}
-      />
+    <div className="pb-12">
+      <Post {...props} type="post" isUserAuthor={isUserAuthor} />
 
       {showComments && (
-        <div className="mt-4">
+        <div>
           {props.comments?.map((comment) => (
             <Post
               key={comment.id}
               type="comment"
               {...comment}
-              upvoteCount={comment.upvotes?.length}
               isAuthor={props.author.id === comment.author.id}
               isUserAuthor={isUserAuthor}
             />

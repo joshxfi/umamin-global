@@ -104,12 +104,14 @@ export function PostContent({ additionalTags, ...rest }: Props) {
           )}
       </div>
 
-      <div className="flex gap-2 flex-wrap">
-        {additionalTags}
-        {tagsToDisplay.map((tag, i) => (
-          <Badge key={ids[i]} name={tag} />
-        ))}
-      </div>
+      {(additionalTags || tagsToDisplay.length > 0) && (
+        <div className="flex gap-2 flex-wrap">
+          {additionalTags}
+          {tagsToDisplay.map((tag, i) => (
+            <Badge key={ids[i]} name={tag} />
+          ))}
+        </div>
+      )}
     </Link>
   );
 }
