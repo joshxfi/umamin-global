@@ -80,14 +80,14 @@ export const Post = ({
 
   const isUpvoted = useMemo(
     () => props.upvotes?.some((u) => u.userId === session?.user?.id),
-    [props.upvotes, session?.user]
+    [props.upvotes, session?.user],
   );
 
   const upvoteId = useMemo(
     () =>
       tempUpvote ??
       props.upvotes?.find((u) => u.userId === session?.user?.id)?.id,
-    [tempUpvote, props.upvotes, session?.user]
+    [tempUpvote, props.upvotes, session?.user],
   );
 
   const displayUpvoteCount = useMemo(() => {
@@ -189,7 +189,7 @@ export const Post = ({
 
   return (
     <div className="border-b border-muted py-8 text-sm">
-      <div className={`${type === "comment" && "pl-16 pt-8"} container`}>
+      <div className={`${type === "comment" && "pl-16"} container`}>
         <PostContent
           {...props}
           additionalTags={
@@ -220,13 +220,30 @@ export const Post = ({
           )}
 
           {type === "post" && (
-            <button type="button" onClick={() => setCommentDialog(true)}>
+            <button
+              type="button"
+              onClick={() => {
+                if (status === "unauthenticated") {
+                  toast.message("Oops!", {
+                    description: "You need to be logged in to comment",
+                    action: {
+                      label: "Login",
+                      onClick: () => router.push("/login"),
+                    },
+                  });
+
+                  return;
+                }
+
+                setCommentDialog(true);
+              }}
+            >
               <Icons.reply className="w-6 h-6" />
             </button>
           )}
         </div>
 
-        {commentCount > 0 ||
+        {commentCount > 0 || 
           (displayUpvoteCount > 0 && (
             <div className="flex space-x-2 text-muted-foreground font-light mt-3">
               {commentCount > 0 && (
