@@ -13,12 +13,8 @@ type Props = {
 };
 
 const GET_USER_POSTS = gql(`
-query GetUserPosts($cursorId: ID, $authorId: String!, $isComment: Boolean!) {
-  getUserPosts(
-    cursorId: $cursorId
-    authorId: $authorId
-    isComment: $isComment
-  ) {
+query GetUserPosts($cursorId: ID, $authorId: String, $isComment: Boolean) {
+  getPosts(cursorId: $cursorId, authorId: $authorId, isComment: $isComment) {
     cursorId
     data {
       id
@@ -37,19 +33,8 @@ query GetUserPosts($cursorId: ID, $authorId: String!, $isComment: Boolean!) {
         id
         userId
       }
-      comments {
-        id
-        content
-        createdAt
-        isAnonymous
-        author {
-          id
-          username
-        }
-        upvotes {
-          id
-          userId
-        }
+      _count {
+        comments
       }
     }
   }
@@ -71,22 +56,22 @@ export function UserPosts({ isComment = false, authorId }: Props) {
     if (inView) {
       fetchMore({
         variables: {
-          cursorId: data?.getUserPosts.cursorId,
+          cursorId: data?.getPosts.cursorId,
           isComment,
           authorId,
         },
       });
     }
-  }, [inView, fetchMore, data?.getUserPosts.cursorId, authorId, isComment]);
+  }, [inView, fetchMore, data?.getPosts.cursorId, authorId, isComment]);
 
   return (
     <section className="pb-24 pt-12">
-      {data?.getUserPosts.data
+      {data?.getPosts.data
         ?.filter((m) => !removedPosts.includes(m.id))
         ?.filter((m) => !(authorId !== session?.user.id && m.isAnonymous))
         .map((m) => <PostContainer key={m.id} {...m} />)}
 
-      {!!data?.getUserPosts.data && data.getUserPosts.data.length >= 10 && (
+      {!!data?.getPosts.data && data.getPosts.data.length >= 10 && (
         <div ref={ref}></div>
       )}
     </section>

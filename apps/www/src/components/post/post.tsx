@@ -22,7 +22,6 @@ type Props = {
   isAuthor?: boolean;
   isUserAuthor?: boolean;
   upvoteCount?: number;
-  commentCount?: number;
 };
 
 const ADD_UPVOTE = gql(`
@@ -58,7 +57,6 @@ export const Post = ({
   type,
   isAuthor,
   isUserAuthor,
-  commentCount = 0,
   upvoteCount = 0,
   ...props
 }: Props & Omit<PostData, "comments">) => {
@@ -75,6 +73,8 @@ export const Post = ({
   const tempUpvote = usePostStore((state) => state.upvotes[props.id]);
   const isTempUpvoted = tempUpvote && tempUpvote !== "temp";
   const updateTempUpvotes = usePostStore((state) => state.updateUpvotes);
+
+  const commentCount = props._count?.comments ?? 0;
 
   const isUpvoted = useMemo(
     () => props.upvotes?.some((u) => u.userId === session?.user?.id),
@@ -180,7 +180,7 @@ export const Post = ({
   };
 
   return (
-    <div className="border-b border-muted pb-8 text-sm">
+    <div className="border-b border-muted py-8 text-sm">
       <div className={`${type === "comment" && "pl-16 pt-8"} container`}>
         <PostContent
           {...props}
@@ -218,22 +218,25 @@ export const Post = ({
           )}
         </div>
 
-        <div className="flex space-x-2 text-muted-foreground font-light mt-3">
-          {commentCount > 0 && (
-            <>
-              <Link href={`/post/${props.id}`}>
-                {commentCount} comment{commentCount > 1 && "s"}
-              </Link>
-              {displayUpvoteCount > 0 && <p>&#183;</p>}
-            </>
-          )}
+        {commentCount > 0 ||
+          (displayUpvoteCount > 0 && (
+            <div className="flex space-x-2 text-muted-foreground font-light mt-3">
+              {commentCount > 0 && (
+                <>
+                  <Link href={`/post/${props.id}`}>
+                    {commentCount} comment{commentCount > 1 && "s"}
+                  </Link>
+                  {displayUpvoteCount > 0 && <p>&#183;</p>}
+                </>
+              )}
 
-          {displayUpvoteCount > 0 && (
-            <p>
-              {displayUpvoteCount} upvote{displayUpvoteCount > 1 && "s"}
-            </p>
-          )}
-        </div>
+              {displayUpvoteCount > 0 && (
+                <p>
+                  {displayUpvoteCount} upvote{displayUpvoteCount > 1 && "s"}
+                </p>
+              )}
+            </div>
+          ))}
       </div>
 
       <DialogDrawer open={commentDialog} setOpen={setCommentDialog}>
