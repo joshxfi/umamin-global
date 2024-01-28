@@ -22,7 +22,6 @@ type Props = {
   type: "post" | "comment";
   isAuthor?: boolean;
   isUserAuthor?: boolean;
-  upvoteCount?: number;
 };
 
 const ADD_UPVOTE = gql(`
@@ -58,7 +57,6 @@ export const Post = ({
   type,
   isAuthor,
   isUserAuthor,
-  upvoteCount = 0,
   ...props
 }: Props & Omit<PostData, "comments">) => {
   const router = useRouter();
@@ -77,6 +75,10 @@ export const Post = ({
   const updateTempUpvotes = usePostStore((state) => state.updateUpvotes);
 
   const commentCount = props._count?.comments ?? 0;
+  const upvoteCount = useMemo(
+    () => props.upvotes?.length ?? 0,
+    [props.upvotes],
+  );
 
   const isUpvoted = useMemo(
     () => props.upvotes?.some((u) => u.userId === session?.user?.id),
@@ -243,25 +245,24 @@ export const Post = ({
           )}
         </div>
 
-        {commentCount > 0 || 
-          (displayUpvoteCount > 0 && (
-            <div className="flex space-x-2 text-muted-foreground font-light mt-3">
-              {commentCount > 0 && (
-                <>
-                  <Link href={`/post/${props.id}`}>
-                    {commentCount} comment{commentCount > 1 && "s"}
-                  </Link>
-                  {displayUpvoteCount > 0 && <p>&#183;</p>}
-                </>
-              )}
+        {(commentCount > 0 || displayUpvoteCount > 0) && (
+          <div className="flex space-x-2 text-muted-foreground font-light mt-3">
+            {commentCount > 0 && (
+              <>
+                <Link href={`/post/${props.id}`}>
+                  {commentCount} comment{commentCount > 1 && "s"}
+                </Link>
+                {displayUpvoteCount > 0 && <p>&#183;</p>}
+              </>
+            )}
 
-              {displayUpvoteCount > 0 && (
-                <p>
-                  {displayUpvoteCount} upvote{displayUpvoteCount > 1 && "s"}
-                </p>
-              )}
-            </div>
-          ))}
+            {displayUpvoteCount > 0 && (
+              <p>
+                {displayUpvoteCount} upvote{displayUpvoteCount > 1 && "s"}
+              </p>
+            )}
+          </div>
+        )}
       </div>
 
       <DialogDrawer open={commentDialog} setOpen={setCommentDialog}>
