@@ -75,7 +75,7 @@ export default function UserProfile({ username }: { username: string }) {
           <div className="flex items-center justify-between py-5">
             <div>
               <span className="font-semibold text-2xl">
-                @{_user?.username ?? "Umamin User"}
+                @{_user?.username ?? "user"}
               </span>
               {_user?.createdAt && (
                 <p className="text-muted-foreground mt-1">

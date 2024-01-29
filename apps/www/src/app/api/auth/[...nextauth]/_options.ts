@@ -15,6 +15,7 @@ export const authOptions: NextAuthOptions = {
         id: user.id,
         username: user.username,
         role: user.role,
+        createdAt: user.createdAt,
       };
 
       if (trigger === "update" && newSession?.name) {
