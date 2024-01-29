@@ -117,7 +117,7 @@ export function PostForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="px-4 pb-4 pt-8 md:p-2">
+    <form onSubmit={handleSubmit} className="pt-8 md:p-2">
       <div className="flex flex-col gap-y-3">
         <div className="flex items-end justify-between text-sm">
           <div className="flex space-x-2">
