@@ -5,10 +5,10 @@ import { gql } from "@umamin-global/codegen/__generated__";
 import { useInView } from "react-intersection-observer";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
+import { Post } from "@/components/post/post";
+import { useNanoid } from "@/hooks/use-nanoid";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePostStore } from "@/store/usePostStore";
-import { PostContainer } from "@/components/post/post-container";
-import { useNanoid } from "@/hooks/use-nanoid";
 
 const GET_POSTS = gql(`
 query GetPosts($cursorId: ID) {
@@ -31,19 +31,8 @@ query GetPosts($cursorId: ID) {
         id
         userId
       }
-      comments {
-        id
-        content
-        createdAt
-        isAnonymous
-        author {
-          id
-          username
-        }
-        upvotes {
-          id
-          userId
-        }
+      _count {
+        comments
       }
     }
   }
@@ -90,12 +79,12 @@ export default function Home() {
         .filter(([_, m]) => !removedPosts.includes(m.id))
         .reverse()
         .map(([_, m]) => (
-          <PostContainer key={m.id} comments={[]} {...m} />
+          <Post type="post" key={m.id} {...m} />
         ))}
 
       {data?.getPosts.data
         ?.filter((m) => !removedPosts.includes(m.id))
-        .map((m) => <PostContainer key={m.id} {...m} />)}
+        .map((m) => <Post type="post" key={m.id} {...m} />)}
 
       {!!data?.getPosts.data && data.getPosts.data.length >= 10 && (
         <div ref={ref}></div>

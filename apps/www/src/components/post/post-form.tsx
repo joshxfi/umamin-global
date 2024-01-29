@@ -11,10 +11,10 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { usePostStore } from "@/store/usePostStore";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
 
 import { Badge } from "../ui/badge";
 import { TagDialog } from "./tag-dialog";
+import { toast } from "sonner";
 
 const ADD_MESSAGE = gql(`
 mutation AddPost($isAnonymous: Boolean!, $content: String!) {
@@ -67,7 +67,6 @@ export function PostForm({
   const updateTempPosts = usePostStore((state) => state.addPost);
   const updateTempTags = usePostStore((state) => state.updateTags);
 
-  const { toast } = useToast();
   const { status } = useSession();
   const { push } = useRouter();
 
@@ -97,16 +96,10 @@ export function PostForm({
 
         updateTempPosts(data.addPost);
 
-        toast({
-          title: "Success",
-          description: "Your message has been posted",
-        });
+        toast.success("Your message has been posted");
       },
       onError: (error) => {
-        toast({
-          title: "Error",
-          description: error.message,
-        });
+        toast.error(error.message);
       },
     });
   };
