@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useMutation } from "@apollo/client";
 
 import { Input } from "../ui/input";
@@ -46,7 +46,7 @@ export function Settings({
 
   return (
     <DialogDrawer open={open} setOpen={setOpen}>
-      <div className="py-12 px-4 ">
+      <div className="py-12">
         <p className="text-sm mb-4">@{session?.user.username || "user"}</p>
         <form className="flex space-x-4" onSubmit={handleSetUsername}>
           <Input
@@ -63,6 +63,16 @@ export function Settings({
           </Button>
         </form>
       </div>
+
+      <Button
+        title="Sign Out"
+        type="button"
+        variant="outline"
+        onClick={() => signOut()}
+        className=" w-full"
+      >
+        Sign Out
+      </Button>
     </DialogDrawer>
   );
 }
