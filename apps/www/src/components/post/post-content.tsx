@@ -1,7 +1,14 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { formatDistanceToNow } from "date-fns";
 import { useSession } from "next-auth/react";
+
+import {
+  formatDistanceToNow,
+  formatDistanceToNowStrict,
+  formatRelative,
+} from "date-fns";
+
+import { formatDistance } from "@/hooks/format-distance";
 
 import { cn } from "@/lib/utils";
 import type { PostData } from "@/types";
@@ -12,6 +19,13 @@ import { Role } from "@umamin-global/codegen/__generated__/graphql";
 import { Icons } from "../icons";
 import { Badge } from "../ui/badge";
 import { ContentMod } from "../moderator/mod-dialog";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  TooltipProvider,
+} from "../ui/tooltip";
 
 type Props = {
   additionalTags?: React.ReactNode;
@@ -28,7 +42,7 @@ export function PostContent({ additionalTags, ...rest }: Props) {
             hide: v,
           }))
         : [],
-    [_tempTags, rest.id],
+    [_tempTags, rest.id]
   );
   const { data: session } = useSession();
 
@@ -39,7 +53,7 @@ export function PostContent({ additionalTags, ...rest }: Props) {
         .map((t) => t.name) ?? []),
       ...tempTags?.filter((t) => !t.hide).map((t) => t.name),
     ],
-    [rest.tags, tempTags],
+    [rest.tags, tempTags]
   );
 
   const ids = useNanoid(tagsToDisplay.length);
@@ -57,11 +71,20 @@ export function PostContent({ additionalTags, ...rest }: Props) {
               rest.author.username
             )}
           </h2>
-          <p className="text-muted-foreground">
+          {/* <p className="text-muted-foreground">
             {formatDistanceToNow(new Date(rest.createdAt), {
               addSuffix: true,
             })}
-          </p>
+          </p> */}
+
+          <span className="select-none text-muted-foreground">
+            {formatDistanceToNowStrict(rest.createdAt, {
+              addSuffix: false,
+              locale: {
+                formatDistance: (...props) => formatDistance(...props),
+              },
+            })}
+          </span>
         </div>
 
         {session?.user?.role === Role.Moderator && (
