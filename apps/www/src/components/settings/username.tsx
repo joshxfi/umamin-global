@@ -1,3 +1,6 @@
+"use client";
+
+import { toast } from "sonner";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useMutation } from "@apollo/client";
@@ -5,7 +8,6 @@ import { useMutation } from "@apollo/client";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { gql } from "@umamin-global/codegen/__generated__";
-import { toast } from "sonner";
 
 const SET_USERNAME = gql(`
 mutation SetUsername($username: String!) {
@@ -39,14 +41,14 @@ export function UsernameSettings() {
 
   return (
     <div>
-      <p className="text-sm mb-4">@{session?.user.username || "user"}</p>
+      <p className="text-sm mb-2">Set username</p>
       <form className="flex space-x-4" onSubmit={handleSetUsername}>
         <Input
           type="text"
           disabled={loading}
           required
           value={username}
-          placeholder="Choose a username"
+          placeholder="Enter your username"
           onChange={(e) => setUsername(e.target.value)}
         />
 

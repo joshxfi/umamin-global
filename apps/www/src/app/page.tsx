@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect } from "react";
-import { gql } from "@umamin-global/codegen/__generated__";
 import { useInView } from "react-intersection-observer";
+import { gql } from "@umamin-global/codegen/__generated__";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
 import { Post } from "@/components/post/post";
 import { useNanoid } from "@/hooks/use-nanoid";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePostStore } from "@/store/usePostStore";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const GET_POSTS = gql(`
 query GetPosts($cursorId: ID) {
@@ -40,7 +42,9 @@ query GetPosts($cursorId: ID) {
 `);
 
 export default function Home() {
+  const router = useRouter();
   const { ref, inView } = useInView();
+  const { data: session, status } = useSession();
   const { data, loading, fetchMore } = useQuery(GET_POSTS);
   const tempPosts = usePostStore((state) => state.posts);
   const removedPosts = usePostStore((state) => state.removedPosts);
@@ -57,7 +61,7 @@ export default function Home() {
     }
   }, [inView, fetchMore, data?.getPosts.cursorId]);
 
-  if (loading) {
+  if (loading || status === "loading") {
     return (
       <div className="space-y-12 container">
         {Array.from({ length: 6 }).map((_, i) => (
@@ -71,6 +75,10 @@ export default function Home() {
         ))}
       </div>
     );
+  }
+
+  if (!session?.user.username) {
+    router.push("/new-user");
   }
 
   return (

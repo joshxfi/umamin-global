@@ -20,7 +20,7 @@ export function Settings({
         type="button"
         variant="outline"
         onClick={() => signOut()}
-        className=" w-full"
+        className="w-full mt-4"
       >
         Sign Out
       </Button>
