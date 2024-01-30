@@ -10,6 +10,5 @@ export default function Profile() {
 
   if (status === "unauthenticated") router.push("/login");
 
-  // TODO: Require username on sign up
   return <UserProfile username={session?.user.username!} />;
 }

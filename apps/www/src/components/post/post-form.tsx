@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useMutation } from "@apollo/client";
 import { gql } from "@umamin-global/codegen/__generated__";
-import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
 import { Icons } from "@/components/icons";
 import { Label } from "@/components/ui/label";
@@ -31,16 +30,6 @@ mutation AddPost($isAnonymous: Boolean!, $content: String!) {
 }
 `);
 
-const GET_CURRENT_USER = gql(`
-query GetCurrentUser {
-  getCurrentUser {
-    id
-    username
-    createdAt
-  }
-}
-`);
-
 const ADD_TAG_TO_POST = gql(`
 mutation AddTagToPost($postId: ID!, $tagName: String!) {
   addTagToPost(postId: $postId, tagName: $tagName) {
@@ -55,7 +44,6 @@ export function PostForm({
 }: {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const { data, loading } = useQuery(GET_CURRENT_USER);
   const [submitMessage, { loading: submitLoading }] = useMutation(ADD_MESSAGE);
   const [addTagToPost] = useMutation(ADD_TAG_TO_POST);
 
@@ -67,7 +55,7 @@ export function PostForm({
   const updateTempPosts = usePostStore((state) => state.addPost);
   const updateTempTags = usePostStore((state) => state.updateTags);
 
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const { push } = useRouter();
 
   const handleSubmit: React.FormEventHandler = (e) => {
@@ -108,7 +96,7 @@ export function PostForm({
     push("/login");
   }
 
-  if (loading) {
+  if (status === "loading") {
     return (
       <div className="grid place-items-center py-24">
         <Icons.spinner className="w-12 h-12" />
@@ -117,7 +105,7 @@ export function PostForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="px-4 pb-4 pt-8 md:p-2">
+    <form onSubmit={handleSubmit} className="pt-8 md:p-2">
       <div className="flex flex-col gap-y-3">
         <div className="flex items-end justify-between text-sm">
           <div className="flex space-x-2">
@@ -126,7 +114,7 @@ export function PostForm({
                 isAnonymous && "text-muted-foreground"
               } font-semibold`}
             >
-              {isAnonymous ? "hidden" : data?.getCurrentUser.username}
+              {isAnonymous ? "hidden" : session?.user.username}
             </h2>
 
             <div className="flex space-x-1">

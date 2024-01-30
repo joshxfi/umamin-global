@@ -1,20 +1,20 @@
 "use client";
 
+import { toast } from "sonner";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { formatDistanceToNow } from "date-fns";
 import { gql } from "@umamin-global/codegen/__generated__";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
-import NotFound from "@/app/not-found";
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { signOut, useSession } from "next-auth/react";
-import { Settings } from "@/components/profile/settings";
+import NotFound from "@/app/not-found";
 import Loading from "@/app/user/loading";
 import { UserPosts } from "./user-posts";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Settings } from "@/components/profile/settings";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const GET_USER = gql(`
 query GetUser($username: String!) {
@@ -60,7 +60,7 @@ export default function UserProfile({ username }: { username: string }) {
       window.history.replaceState(
         { ...window.history.state, as: newUrl, url: newUrl },
         "",
-        newUrl
+        newUrl,
       );
     }
   }, [username, isCurrentUser]);
@@ -75,7 +75,7 @@ export default function UserProfile({ username }: { username: string }) {
           <div className="flex items-center justify-between py-5">
             <div>
               <span className="font-semibold text-2xl">
-                @{_user?.username ?? "Umamin User"}
+                @{_user?.username ?? "user"}
               </span>
               {_user?.createdAt && (
                 <p className="text-muted-foreground mt-1">
@@ -115,18 +115,13 @@ export default function UserProfile({ username }: { username: string }) {
               </Button>
 
               <Button
-                title="Sign Out"
+                title="Settings"
                 type="button"
                 variant="outline"
-                onClick={() => {
-                  signOut();
-                  toast.message("Signed Out", {
-                    description: "You have been signed out successfully",
-                  });
-                }}
+                onClick={() => setOpenSettings(true)}
                 className=" w-full"
               >
-                Sign Out
+                Settings
               </Button>
             </div>
           ) : (

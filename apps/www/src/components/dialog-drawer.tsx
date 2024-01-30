@@ -21,7 +21,7 @@ export function DialogDrawer({ open, setOpen, children }: Props) {
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerContent>{children}</DrawerContent>
+      <DrawerContent className="px-4 pb-8">{children}</DrawerContent>
     </Drawer>
   );
 }
