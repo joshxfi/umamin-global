@@ -50,6 +50,7 @@ export function UserPosts({ isComment = false, authorId }: Props) {
       isComment,
       authorId,
     },
+    skip: !authorId,
   });
 
   useEffect(() => {
