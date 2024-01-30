@@ -71,20 +71,23 @@ export function PostContent({ additionalTags, ...rest }: Props) {
               rest.author.username
             )}
           </h2>
-          {/* <p className="text-muted-foreground">
-            {formatDistanceToNow(new Date(rest.createdAt), {
-              addSuffix: true,
-            })}
-          </p> */}
-
-          <span className="select-none text-muted-foreground">
-            {formatDistanceToNowStrict(rest.createdAt, {
-              addSuffix: false,
-              locale: {
-                formatDistance: (...props) => formatDistance(...props),
-              },
-            })}
-          </span>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <span className="select-none text-muted-foreground">
+                  {formatDistanceToNowStrict(rest.createdAt, {
+                    addSuffix: false,
+                    locale: {
+                      formatDistance: (...props) => formatDistance(...props),
+                    },
+                  })}
+                </span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <span>{formatRelative(rest.createdAt, new Date())}</span>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
 
         {session?.user?.role === Role.Moderator && (
