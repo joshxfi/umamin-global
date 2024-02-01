@@ -9,12 +9,13 @@ import { usePostStore } from "@/store/usePostStore";
 
 type Props = {
   isComment?: boolean;
+  isUpvoted?: boolean;
   authorId: string;
 };
 
 const GET_USER_POSTS = gql(`
-query GetUserPosts($cursorId: ID, $authorId: String, $isComment: Boolean) {
-  getPosts(cursorId: $cursorId, authorId: $authorId, isComment: $isComment) {
+query GetUserPosts($input: UserPostsInput!) {
+  getUserPosts(input: $input) {
     cursorId
     data {
       id
@@ -41,14 +42,21 @@ query GetUserPosts($cursorId: ID, $authorId: String, $isComment: Boolean) {
 }
 `);
 
-export function UserPosts({ isComment = false, authorId }: Props) {
+export function UserPosts({
+  isComment = false,
+  isUpvoted = false,
+  authorId,
+}: Props) {
   const { ref, inView } = useInView();
   const { data: session } = useSession();
   const removedPosts = usePostStore((state) => state.removedPosts);
   const { data, fetchMore } = useQuery(GET_USER_POSTS, {
     variables: {
-      isComment,
-      authorId,
+      input: {
+        authorId,
+        isComment,
+        isUpvoted,
+      },
     },
     skip: !authorId,
   });
@@ -57,22 +65,32 @@ export function UserPosts({ isComment = false, authorId }: Props) {
     if (inView) {
       fetchMore({
         variables: {
-          cursorId: data?.getPosts.cursorId,
-          isComment,
-          authorId,
+          input: {
+            cursorId: data?.getUserPosts.cursorId,
+            isComment,
+            isUpvoted,
+            authorId,
+          },
         },
       });
     }
-  }, [inView, fetchMore, data?.getPosts.cursorId, authorId, isComment]);
+  }, [
+    inView,
+    fetchMore,
+    data?.getUserPosts.cursorId,
+    authorId,
+    isComment,
+    isUpvoted,
+  ]);
 
   return (
     <section className="pb-24 pt-12">
-      {data?.getPosts.data
+      {data?.getUserPosts.data
         ?.filter((m) => !removedPosts.includes(m.id))
         ?.filter((m) => !(authorId !== session?.user.id && m.isAnonymous))
         .map((m) => <Post type="post" key={m.id} {...m} />)}
 
-      {!!data?.getPosts.data && data.getPosts.data.length >= 10 && (
+      {!!data?.getUserPosts.data && data.getUserPosts.data.length >= 10 && (
         <div ref={ref}></div>
       )}
     </section>

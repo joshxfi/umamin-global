@@ -26,7 +26,6 @@ import {
 type Props = {
   type: "post" | "comment";
   isAuthor?: boolean;
-  isUserAuthor?: boolean;
 };
 
 const ADD_UPVOTE = gql(`
@@ -60,8 +59,7 @@ mutation AddComment($postId: ID!, $isAnonymous: Boolean!, $content: String!) {
 
 export const Post = ({
   type,
-  isAuthor,
-  isUserAuthor,
+  isAuthor = false,
   ...props
 }: Props & Omit<PostData, "comments">) => {
   const router = useRouter();
@@ -91,6 +89,8 @@ export const Post = ({
     () => props.upvotes?.length ?? 0,
     [props.upvotes],
   );
+
+  const isUserAuthor = useMemo(() => session?.user.id === props.author.id, []);
 
   const isUpvoted = useMemo(
     () => props.upvotes?.some((u) => u.userId === session?.user?.id),
