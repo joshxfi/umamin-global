@@ -2,11 +2,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
 
-import {
-  formatDistanceToNow,
-  formatDistanceToNowStrict,
-  formatRelative,
-} from "date-fns";
+import { formatDistanceToNowStrict, formatRelative } from "date-fns";
 
 import { formatDistance } from "@/hooks/format-distance";
 
@@ -26,6 +22,7 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from "../ui/tooltip";
+import { PostDropdownMenu } from "./post-dropdown-menu";
 
 type Props = {
   additionalTags?: React.ReactNode;
@@ -61,7 +58,7 @@ export function PostContent({ additionalTags, ...rest }: Props) {
   const [hideNsfw, setHideNsfw] = useState(true);
 
   return (
-    <Link href={`/post/${rest.id}`} className="space-y-2">
+    <div className="space-y-2">
       <div className="flex justify-between items-center">
         <div className="flex gap-x-2">
           <h2 className="font-semibold">
@@ -104,17 +101,21 @@ export function PostContent({ additionalTags, ...rest }: Props) {
             />
           </>
         )}
+
+        <PostDropdownMenu postId={rest.id} postAuthor={rest.author.id} />
       </div>
       <div className="relative">
-        <p
-          className={cn("break-words whitespace-pre-wrap relative", {
-            "blur-sm text-gray-600 select-none":
-              tagsToDisplay.includes("quarantine") ||
-              (tagsToDisplay.includes("nsfw") && hideNsfw),
-          })}
-        >
-          {rest.content}
-        </p>
+        <Link href={`/post/${rest.id}`}>
+          <p
+            className={cn("break-words whitespace-pre-wrap relative", {
+              "blur-sm text-gray-600 select-none":
+                tagsToDisplay.includes("quarantine") ||
+                (tagsToDisplay.includes("nsfw") && hideNsfw),
+            })}
+          >
+            {rest.content}
+          </p>
+        </Link>
         {tagsToDisplay.includes("nsfw") &&
           !tagsToDisplay.includes("quarantine") &&
           hideNsfw && (
@@ -138,6 +139,6 @@ export function PostContent({ additionalTags, ...rest }: Props) {
           ))}
         </div>
       )}
-    </Link>
+    </div>
   );
 }
