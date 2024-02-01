@@ -1,6 +1,9 @@
 "use client";
 
+import React from "react";
 import { toast } from "sonner";
+import { Icons } from "../icons";
+import { useSession } from "next-auth/react";
 
 import {
   DropdownMenu,
@@ -9,10 +12,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-import React from "react";
-import { useSession } from "next-auth/react";
-import { Icons } from "../icons";
 
 type PostDropdownMenuProps = {
   postId: string;
@@ -91,47 +90,23 @@ export function PostDropdownMenu({ postAuthor }: PostDropdownMenuProps) {
     },
   ];
 
+  const dropdownMenu = isAuthor ? authorMenu : userMenu;
+
   return (
-    <>
-      {isAuthor ? (
-        <DropdownMenu>
-          <DropdownMenuTrigger title="post menu" className="outline-none">
-            <Icons.menuDots className="h-4 w-4" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="font-semibold [&>*]:cursor-pointer">
-            {authorMenu.map((item, i) => (
-              <React.Fragment key={item.title}>
-                <DropdownMenuItem
-                  onClick={item.onClick}
-                  className={item.className}
-                >
-                  {item.title}
-                </DropdownMenuItem>
-                {i + 1 !== authorMenu.length && <DropdownMenuSeparator />}
-              </React.Fragment>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ) : (
-        <DropdownMenu>
-          <DropdownMenuTrigger className="outline-none">
-            <Icons.menuDots className="h-4 w-4 text-2xl" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="font-semibold [&>*]:cursor-pointer [&>*]:border-b [&>*]:last:border-0">
-            {userMenu.map((item, i) => (
-              <React.Fragment key={item.title}>
-                <DropdownMenuItem
-                  onClick={item.onClick}
-                  className={item.className}
-                >
-                  {item.title}
-                </DropdownMenuItem>
-                {i + 1 !== userMenu.length && <DropdownMenuSeparator />}
-              </React.Fragment>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
-    </>
+    <DropdownMenu>
+      <DropdownMenuTrigger title="post menu" className="outline-none">
+        <Icons.menuDots className="h-4 w-4" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="font-semibold [&>*]:cursor-pointer [&>*]:border-b [&>*]:last:border-0">
+        {dropdownMenu.map((item, i) => (
+          <React.Fragment key={item.title}>
+            <DropdownMenuItem onClick={item.onClick} className={item.className}>
+              {item.title}
+            </DropdownMenuItem>
+            {i + 1 !== dropdownMenu.length && <DropdownMenuSeparator />}
+          </React.Fragment>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
