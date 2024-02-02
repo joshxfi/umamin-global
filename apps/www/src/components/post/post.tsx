@@ -215,74 +215,76 @@ export const Post = ({
             </>
           }
           postButtons={
-            <div className="mt-2 flex gap-x-2 items-center">
-              {!!isTempUpvoted || (isUpvoted && !tempUpvote) ? (
-                <button
-                  type="button"
-                  disabled={removeUpvoteLoading}
-                  onClick={handleRemoveUpvote}
-                >
-                  <Icons.arrowUpSolid className="w-6 h-6" />
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  disabled={addUpvoteLoading}
-                  onClick={() => handleAddUpvote(props.id)}
-                >
-                  <Icons.arrowUp className="w-6 h-6" />
-                </button>
-              )}
+            <div>
+              <div className="mt-2 flex gap-x-2 items-center">
+                {!!isTempUpvoted || (isUpvoted && !tempUpvote) ? (
+                  <button
+                    type="button"
+                    disabled={removeUpvoteLoading}
+                    onClick={handleRemoveUpvote}
+                  >
+                    <Icons.arrowUpSolid className="w-6 h-6" />
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    disabled={addUpvoteLoading}
+                    onClick={() => handleAddUpvote(props.id)}
+                  >
+                    <Icons.arrowUp className="w-6 h-6" />
+                  </button>
+                )}
 
-              {type === "post" && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (status === "unauthenticated") {
-                      toast.message("Oops!", {
-                        description: "You need to be logged in to comment",
-                        action: {
-                          label: "Login",
-                          onClick: () => router.push("/login"),
-                        },
-                      });
+                {type === "post" && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (status === "unauthenticated") {
+                        toast.message("Oops!", {
+                          description: "You need to be logged in to comment",
+                          action: {
+                            label: "Login",
+                            onClick: () => router.push("/login"),
+                          },
+                        });
 
-                      return;
-                    }
+                        return;
+                      }
 
-                    if (pathname !== `/post/${props.id}`) {
-                      router.push(`/post/${props.id}?comment=true`);
-                      return;
-                    }
+                      if (pathname !== `/post/${props.id}`) {
+                        router.push(`/post/${props.id}?comment=true`);
+                        return;
+                      }
 
-                    setCommentDialog(true);
-                  }}
-                >
-                  <Icons.reply className="w-6 h-6" />
-                </button>
+                      setCommentDialog(true);
+                    }}
+                  >
+                    <Icons.reply className="w-6 h-6" />
+                  </button>
+                )}
+              </div>
+
+              {(commentCount > 0 || displayUpvoteCount > 0) && (
+                <div className="flex space-x-2 text-muted-foreground font-light mt-2">
+                  {commentCount > 0 && (
+                    <>
+                      <Link href={`/post/${props.id}`}>
+                        {commentCount} comment{commentCount > 1 && "s"}
+                      </Link>
+                      {displayUpvoteCount > 0 && <p>&#183;</p>}
+                    </>
+                  )}
+
+                  {displayUpvoteCount > 0 && (
+                    <p>
+                      {displayUpvoteCount} upvote{displayUpvoteCount > 1 && "s"}
+                    </p>
+                  )}
+                </div>
               )}
             </div>
           }
         />
-
-        {(commentCount > 0 || displayUpvoteCount > 0) && (
-          <div className="flex space-x-2 text-muted-foreground font-light mt-2">
-            {commentCount > 0 && (
-              <>
-                <Link href={`/post/${props.id}`}>
-                  {commentCount} comment{commentCount > 1 && "s"}
-                </Link>
-                {displayUpvoteCount > 0 && <p>&#183;</p>}
-              </>
-            )}
-
-            {displayUpvoteCount > 0 && (
-              <p>
-                {displayUpvoteCount} upvote{displayUpvoteCount > 1 && "s"}
-              </p>
-            )}
-          </div>
-        )}
       </div>
 
       <DialogDrawer open={commentDialog} setOpen={setCommentDialog}>
