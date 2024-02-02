@@ -215,7 +215,7 @@ export const Post = ({
             </>
           }
           postButtons={
-            <div className="mt-3 flex gap-x-2 items-center">
+            <div className="mt-2 flex gap-x-2 items-center">
               {!!isTempUpvoted || (isUpvoted && !tempUpvote) ? (
                 <button
                   type="button"
@@ -266,7 +266,7 @@ export const Post = ({
         />
 
         {(commentCount > 0 || displayUpvoteCount > 0) && (
-          <div className="flex space-x-2 text-muted-foreground font-light mt-3">
+          <div className="flex space-x-2 text-muted-foreground font-light mt-2">
             {commentCount > 0 && (
               <>
                 <Link href={`/post/${props.id}`}>

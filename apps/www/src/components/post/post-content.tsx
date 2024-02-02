@@ -71,10 +71,10 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
           {rest.author.username?.split(" ").at(0)}
         </AvatarFallback>
       </Avatar>
-      <div className="w-full space-y-2">
+      <div className="w-full ">
         <div className="flex justify-between items-center">
           <div className="flex gap-x-2">
-            <h2 className="font-semibold">
+            <h2 className="font-semibold text-base">
               {rest.isAnonymous ? (
                 <span className="text-zinc-400">hidden</span>
               ) : (
@@ -120,11 +120,14 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
         <div className="relative">
           <Link href={`/post/${rest.id}`}>
             <p
-              className={cn("break-words whitespace-pre-wrap relative", {
-                "blur-sm text-gray-600 select-none":
-                  tagsToDisplay.includes("quarantine") ||
-                  (tagsToDisplay.includes("nsfw") && hideNsfw),
-              })}
+              className={cn(
+                "break-words whitespace-pre-wrap relative text-base",
+                {
+                  "blur-sm text-gray-600 select-none":
+                    tagsToDisplay.includes("quarantine") ||
+                    (tagsToDisplay.includes("nsfw") && hideNsfw),
+                }
+              )}
             >
               {rest.content}
             </p>
@@ -145,7 +148,7 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
         </div>
 
         {(additionalTags || tagsToDisplay.length > 0) && (
-          <div className="flex gap-2 flex-wrap">
+          <div className="flex gap-2 flex-wrap mt-2">
             {additionalTags}
             {tagsToDisplay.map((tag, i) => (
               <Badge key={ids[i]} name={tag} />
