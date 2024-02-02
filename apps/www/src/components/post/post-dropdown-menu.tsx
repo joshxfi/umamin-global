@@ -95,7 +95,7 @@ export function PostDropdownMenu({ postAuthor }: PostDropdownMenuProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger title="post menu" className="outline-none">
-        <Icons.menuDots className="h-4 w-4" />
+        <Icons.menuDots className="h-5 w-5" />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="font-semibold [&>*]:cursor-pointer [&>*]:border-b [&>*]:last:border-0">
         {dropdownMenu.map((item, i) => (
