@@ -74,13 +74,16 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
       <div className="w-full ">
         <div className="flex justify-between items-center">
           <div className="flex gap-x-2">
-            <h2 className="font-semibold text-base">
+            <Link
+              href={`/user/${rest.author.username}`}
+              className="font-semibold text-base hover:underline"
+            >
               {rest.isAnonymous ? (
                 <span className="text-zinc-400">hidden</span>
               ) : (
                 rest.author.username
               )}
-            </h2>
+            </Link>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
