@@ -73,7 +73,7 @@ export const Post = ({
   const { data: session, status } = useSession();
   const [addComment, { loading }] = useMutation(ADD_COMMENT);
   const [commentDialog, setCommentDialog] = useState(
-    searchParams.get("comment") === "true" && params.postId === props.id,
+    searchParams.get("comment") === "true" && params.postId === props.id
   );
 
   const [isAnonymous, setIsAnonymous] = useState(false);
@@ -87,21 +87,21 @@ export const Post = ({
   const commentCount = props._count?.comments ?? 0;
   const upvoteCount = useMemo(
     () => props.upvotes?.length ?? 0,
-    [props.upvotes],
+    [props.upvotes]
   );
 
   const isUserAuthor = useMemo(() => session?.user.id === props.author.id, []);
 
   const isUpvoted = useMemo(
     () => props.upvotes?.some((u) => u.userId === session?.user?.id),
-    [props.upvotes, session?.user],
+    [props.upvotes, session?.user]
   );
 
   const upvoteId = useMemo(
     () =>
       tempUpvote ??
       props.upvotes?.find((u) => u.userId === session?.user?.id)?.id,
-    [tempUpvote, props.upvotes, session?.user],
+    [tempUpvote, props.upvotes, session?.user]
   );
 
   const displayUpvoteCount = useMemo(() => {
@@ -205,7 +205,7 @@ export const Post = ({
 
   return (
     <div className="border-b border-muted py-8 text-sm">
-      <div className={`${type === "comment" && "pl-16"} container`}>
+      <div className={`${type === "comment" && "pl-16"}`}>
         <PostContent
           {...props}
           additionalTags={
@@ -214,55 +214,56 @@ export const Post = ({
               {isUserAuthor && <Badge name="you" />}
             </>
           }
+          postButtons={
+            <div className="mt-3 flex gap-x-2 items-center">
+              {!!isTempUpvoted || (isUpvoted && !tempUpvote) ? (
+                <button
+                  type="button"
+                  disabled={removeUpvoteLoading}
+                  onClick={handleRemoveUpvote}
+                >
+                  <Icons.arrowUpSolid className="w-6 h-6" />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  disabled={addUpvoteLoading}
+                  onClick={() => handleAddUpvote(props.id)}
+                >
+                  <Icons.arrowUp className="w-6 h-6" />
+                </button>
+              )}
+
+              {type === "post" && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (status === "unauthenticated") {
+                      toast.message("Oops!", {
+                        description: "You need to be logged in to comment",
+                        action: {
+                          label: "Login",
+                          onClick: () => router.push("/login"),
+                        },
+                      });
+
+                      return;
+                    }
+
+                    if (pathname !== `/post/${props.id}`) {
+                      router.push(`/post/${props.id}?comment=true`);
+                      return;
+                    }
+
+                    setCommentDialog(true);
+                  }}
+                >
+                  <Icons.reply className="w-6 h-6" />
+                </button>
+              )}
+            </div>
+          }
         />
-
-        <div className="mt-3 flex gap-x-2 items-center">
-          {!!isTempUpvoted || (isUpvoted && !tempUpvote) ? (
-            <button
-              type="button"
-              disabled={removeUpvoteLoading}
-              onClick={handleRemoveUpvote}
-            >
-              <Icons.arrowUpSolid className="w-6 h-6" />
-            </button>
-          ) : (
-            <button
-              type="button"
-              disabled={addUpvoteLoading}
-              onClick={() => handleAddUpvote(props.id)}
-            >
-              <Icons.arrowUp className="w-6 h-6" />
-            </button>
-          )}
-
-          {type === "post" && (
-            <button
-              type="button"
-              onClick={() => {
-                if (status === "unauthenticated") {
-                  toast.message("Oops!", {
-                    description: "You need to be logged in to comment",
-                    action: {
-                      label: "Login",
-                      onClick: () => router.push("/login"),
-                    },
-                  });
-
-                  return;
-                }
-
-                if (pathname !== `/post/${props.id}`) {
-                  router.push(`/post/${props.id}?comment=true`);
-                  return;
-                }
-
-                setCommentDialog(true);
-              }}
-            >
-              <Icons.reply className="w-6 h-6" />
-            </button>
-          )}
-        </div>
 
         {(commentCount > 0 || displayUpvoteCount > 0) && (
           <div className="flex space-x-2 text-muted-foreground font-light mt-3">
