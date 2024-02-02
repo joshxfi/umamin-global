@@ -24,6 +24,7 @@ import {
 } from "../ui/tooltip";
 import { PostDropdownMenu } from "./post-dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { ProfileHoverCard } from "../profile/profile-hover-card";
 
 type Props = {
   additionalTags?: React.ReactNode;
@@ -74,16 +75,18 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
       <div className="w-full ">
         <div className="flex justify-between items-center">
           <div className="flex gap-x-2">
-            <Link
-              href={`/user/${rest.author.username}`}
-              className="font-semibold text-base hover:underline"
-            >
-              {rest.isAnonymous ? (
-                <span className="text-zinc-400">hidden</span>
-              ) : (
-                rest.author.username
-              )}
-            </Link>
+            <ProfileHoverCard author={rest.author} userId={session?.user.id}>
+              <Link
+                href={`/user/${rest.author.username}`}
+                className="font-semibold text-base hover:underline"
+              >
+                {rest.isAnonymous ? (
+                  <span className="text-zinc-400">hidden</span>
+                ) : (
+                  rest.author.username
+                )}
+              </Link>
+            </ProfileHoverCard>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
