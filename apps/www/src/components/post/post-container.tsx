@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import React, { useMemo } from "react";
 
 import { Post } from "./post";
@@ -11,8 +10,6 @@ export function PostContainer({
   showComments = false,
   ...props
 }: { showComments?: boolean } & GetPostQuery["getPost"]) {
-  const { data: session } = useSession();
-  const isUserAuthor = props.author.id === session?.user?.id;
   const _tempComments = usePostStore((state) => state.comments);
 
   const tempComments = useMemo(
@@ -25,7 +22,7 @@ export function PostContainer({
 
   return (
     <div className="pb-12">
-      <Post {...props} type="post" isUserAuthor={isUserAuthor} />
+      <Post {...props} type="post" />
 
       {showComments && (
         <div>
@@ -35,7 +32,6 @@ export function PostContainer({
               type="comment"
               {...comment}
               isAuthor={props.author.id === comment.author.id}
-              isUserAuthor={isUserAuthor}
             />
           ))}
 
@@ -45,7 +41,6 @@ export function PostContainer({
               type="comment"
               {...comment}
               isAuthor={props.author.id === comment.author.id}
-              isUserAuthor={isUserAuthor}
             />
           ))}
         </div>

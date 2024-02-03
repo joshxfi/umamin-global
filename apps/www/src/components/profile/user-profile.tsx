@@ -178,11 +178,7 @@ export default function UserProfile({ username }: { username: string }) {
             {_user?.id && <UserPosts isComment={true} authorId={_user.id} />}
           </TabsContent>
 
-          <TabsContent value="likes">
-            <div className="flex justify-center pt-10 text-xl font-semibold">
-              Likes tab coming soon..
-            </div>
-          </TabsContent>
+          <TabsContent value="likes"></TabsContent>
         </Tabs>
       </main>
     )

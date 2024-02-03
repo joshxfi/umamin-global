@@ -24,6 +24,7 @@ query GetPosts($cursorId: ID) {
       author {
         id
         username
+        image
       }
       tags {
         id
@@ -77,7 +78,7 @@ export default function Home() {
     );
   }
 
-  if (!session?.user.username) {
+  if (session?.user && !session?.user.username) {
     router.push("/new-user");
   }
 

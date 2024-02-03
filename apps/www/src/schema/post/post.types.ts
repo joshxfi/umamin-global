@@ -1,5 +1,5 @@
 import { Post, User, Upvote, Tag } from "@generated/type-graphql";
-import { Field, ID, ObjectType } from "type-graphql";
+import { Field, ID, InputType, ObjectType } from "type-graphql";
 
 @ObjectType()
 class Count {
@@ -57,6 +57,21 @@ export class PostsWithCursor {
   @Field(() => [PostData])
   data: PostData[];
 
-  @Field({ nullable: true })
+  @Field(() => ID, { nullable: true })
   cursorId?: string;
+}
+
+@InputType()
+export class UserPostsInput {
+  @Field(() => ID)
+  authorId: string;
+
+  @Field(() => ID, { nullable: true })
+  cursorId?: string;
+
+  @Field({ nullable: true })
+  isComment?: boolean;
+
+  @Field({ nullable: true })
+  isUpvoted?: boolean;
 }

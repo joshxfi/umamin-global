@@ -19,14 +19,12 @@ export class PostResolver {
   async getPosts(
     @Ctx() ctx: TContext,
     @Arg("isComment", () => Boolean, { nullable: true }) isComment?: boolean,
-    @Arg("authorId", () => String, { nullable: true }) authorId?: string | null,
     @Arg("cursorId", () => ID, { nullable: true }) cursorId?: string | null,
   ): Promise<PostsWithCursor> {
     try {
       const posts = await ctx.prisma.post.findMany({
         where: {
           parentId: isComment ? { not: null } : null,
-          ...(authorId && { authorId }),
         },
         orderBy: { createdAt: "desc" },
         take: 10,

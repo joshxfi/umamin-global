@@ -26,7 +26,6 @@ import {
 type Props = {
   type: "post" | "comment";
   isAuthor?: boolean;
-  isUserAuthor?: boolean;
 };
 
 const ADD_UPVOTE = gql(`
@@ -60,8 +59,7 @@ mutation AddComment($postId: ID!, $isAnonymous: Boolean!, $content: String!) {
 
 export const Post = ({
   type,
-  isAuthor,
-  isUserAuthor,
+  isAuthor = false,
   ...props
 }: Props & Omit<PostData, "comments">) => {
   const router = useRouter();
@@ -90,6 +88,11 @@ export const Post = ({
   const upvoteCount = useMemo(
     () => props.upvotes?.length ?? 0,
     [props.upvotes],
+  );
+
+  const isUserAuthor = useMemo(
+    () => session?.user.id === props.author.id,
+    [session?.user.id, props.author.id],
   );
 
   const isUpvoted = useMemo(
@@ -205,7 +208,7 @@ export const Post = ({
 
   return (
     <div className="border-b border-muted py-8 text-sm">
-      <div className={`${type === "comment" && "pl-16"} container`}>
+      <div className={`${type === "comment" && "pl-16"}`}>
         <PostContent
           {...props}
           additionalTags={
@@ -214,74 +217,77 @@ export const Post = ({
               {isUserAuthor && <Badge name="you" />}
             </>
           }
+          postButtons={
+            <div>
+              <div className="mt-2 flex gap-x-2 items-center">
+                {!!isTempUpvoted || (isUpvoted && !tempUpvote) ? (
+                  <button
+                    type="button"
+                    disabled={removeUpvoteLoading}
+                    onClick={handleRemoveUpvote}
+                  >
+                    <Icons.arrowUpSolid className="w-6 h-6" />
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    disabled={addUpvoteLoading}
+                    onClick={() => handleAddUpvote(props.id)}
+                  >
+                    <Icons.arrowUp className="w-6 h-6" />
+                  </button>
+                )}
+
+                {type === "post" && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (status === "unauthenticated") {
+                        toast.message("Oops!", {
+                          description: "You need to be logged in to comment",
+                          action: {
+                            label: "Login",
+                            onClick: () => router.push("/login"),
+                          },
+                        });
+
+                        return;
+                      }
+
+                      if (pathname !== `/post/${props.id}`) {
+                        router.push(`/post/${props.id}?comment=true`);
+                        return;
+                      }
+
+                      setCommentDialog(true);
+                    }}
+                  >
+                    <Icons.reply className="w-6 h-6" />
+                  </button>
+                )}
+              </div>
+
+              {(commentCount > 0 || displayUpvoteCount > 0) && (
+                <div className="flex space-x-2 text-muted-foreground font-light mt-2">
+                  {commentCount > 0 && (
+                    <>
+                      <Link href={`/post/${props.id}`}>
+                        {commentCount} comment{commentCount > 1 && "s"}
+                      </Link>
+                      {displayUpvoteCount > 0 && <p>&#183;</p>}
+                    </>
+                  )}
+
+                  {displayUpvoteCount > 0 && (
+                    <p>
+                      {displayUpvoteCount} upvote{displayUpvoteCount > 1 && "s"}
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          }
         />
-
-        <div className="mt-3 flex gap-x-2 items-center">
-          {!!isTempUpvoted || (isUpvoted && !tempUpvote) ? (
-            <button
-              type="button"
-              disabled={removeUpvoteLoading}
-              onClick={handleRemoveUpvote}
-            >
-              <Icons.arrowUpSolid className="w-6 h-6" />
-            </button>
-          ) : (
-            <button
-              type="button"
-              disabled={addUpvoteLoading}
-              onClick={() => handleAddUpvote(props.id)}
-            >
-              <Icons.arrowUp className="w-6 h-6" />
-            </button>
-          )}
-
-          {type === "post" && (
-            <button
-              type="button"
-              onClick={() => {
-                if (status === "unauthenticated") {
-                  toast.message("Oops!", {
-                    description: "You need to be logged in to comment",
-                    action: {
-                      label: "Login",
-                      onClick: () => router.push("/login"),
-                    },
-                  });
-
-                  return;
-                }
-
-                if (pathname !== `/post/${props.id}`) {
-                  router.push(`/post/${props.id}?comment=true`);
-                  return;
-                }
-
-                setCommentDialog(true);
-              }}
-            >
-              <Icons.reply className="w-6 h-6" />
-            </button>
-          )}
-        </div>
-
-        {(commentCount > 0 || displayUpvoteCount > 0) && (
-          <div className="flex space-x-2 text-muted-foreground font-light mt-3">
-            {commentCount > 0 && (
-              <>
-                <Link href={`/post/${props.id}`}>
-                  {commentCount} comment{commentCount > 1 && "s"}
-                </Link>
-                {displayUpvoteCount > 0 && <p>&#183;</p>}
-              </>
-            )}
-
-            {displayUpvoteCount > 0 && (
-              <p>
-                {displayUpvoteCount} upvote{displayUpvoteCount > 1 && "s"}
-              </p>
-            )}
-          </div>
-        )}
       </div>
 
       <DialogDrawer open={commentDialog} setOpen={setCommentDialog}>
