@@ -73,7 +73,7 @@ export const Post = ({
   const { data: session, status } = useSession();
   const [addComment, { loading }] = useMutation(ADD_COMMENT);
   const [commentDialog, setCommentDialog] = useState(
-    searchParams.get("comment") === "true" && params.postId === props.id
+    searchParams.get("comment") === "true" && params.postId === props.id,
   );
 
   const [isAnonymous, setIsAnonymous] = useState(false);
@@ -87,21 +87,24 @@ export const Post = ({
   const commentCount = props._count?.comments ?? 0;
   const upvoteCount = useMemo(
     () => props.upvotes?.length ?? 0,
-    [props.upvotes]
+    [props.upvotes],
   );
 
-  const isUserAuthor = useMemo(() => session?.user.id === props.author.id, []);
+  const isUserAuthor = useMemo(
+    () => session?.user.id === props.author.id,
+    [session?.user.id, props.author.id],
+  );
 
   const isUpvoted = useMemo(
     () => props.upvotes?.some((u) => u.userId === session?.user?.id),
-    [props.upvotes, session?.user]
+    [props.upvotes, session?.user],
   );
 
   const upvoteId = useMemo(
     () =>
       tempUpvote ??
       props.upvotes?.find((u) => u.userId === session?.user?.id)?.id,
-    [tempUpvote, props.upvotes, session?.user]
+    [tempUpvote, props.upvotes, session?.user],
   );
 
   const displayUpvoteCount = useMemo(() => {
