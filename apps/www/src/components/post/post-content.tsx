@@ -61,7 +61,7 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
   const [hideNsfw, setHideNsfw] = useState(true);
 
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-3 container">
       <Avatar className="h-9 w-9">
         <AvatarImage
           className="rounded-full"
