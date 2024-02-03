@@ -24,6 +24,7 @@ query GetPosts($cursorId: ID) {
       author {
         id
         username
+        image
       }
       tags {
         id

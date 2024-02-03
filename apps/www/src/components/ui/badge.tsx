@@ -24,8 +24,7 @@ export function Badge({
           "bg-amber-900 border-amber-700": tag("rant"),
           "bg-fuchsia-900 border-fuchsia-700": tag("confession"),
           "bg-indigo-900 border-indigo-700": tag("question"),
-          "font-semibold border-yellow-500":
-            tag("quarantine"),
+          "font-semibold border-yellow-500": tag("quarantine"),
           "font-semibold border-red-600": tag("nsfw"),
         },
         {

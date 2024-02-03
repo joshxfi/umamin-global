@@ -25,6 +25,7 @@ query GetUserPosts($input: UserPostsInput!) {
       author {
         id
         username
+        image
       }
       tags {
         id
