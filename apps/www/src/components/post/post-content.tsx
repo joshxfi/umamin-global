@@ -42,7 +42,7 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
             hide: v,
           }))
         : [],
-    [_tempTags, rest.id]
+    [_tempTags, rest.id],
   );
   const { data: session } = useSession();
 
@@ -53,7 +53,7 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
         .map((t) => t.name) ?? []),
       ...tempTags?.filter((t) => !t.hide).map((t) => t.name),
     ],
-    [rest.tags, tempTags]
+    [rest.tags, tempTags],
   );
 
   const ids = useNanoid(tagsToDisplay.length);
@@ -65,11 +65,11 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
       <Avatar className="h-9 w-9">
         <AvatarImage
           className="rounded-full"
-          src={rest.author.image as string | undefined}
-          alt={`${rest.author.username}'s avatar`}
+          src={rest.isAnonymous ? "" : rest.author.image ?? ""}
+          alt="User Avatar"
         />
-        <AvatarFallback className="text-xs">
-          {rest.author.username?.split(" ").at(0)}
+        <AvatarFallback className="text-xs uppercase">
+          {rest.author.username?.charAt(0)}
         </AvatarFallback>
       </Avatar>
       <div className="w-full ">
@@ -132,7 +132,7 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
                   "blur-sm text-gray-600 select-none":
                     tagsToDisplay.includes("quarantine") ||
                     (tagsToDisplay.includes("nsfw") && hideNsfw),
-                }
+                },
               )}
             >
               {rest.content}
