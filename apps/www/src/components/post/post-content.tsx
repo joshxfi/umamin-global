@@ -62,7 +62,7 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
 
   return (
     <div className="flex gap-3 container">
-      <Avatar className="h-9 w-9">
+      <Avatar className="h-9 w-9 mt-1">
         <AvatarImage
           className="rounded-full"
           src={rest.isAnonymous ? "" : rest.author.image ?? ""}
@@ -75,18 +75,20 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
       <div className="w-full ">
         <div className="flex justify-between items-center">
           <div className="flex gap-x-2">
-            <ProfileHoverCard author={rest.author} userId={session?.user.id}>
-              <Link
-                href={`/user/${rest.author.username}`}
-                className="font-semibold text-sm hover:underline"
-              >
-                {rest.isAnonymous ? (
-                  <span className="text-zinc-400">hidden</span>
-                ) : (
-                  rest.author.username
-                )}
-              </Link>
-            </ProfileHoverCard>
+            {rest.isAnonymous ? (
+              <p className="font-semibold text-sm text-zinc-400">
+                hidden
+              </p>
+            ) : (
+              <ProfileHoverCard author={rest.author} userId={session?.user.id}>
+                <Link
+                  href={`/user/${rest.author.username}`}
+                  className="font-semibold text-sm hover:underline"
+                >
+                  {rest.author.username}
+                </Link>
+              </ProfileHoverCard>
+            )}
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
@@ -123,7 +125,7 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
 
           <PostDropdownMenu postId={rest.id} postAuthor={rest.author.id} />
         </div>
-        <div className="relative">
+        <div className="relative mt-1">
           <Link href={`/post/${rest.id}`}>
             <p
               className={cn(
