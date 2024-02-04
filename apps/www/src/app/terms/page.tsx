@@ -5,17 +5,17 @@ export default function Terms() {
   const markdown = `
 # Terms of Service
 
-Welcome to TheForum! We're excited to have you join our community. Before you dive in, please take a moment to read and understand our Terms of Service.
+Welcome to Umamin Global! We're excited to have you join our community. Before you dive in, please take a moment to read and understand our Terms of Service.
 
 ## 1. Acceptance of Terms
 
-By using TheForum, you agree to abide by these Terms of Service. If you do not agree with any part of these terms, please refrain from using our platform.
+By using Umamin Global, you agree to abide by these Terms of Service. If you do not agree with any part of these terms, please refrain from using our platform.
 
 ## 2. User Conduct
 
-- **Respectful Communication:** TheForum is a space for positive and constructive dialogue. Users are prohibited from targeting specific individuals or engaging in personal attacks.
+- **Respectful Communication:** Umamin Global is a space for positive and constructive dialogue. Users are prohibited from targeting specific individuals or engaging in personal attacks.
 
-- **No Harassment or Discrimination:** Harassment, racism, discrimination, and any form of hate speech will not be tolerated on TheForum. We aim to create a safe and inclusive environment for all users.
+- **No Harassment or Discrimination:** Harassment, racism, discrimination, and any form of hate speech will not be tolerated on Umamin Global. We aim to create a safe and inclusive environment for all users.
 
 ## 3. Account Security
 
@@ -25,11 +25,11 @@ By using TheForum, you agree to abide by these Terms of Service. If you do not a
 
 ## 4. Termination of Accounts
 
-TheForum reserves the right to terminate or suspend user accounts that violate these terms. We may also remove content that goes against our guidelines.
+Umamin Global reserves the right to terminate or suspend user accounts that violate these terms. We may also remove content that goes against our guidelines.
 
 ## 5. Changes to Terms
 
-TheForum may update these Terms of Service from time to time. Users will be notified of any significant changes, and continued use of the platform constitutes acceptance of the updated terms.
+Umamin Global may update these Terms of Service from time to time. Users will be notified of any significant changes, and continued use of the platform constitutes acceptance of the updated terms.
 
 `;
 

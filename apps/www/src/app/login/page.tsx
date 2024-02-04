@@ -27,7 +27,7 @@ export default function Login() {
           <CardTitle className="text-2xl flex justify-between items-center">
             <p>Login to proceed</p>
           </CardTitle>
-          <CardDescription>an open space for universities</CardDescription>
+          <CardDescription>A Social Platform for the Umamin Community</CardDescription>
         </CardHeader>
 
         <CardFooter className="flex flex-col items-start">
