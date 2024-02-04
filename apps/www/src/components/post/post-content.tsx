@@ -78,7 +78,7 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
             <ProfileHoverCard author={rest.author} userId={session?.user.id}>
               <Link
                 href={`/user/${rest.author.username}`}
-                className="font-semibold text-base hover:underline"
+                className="font-semibold text-sm hover:underline"
               >
                 {rest.isAnonymous ? (
                   <span className="text-zinc-400">hidden</span>
@@ -127,7 +127,7 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
           <Link href={`/post/${rest.id}`}>
             <p
               className={cn(
-                "break-words whitespace-pre-wrap relative text-base",
+                "break-words whitespace-pre-wrap relative text-sm",
                 {
                   "blur-sm text-gray-600 select-none":
                     tagsToDisplay.includes("quarantine") ||
