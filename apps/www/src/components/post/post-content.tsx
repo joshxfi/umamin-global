@@ -42,7 +42,7 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
             hide: v,
           }))
         : [],
-    [_tempTags, rest.id]
+    [_tempTags, rest.id],
   );
   const { data: session } = useSession();
 
@@ -53,40 +53,38 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
         .map((t) => t.name) ?? []),
       ...tempTags?.filter((t) => !t.hide).map((t) => t.name),
     ],
-    [rest.tags, tempTags]
+    [rest.tags, tempTags],
   );
 
   const ids = useNanoid(tagsToDisplay.length);
 
-  const [hideNsfw, setHideNsfw] = useState(true);
-
   return (
     <div className="flex gap-3 container">
-      <Avatar className="h-9 w-9">
+      <Avatar className="h-9 w-9 mt-1">
         <AvatarImage
           className="rounded-full"
-          src={rest.author.image as string | undefined}
-          alt={`${rest.author.username}'s avatar`}
+          src={rest.isAnonymous ? "" : rest.author.image ?? ""}
+          alt="User Avatar"
         />
-        <AvatarFallback className="text-xs">
-          {rest.author.username?.split(" ").at(0)}
+        <AvatarFallback className="text-xs uppercase">
+          {rest.author.username?.charAt(0)}
         </AvatarFallback>
       </Avatar>
       <div className="w-full ">
         <div className="flex justify-between items-center">
           <div className="flex gap-x-2">
-            <ProfileHoverCard author={rest.author} userId={session?.user.id}>
-              <Link
-                href={`/user/${rest.author.username}`}
-                className="font-semibold text-base hover:underline"
-              >
-                {rest.isAnonymous ? (
-                  <span className="text-zinc-400">hidden</span>
-                ) : (
-                  rest.author.username
-                )}
-              </Link>
-            </ProfileHoverCard>
+            {rest.isAnonymous ? (
+              <p className="font-semibold text-sm text-zinc-400">hidden</p>
+            ) : (
+              <ProfileHoverCard author={rest.author} userId={session?.user.id}>
+                <Link
+                  href={`/user/${rest.author.username}`}
+                  className="font-semibold text-sm hover:underline"
+                >
+                  {rest.author.username}
+                </Link>
+              </ProfileHoverCard>
+            )}
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
@@ -123,35 +121,17 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
 
           <PostDropdownMenu postId={rest.id} postAuthor={rest.author.id} />
         </div>
-        <div className="relative">
-          <Link href={`/post/${rest.id}`}>
-            <p
-              className={cn(
-                "break-words whitespace-pre-wrap relative text-base",
-                {
-                  "blur-sm text-gray-600 select-none":
-                    tagsToDisplay.includes("quarantine") ||
-                    (tagsToDisplay.includes("nsfw") && hideNsfw),
-                }
-              )}
-            >
-              {rest.content}
-            </p>
-          </Link>
-          {tagsToDisplay.includes("nsfw") &&
-            !tagsToDisplay.includes("quarantine") &&
-            hideNsfw && (
-              <button
-                type="button"
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center"
-                onClick={() => setHideNsfw(false)}
-              >
-                <Icons.exclamationCircle className="w-5 h-5 text-red-500" />
-                <p className="font-semibold mt-2">NSFW Content</p>
-                <p className="text-xs mt-1">Tap to view</p>
-              </button>
-            )}
-        </div>
+
+        <Link
+          href={`/post/${rest.id}`}
+          className={cn("break-words whitespace-pre-wrap relative text-sm", {
+            "blur-sm text-gray-600 select-none":
+              tagsToDisplay.includes("quarantine"),
+            "break-all": rest.content.split(" ").length === 1,
+          })}
+        >
+          {rest.content}
+        </Link>
 
         {(additionalTags || tagsToDisplay.length > 0) && (
           <div className="flex gap-2 flex-wrap mt-2">

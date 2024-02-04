@@ -70,8 +70,8 @@ export default function UserProfile({ username }: { username: string }) {
 
   return (
     mounted && (
-      <main className="container">
-        <section>
+      <main>
+        <section className="container">
           <div className="flex items-center justify-between py-5">
             <div>
               <span className="font-semibold text-2xl">
@@ -157,7 +157,7 @@ export default function UserProfile({ username }: { username: string }) {
           )}
         </section>
 
-        <Tabs defaultValue="posts" className="mt-5 w-full">
+        <Tabs defaultValue="posts" className="mt-8 w-full">
           <TabsList className="w-full border-b bg-transparent">
             <TabsTrigger value="posts" className="w-full">
               Posts

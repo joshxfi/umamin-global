@@ -85,7 +85,7 @@ export function UserPosts({
   ]);
 
   return (
-    <section className="pb-24 pt-12">
+    <section className="pb-24">
       {data?.getUserPosts.data
         ?.filter((m) => !removedPosts.includes(m.id))
         ?.filter((m) => !(authorId !== session?.user.id && m.isAnonymous))
