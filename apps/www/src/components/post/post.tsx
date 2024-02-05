@@ -212,6 +212,7 @@ export const Post = ({
       <div className={`${type === "comment" && "pl-16"}`}>
         <PostContent
           {...props}
+          type={type}
           additionalTags={
             <>
               {type === "comment" && isAuthor && <Badge name="author" />}

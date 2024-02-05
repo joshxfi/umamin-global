@@ -27,11 +27,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { ProfileHoverCard } from "../profile/profile-hover-card";
 
 type Props = {
+  type?: "post" | "comment";
   additionalTags?: React.ReactNode;
   postButtons?: React.ReactNode;
 } & Omit<PostData, "comments">;
 
-export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
+export function PostContent({
+  type,
+  additionalTags,
+  postButtons,
+  ...rest
+}: Props) {
   const [modDialog, setModDialog] = useState(false);
   const _tempTags = usePostStore((state) => state.tags);
   const tempTags = useMemo(
@@ -122,16 +128,28 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
           <PostDropdownMenu postId={rest.id} postAuthor={rest.author.id} />
         </div>
 
-        <Link
-          href={`/post/${rest.id}`}
-          className={cn("break-words whitespace-pre-wrap relative text-sm", {
-            "blur-sm text-gray-600 select-none":
-              tagsToDisplay.includes("quarantine"),
-            "break-all": rest.content.split(" ").length === 1,
-          })}
-        >
-          {rest.content}
-        </Link>
+        {type === "comment" ? (
+          <p
+            className={cn("break-words whitespace-pre-wrap relative text-sm", {
+              "blur-sm text-gray-600 select-none":
+                tagsToDisplay.includes("quarantine"),
+              "break-all": rest.content.split(" ").length === 1,
+            })}
+          >
+            {rest.content}
+          </p>
+        ) : (
+          <Link
+            href={`/post/${rest.id}`}
+            className={cn("break-words whitespace-pre-wrap relative text-sm", {
+              "blur-sm text-gray-600 select-none":
+                tagsToDisplay.includes("quarantine"),
+              "break-all": rest.content.split(" ").length === 1,
+            })}
+          >
+            {rest.content}
+          </Link>
+        )}
 
         {(additionalTags || tagsToDisplay.length > 0) && (
           <div className="flex gap-2 flex-wrap mt-2">
