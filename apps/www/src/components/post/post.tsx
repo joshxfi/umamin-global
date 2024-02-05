@@ -292,11 +292,6 @@ export const Post = ({
 
       <DialogDrawer open={commentDialog} setOpen={setCommentDialog}>
         <section className="text-sm p-4 md:p-2 space-y-2">
-          <PostContent
-            {...props}
-            additionalTags={isUserAuthor && <Badge name="you" />}
-          />
-
           <form onSubmit={handleComment} className="pt-2">
             <Textarea
               required
