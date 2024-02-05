@@ -51,6 +51,7 @@ mutation AddComment($postId: ID!, $isAnonymous: Boolean!, $content: String!) {
     isAnonymous
     author {
       id
+      image
       username
     }
   }
