@@ -24,6 +24,7 @@ mutation AddPost($isAnonymous: Boolean!, $content: String!) {
     isAnonymous
     author {
       id
+      image
       username
     }
   }
