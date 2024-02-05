@@ -44,6 +44,7 @@ export const usePostStore = create<State & Action>()(
     updateComments: (postId, commentData) =>
       set((state) => {
         state.comments[postId] = {
+          ...state.comments[postId],
           [commentData.id]: commentData,
         };
       }),
@@ -60,5 +61,5 @@ export const usePostStore = create<State & Action>()(
           [tag.name]: tag.hide,
         };
       }),
-  }))
+  })),
 );
