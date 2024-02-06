@@ -5,32 +5,32 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useMutation } from "@apollo/client";
 
-import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { Textarea } from "../ui/textarea";
 import { gql } from "@umamin-global/codegen/__generated__";
 
-const SET_USERNAME = gql(`
-mutation SetUsername($username: String!) {
-  setUsername(username: $username)
+const SET_BIO = gql(`
+mutation SetBio($bio: String!) {
+  setBio(bio: $bio)
 }
 `);
 
-export function UsernameSettings() {
+export function BioSettings() {
   const { data: session, update } = useSession();
-  const [username, setUsername] = useState(session?.user.username ?? "");
+  const [bio, setBio] = useState(session?.user.bio ?? "");
 
-  const [setUsernameFn, { loading }] = useMutation(SET_USERNAME);
+  const [setBioFn, { loading }] = useMutation(SET_BIO);
 
   const handleSetUsername: React.FormEventHandler = (e) => {
     e.preventDefault();
 
-    setUsernameFn({
+    setBioFn({
       variables: {
-        username,
+        bio,
       },
       onCompleted: () => {
-        update({ user: { username } });
-        toast.success("Username set successfully");
+        update({ user: { bio } });
+        toast.success("Bio set successfully");
       },
       onError: (err) => {
         console.log(err);
@@ -41,15 +41,14 @@ export function UsernameSettings() {
 
   return (
     <div>
-      <p className="text-sm mb-2">Username</p>
+      <p className="text-sm mb-2">Bio</p>
       <form className="flex space-x-4" onSubmit={handleSetUsername}>
-        <Input
-          type="text"
-          disabled={loading}
+        <Textarea
           required
-          value={username}
-          placeholder="Enter your username"
-          onChange={(e) => setUsername(e.target.value)}
+          value={bio}
+          disabled={loading}
+          placeholder="Enter your bio"
+          onChange={(e) => setBio(e.target.value)}
         />
 
         <Button disabled={loading} type="submit">

@@ -74,19 +74,20 @@ export default function UserProfile({ username }: { username: string }) {
         <section className="container">
           <div className="flex items-center justify-between py-5">
             <div>
-              <span className="font-semibold text-2xl">
+              <span className="font-semibold text-xl">
                 @{_user?.username ?? "user"}
               </span>
               {_user?.createdAt && (
-                <p className="text-muted-foreground mt-1">
+                <p className="text-muted-foreground text-sm mt-1">
                   Joined{" "}
                   {formatDistanceToNow(new Date(_user?.createdAt), {
                     addSuffix: true,
                   })}
                 </p>
               )}
+              <p className="mt-3 text-sm">{_user?.bio}</p>
             </div>
-            <Avatar className="h-24 w-24">
+            <Avatar className="h-20 w-20">
               <AvatarImage
                 className="rounded-full"
                 src={_user?.image as string | undefined}

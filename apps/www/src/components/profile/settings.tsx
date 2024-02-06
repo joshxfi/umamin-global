@@ -3,6 +3,7 @@ import { signOut } from "next-auth/react";
 import { Button } from "../ui/button";
 import { DialogDrawer } from "../dialog-drawer";
 import { UsernameSettings } from "../settings/username";
+import { BioSettings } from "../settings/bio";
 
 export function Settings({
   open,
@@ -13,7 +14,10 @@ export function Settings({
 }) {
   return (
     <DialogDrawer open={open} setOpen={setOpen}>
-      <UsernameSettings />
+      <div className="space-y-4">
+        <UsernameSettings />
+        <BioSettings />
+      </div>
 
       <Button
         title="Sign Out"

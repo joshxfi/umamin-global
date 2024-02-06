@@ -29,6 +29,7 @@ const documents = {
     "\nmutation AddComment($postId: ID!, $isAnonymous: Boolean!, $content: String!) {\n  addComment(postId: $postId, isAnonymous: $isAnonymous, content: $content) {\n    id\n    content\n    createdAt\n    isAnonymous\n    author {\n      id\n      image\n      username\n    }\n  }\n}\n": types.AddCommentDocument,
     "\nquery GetUserPosts($input: UserPostsInput!) {\n  getUserPosts(input: $input) {\n    cursorId\n    data {\n      id\n      content\n      createdAt\n      isAnonymous\n      author {\n        id\n        username\n        image\n      }\n      tags {\n        id\n        name\n      }\n      upvotes {\n        id\n        userId\n      }\n      _count {\n        comments\n      }\n    }\n  }\n}\n": types.GetUserPostsDocument,
     "\nquery GetUser($username: String!) {\n  getUser(username: $username) {\n    id\n    createdAt\n    username\n    image\n    bio\n  }\n}\n": types.GetUserDocument,
+    "\nmutation SetBio($bio: String!) {\n  setBio(bio: $bio)\n}\n": types.SetBioDocument,
     "\nmutation SetUsername($username: String!) {\n  setUsername(username: $username)\n}\n": types.SetUsernameDocument,
 };
 
@@ -110,6 +111,10 @@ export function gql(source: "\nquery GetUserPosts($input: UserPostsInput!) {\n  
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\nquery GetUser($username: String!) {\n  getUser(username: $username) {\n    id\n    createdAt\n    username\n    image\n    bio\n  }\n}\n"): (typeof documents)["\nquery GetUser($username: String!) {\n  getUser(username: $username) {\n    id\n    createdAt\n    username\n    image\n    bio\n  }\n}\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\nmutation SetBio($bio: String!) {\n  setBio(bio: $bio)\n}\n"): (typeof documents)["\nmutation SetBio($bio: String!) {\n  setBio(bio: $bio)\n}\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
