@@ -4,6 +4,9 @@ import React from "react";
 import { toast } from "sonner";
 import { Icons } from "../icons";
 import { useSession } from "next-auth/react";
+import { useMutation } from "@apollo/client";
+import { Role } from "@umamin-global/prisma";
+import { gql } from "@umamin-global/codegen/__generated__/";
 
 import {
   DropdownMenu,
@@ -12,21 +15,52 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { usePostStore } from "@/store/usePostStore";
 
 type PostDropdownMenuProps = {
   postId: string;
   postAuthor: string;
 };
 
-export function PostDropdownMenu({ postAuthor }: PostDropdownMenuProps) {
+type PostMenu = {
+  title: string;
+  onClick?: () => void;
+  className?: string;
+};
+
+const REMOVE_POST = gql(`
+mutation RemovePost($postId: ID!) {
+  removePost(postId: $postId)
+}
+`);
+
+export function PostDropdownMenu({
+  postId,
+  postAuthor,
+}: PostDropdownMenuProps) {
   const { data: session } = useSession();
+  const [removePost] = useMutation(REMOVE_POST, {
+    variables: {
+      postId,
+    },
+  });
 
   const isAuthor = session?.user.id === postAuthor;
+  const tempRemovePost = usePostStore((state) => state.removePost);
 
-  type PostMenu = {
-    title: string;
-    onClick?: () => void;
-    className?: string;
+  const handleRemovePost = () => {
+    toast.loading("Deleting Post");
+
+    removePost({
+      onCompleted: () => {
+        tempRemovePost(postId);
+        toast.success("Post removed permanently");
+      },
+      onError: (err) => {
+        console.log(err);
+        toast.error("Something went wrong");
+      },
+    });
   };
 
   const featUnavailable = () => {
@@ -54,9 +88,8 @@ export function PostDropdownMenu({ postAuthor }: PostDropdownMenuProps) {
     },
     {
       title: "Delete",
-      onClick: () => {
-        featUnavailable();
-      },
+      onClick: handleRemovePost,
+
       className: "text-red-500",
     },
   ];
