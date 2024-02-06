@@ -1,15 +1,14 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
-
+import { usePathname } from "next/navigation";
 import { formatDistanceToNowStrict, formatRelative } from "date-fns";
-
-import { formatDistance } from "@/hooks/format-distance";
 
 import { cn } from "@/lib/utils";
 import type { PostData } from "@/types";
 import { useNanoid } from "@/hooks/use-nanoid";
 import { usePostStore } from "@/store/usePostStore";
+import { formatDistance } from "@/hooks/format-distance";
 import { Role } from "@umamin-global/codegen/__generated__/graphql";
 
 import { Icons } from "../icons";
@@ -23,8 +22,8 @@ import {
   TooltipProvider,
 } from "../ui/tooltip";
 import { PostDropdownMenu } from "./post-dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { ProfileHoverCard } from "../profile/profile-hover-card";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 type Props = {
   type?: "post" | "comment";
@@ -63,6 +62,7 @@ export function PostContent({
   );
 
   const ids = useNanoid(tagsToDisplay.length);
+  const pathname = usePathname();
 
   return (
     <div className="flex gap-3 container">
@@ -128,7 +128,7 @@ export function PostContent({
           <PostDropdownMenu postId={rest.id} postAuthor={rest.author.id} />
         </div>
 
-        {type === "comment" ? (
+        {pathname !== "/" ? (
           <p
             className={cn("break-words whitespace-pre-wrap relative text-sm", {
               "blur-sm text-gray-600 select-none":
@@ -147,7 +147,7 @@ export function PostContent({
               "break-all": rest.content.split(" ").length === 1,
             })}
           >
-            {rest.content}
+            <div>{rest.content}</div>
           </Link>
         )}
 
