@@ -86,6 +86,26 @@ export class UserResolver {
     }
   }
 
+  @Mutation(() => String)
+  async setBio(
+    @Arg("bio", () => String) bio: string,
+    @Ctx() ctx: TContext,
+  ): Promise<String> {
+    try {
+      await ctx.prisma.user.update({
+        where: { id: ctx.id },
+        data: {
+          bio,
+        },
+      });
+
+      return "Success";
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
+
   @Mutation(() => User)
   async setUserRole(
     @Arg("username", () => String) username: string,

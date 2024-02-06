@@ -14,7 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\nquery GetPosts($cursorId: ID) {\n  getPosts(cursorId: $cursorId) {\n    cursorId\n    data {\n      id\n      content\n      createdAt\n      isAnonymous\n      author {\n        id\n        username\n        image\n      }\n      tags {\n        id\n        name\n      }\n      upvotes {\n        id\n        userId\n      }\n      _count {\n        comments\n      }\n    }\n  }\n}\n": types.GetPostsDocument,
-    "\nquery GetPost($postId: ID!) {\n  getPost(postId: $postId) {\n    id\n    content\n    createdAt\n    isAnonymous\n    author {\n      id\n      username\n    }\n    tags {\n      id\n      name\n    }\n    upvotes {\n      id\n      userId\n    }\n    comments {\n      id\n      content\n      createdAt\n      isAnonymous\n      author {\n        id\n        username\n      }\n      upvotes {\n        id\n        userId\n      }\n    }\n  }\n}\n": types.GetPostDocument,
+    "\nquery GetPost($postId: ID!) {\n  getPost(postId: $postId) {\n    id\n    content\n    createdAt\n    isAnonymous\n    author {\n      id\n      image\n      username\n    }\n    tags {\n      id\n      name\n    }\n    upvotes {\n      id\n      userId\n    }\n    comments {\n      id\n      content\n      createdAt\n      isAnonymous\n      author {\n        id\n        image\n        username\n      }\n      upvotes {\n        id\n        userId\n      }\n    }\n  }\n}\n": types.GetPostDocument,
     "\nquery GetUsers($role: Role!) {\n  getUsers(role: $role) {\n    id\n    username\n  }\n}\n": types.GetUsersDocument,
     "\nmutation setUserRole($role: Role!, $username: String!) {\n  setUserRole(role: $role, username: $username) {\n    id\n    username\n  }\n}\n": types.SetUserRoleDocument,
     "\nquery GetTags {\n  getTags {\n    id\n    name\n  }\n}\n": types.GetTagsDocument,
@@ -23,12 +23,13 @@ const documents = {
     "\nmutation RemovePost($postId: ID!) {\n  removePost(postId: $postId)\n}\n": types.RemovePostDocument,
     "\nmutation AddTagToPost($postId: ID!, $tagName: String!) {\n  addTagToPost(postId: $postId, tagName: $tagName) {\n    id\n    name\n  }\n}\n": types.AddTagToPostDocument,
     "\nmutation RemoveTagOnPost($postId: ID!, $tagName: String!) {\n  removeTagOnPost(postId: $postId, tagName: $tagName)\n}\n": types.RemoveTagOnPostDocument,
-    "\nmutation AddPost($isAnonymous: Boolean!, $content: String!) {\n  addPost(isAnonymous: $isAnonymous, content: $content) {\n    id\n    content\n    createdAt\n    isAnonymous\n    author {\n      id\n      username\n    }\n  }\n}\n": types.AddPostDocument,
+    "\nmutation AddPost($isAnonymous: Boolean!, $content: String!) {\n  addPost(isAnonymous: $isAnonymous, content: $content) {\n    id\n    content\n    createdAt\n    isAnonymous\n    author {\n      id\n      image\n      username\n    }\n  }\n}\n": types.AddPostDocument,
     "\nmutation AddUpvote($postId: ID!) {\n  addUpvote(postId: $postId) {\n    id\n  }\n}\n": types.AddUpvoteDocument,
     "\nmutation RemoveUpvote($upvoteId: ID!) {\n  removeUpvote(id: $upvoteId) \n}\n": types.RemoveUpvoteDocument,
-    "\nmutation AddComment($postId: ID!, $isAnonymous: Boolean!, $content: String!) {\n  addComment(postId: $postId, isAnonymous: $isAnonymous, content: $content) {\n    id\n    content\n    createdAt\n    isAnonymous\n    author {\n      id\n      username\n    }\n  }\n}\n": types.AddCommentDocument,
+    "\nmutation AddComment($postId: ID!, $isAnonymous: Boolean!, $content: String!) {\n  addComment(postId: $postId, isAnonymous: $isAnonymous, content: $content) {\n    id\n    content\n    createdAt\n    isAnonymous\n    author {\n      id\n      image\n      username\n    }\n  }\n}\n": types.AddCommentDocument,
     "\nquery GetUserPosts($input: UserPostsInput!) {\n  getUserPosts(input: $input) {\n    cursorId\n    data {\n      id\n      content\n      createdAt\n      isAnonymous\n      author {\n        id\n        username\n        image\n      }\n      tags {\n        id\n        name\n      }\n      upvotes {\n        id\n        userId\n      }\n      _count {\n        comments\n      }\n    }\n  }\n}\n": types.GetUserPostsDocument,
     "\nquery GetUser($username: String!) {\n  getUser(username: $username) {\n    id\n    createdAt\n    username\n    image\n    bio\n  }\n}\n": types.GetUserDocument,
+    "\nmutation SetBio($bio: String!) {\n  setBio(bio: $bio)\n}\n": types.SetBioDocument,
     "\nmutation SetUsername($username: String!) {\n  setUsername(username: $username)\n}\n": types.SetUsernameDocument,
 };
 
@@ -53,7 +54,7 @@ export function gql(source: "\nquery GetPosts($cursorId: ID) {\n  getPosts(curso
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\nquery GetPost($postId: ID!) {\n  getPost(postId: $postId) {\n    id\n    content\n    createdAt\n    isAnonymous\n    author {\n      id\n      username\n    }\n    tags {\n      id\n      name\n    }\n    upvotes {\n      id\n      userId\n    }\n    comments {\n      id\n      content\n      createdAt\n      isAnonymous\n      author {\n        id\n        username\n      }\n      upvotes {\n        id\n        userId\n      }\n    }\n  }\n}\n"): (typeof documents)["\nquery GetPost($postId: ID!) {\n  getPost(postId: $postId) {\n    id\n    content\n    createdAt\n    isAnonymous\n    author {\n      id\n      username\n    }\n    tags {\n      id\n      name\n    }\n    upvotes {\n      id\n      userId\n    }\n    comments {\n      id\n      content\n      createdAt\n      isAnonymous\n      author {\n        id\n        username\n      }\n      upvotes {\n        id\n        userId\n      }\n    }\n  }\n}\n"];
+export function gql(source: "\nquery GetPost($postId: ID!) {\n  getPost(postId: $postId) {\n    id\n    content\n    createdAt\n    isAnonymous\n    author {\n      id\n      image\n      username\n    }\n    tags {\n      id\n      name\n    }\n    upvotes {\n      id\n      userId\n    }\n    comments {\n      id\n      content\n      createdAt\n      isAnonymous\n      author {\n        id\n        image\n        username\n      }\n      upvotes {\n        id\n        userId\n      }\n    }\n  }\n}\n"): (typeof documents)["\nquery GetPost($postId: ID!) {\n  getPost(postId: $postId) {\n    id\n    content\n    createdAt\n    isAnonymous\n    author {\n      id\n      image\n      username\n    }\n    tags {\n      id\n      name\n    }\n    upvotes {\n      id\n      userId\n    }\n    comments {\n      id\n      content\n      createdAt\n      isAnonymous\n      author {\n        id\n        image\n        username\n      }\n      upvotes {\n        id\n        userId\n      }\n    }\n  }\n}\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -89,7 +90,7 @@ export function gql(source: "\nmutation RemoveTagOnPost($postId: ID!, $tagName: 
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\nmutation AddPost($isAnonymous: Boolean!, $content: String!) {\n  addPost(isAnonymous: $isAnonymous, content: $content) {\n    id\n    content\n    createdAt\n    isAnonymous\n    author {\n      id\n      username\n    }\n  }\n}\n"): (typeof documents)["\nmutation AddPost($isAnonymous: Boolean!, $content: String!) {\n  addPost(isAnonymous: $isAnonymous, content: $content) {\n    id\n    content\n    createdAt\n    isAnonymous\n    author {\n      id\n      username\n    }\n  }\n}\n"];
+export function gql(source: "\nmutation AddPost($isAnonymous: Boolean!, $content: String!) {\n  addPost(isAnonymous: $isAnonymous, content: $content) {\n    id\n    content\n    createdAt\n    isAnonymous\n    author {\n      id\n      image\n      username\n    }\n  }\n}\n"): (typeof documents)["\nmutation AddPost($isAnonymous: Boolean!, $content: String!) {\n  addPost(isAnonymous: $isAnonymous, content: $content) {\n    id\n    content\n    createdAt\n    isAnonymous\n    author {\n      id\n      image\n      username\n    }\n  }\n}\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -101,7 +102,7 @@ export function gql(source: "\nmutation RemoveUpvote($upvoteId: ID!) {\n  remove
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\nmutation AddComment($postId: ID!, $isAnonymous: Boolean!, $content: String!) {\n  addComment(postId: $postId, isAnonymous: $isAnonymous, content: $content) {\n    id\n    content\n    createdAt\n    isAnonymous\n    author {\n      id\n      username\n    }\n  }\n}\n"): (typeof documents)["\nmutation AddComment($postId: ID!, $isAnonymous: Boolean!, $content: String!) {\n  addComment(postId: $postId, isAnonymous: $isAnonymous, content: $content) {\n    id\n    content\n    createdAt\n    isAnonymous\n    author {\n      id\n      username\n    }\n  }\n}\n"];
+export function gql(source: "\nmutation AddComment($postId: ID!, $isAnonymous: Boolean!, $content: String!) {\n  addComment(postId: $postId, isAnonymous: $isAnonymous, content: $content) {\n    id\n    content\n    createdAt\n    isAnonymous\n    author {\n      id\n      image\n      username\n    }\n  }\n}\n"): (typeof documents)["\nmutation AddComment($postId: ID!, $isAnonymous: Boolean!, $content: String!) {\n  addComment(postId: $postId, isAnonymous: $isAnonymous, content: $content) {\n    id\n    content\n    createdAt\n    isAnonymous\n    author {\n      id\n      image\n      username\n    }\n  }\n}\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -110,6 +111,10 @@ export function gql(source: "\nquery GetUserPosts($input: UserPostsInput!) {\n  
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\nquery GetUser($username: String!) {\n  getUser(username: $username) {\n    id\n    createdAt\n    username\n    image\n    bio\n  }\n}\n"): (typeof documents)["\nquery GetUser($username: String!) {\n  getUser(username: $username) {\n    id\n    createdAt\n    username\n    image\n    bio\n  }\n}\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\nmutation SetBio($bio: String!) {\n  setBio(bio: $bio)\n}\n"): (typeof documents)["\nmutation SetBio($bio: String!) {\n  setBio(bio: $bio)\n}\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

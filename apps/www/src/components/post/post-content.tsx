@@ -1,15 +1,14 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
-
+import { usePathname } from "next/navigation";
 import { formatDistanceToNowStrict, formatRelative } from "date-fns";
-
-import { formatDistance } from "@/hooks/format-distance";
 
 import { cn } from "@/lib/utils";
 import type { PostData } from "@/types";
 import { useNanoid } from "@/hooks/use-nanoid";
 import { usePostStore } from "@/store/usePostStore";
+import { formatDistance } from "@/hooks/format-distance";
 import { Role } from "@umamin-global/codegen/__generated__/graphql";
 
 import { Icons } from "../icons";
@@ -23,15 +22,21 @@ import {
   TooltipProvider,
 } from "../ui/tooltip";
 import { PostDropdownMenu } from "./post-dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { ProfileHoverCard } from "../profile/profile-hover-card";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 type Props = {
+  type?: "post" | "comment";
   additionalTags?: React.ReactNode;
   postButtons?: React.ReactNode;
 } & Omit<PostData, "comments">;
 
-export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
+export function PostContent({
+  type,
+  additionalTags,
+  postButtons,
+  ...rest
+}: Props) {
   const [modDialog, setModDialog] = useState(false);
   const _tempTags = usePostStore((state) => state.tags);
   const tempTags = useMemo(
@@ -57,6 +62,7 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
   );
 
   const ids = useNanoid(tagsToDisplay.length);
+  const pathname = usePathname();
 
   return (
     <div className="flex gap-3 container">
@@ -122,16 +128,28 @@ export function PostContent({ additionalTags, postButtons, ...rest }: Props) {
           <PostDropdownMenu postId={rest.id} postAuthor={rest.author.id} />
         </div>
 
-        <Link
-          href={`/post/${rest.id}`}
-          className={cn("break-words whitespace-pre-wrap relative text-sm", {
-            "blur-sm text-gray-600 select-none":
-              tagsToDisplay.includes("quarantine"),
-            "break-all": rest.content.split(" ").length === 1,
-          })}
-        >
-          {rest.content}
-        </Link>
+        {pathname !== "/" ? (
+          <p
+            className={cn("break-words whitespace-pre-wrap relative text-sm", {
+              "blur-sm text-gray-600 select-none":
+                tagsToDisplay.includes("quarantine"),
+              "break-all": rest.content.split(" ").length === 1,
+            })}
+          >
+            {rest.content}
+          </p>
+        ) : (
+          <Link
+            href={`/post/${rest.id}`}
+            className={cn("break-words whitespace-pre-wrap relative text-sm", {
+              "blur-sm text-gray-600 select-none":
+                tagsToDisplay.includes("quarantine"),
+              "break-all": rest.content.split(" ").length === 1,
+            })}
+          >
+            <div>{rest.content}</div>
+          </Link>
+        )}
 
         {(additionalTags || tagsToDisplay.length > 0) && (
           <div className="flex gap-2 flex-wrap mt-2">

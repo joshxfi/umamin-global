@@ -15,6 +15,7 @@ query GetPost($postId: ID!) {
     isAnonymous
     author {
       id
+      image
       username
     }
     tags {
@@ -32,6 +33,7 @@ query GetPost($postId: ID!) {
       isAnonymous
       author {
         id
+        image
         username
       }
       upvotes {
