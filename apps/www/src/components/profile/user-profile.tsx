@@ -179,7 +179,11 @@ export default function UserProfile({ username }: { username: string }) {
             {_user?.id && <UserPosts isComment={true} authorId={_user.id} />}
           </TabsContent>
 
-          <TabsContent value="likes"></TabsContent>
+          <TabsContent value="likes">
+            <p className="text-center mt-8 text-muted-foreground text-sm">
+              Coming soon
+            </p>
+          </TabsContent>
         </Tabs>
       </main>
     )
