@@ -9,6 +9,7 @@ import NextAuthProvider from "@/context/NextAuthProvider";
 
 import "./globals.css";
 import { ApolloWrapper } from "./ApolloWrapper";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <Script
+        async
+        strategy="beforeInteractive"
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4274133898976040"
+        crossOrigin="anonymous"
+      />
+
       <body className={`${inter.className}`}>
         <NextAuthProvider>
           <NextTopLoader showSpinner={false} />
