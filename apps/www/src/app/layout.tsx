@@ -15,7 +15,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Umamin Global",
-  description: "A global channel for the umam.in ecosystem.",
+  description: "A Social Platform for the Umamin Community",
 };
 
 export default function RootLayout({
@@ -25,13 +25,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <Script
-        async
-        strategy="beforeInteractive"
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4274133898976040"
-        crossOrigin="anonymous"
-      />
-
       <body className={`${inter.className}`}>
         <NextAuthProvider>
           <NextTopLoader showSpinner={false} />
@@ -45,6 +38,12 @@ export default function RootLayout({
           </ApolloWrapper>
         </NextAuthProvider>
       </body>
+
+      <Script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4274133898976040"
+        crossOrigin="anonymous"
+      />
     </html>
   );
 }
