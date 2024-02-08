@@ -11,6 +11,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { usePostStore } from "@/store/usePostStore";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
+
+const AdSense = dynamic(() => import("@/components/adsense"), {
+  ssr: false,
+});
 
 const GET_POSTS = gql(`
 query GetPosts($cursorId: ID) {
@@ -84,6 +89,9 @@ export default function Home() {
 
   return (
     <section className="pb-24">
+      {/** umg-feed */}
+      <AdSense slotId="6296403271" />
+
       {Object.entries(tempPosts)
         .filter(([_, m]) => !removedPosts.includes(m.id))
         .reverse()
