@@ -12,6 +12,7 @@ import { usePostStore } from "@/store/usePostStore";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import FeedLoading from "@/components/post/feed-loading";
 
 const AdSense = dynamic(() => import("@/components/adsense"), {
   ssr: false,
@@ -68,19 +69,7 @@ export default function Home() {
   }, [inView, fetchMore, data?.getPosts.cursorId]);
 
   if (loading || status === "loading") {
-    return (
-      <div className="space-y-12 container">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div className="space-y-2" key={ids[i]}>
-            <div className="flex space-x-2">
-              <Skeleton className="h-4 w-[80px]" />
-              <Skeleton className="h-4 w-[100px]" />
-            </div>
-            <Skeleton className="h-4 w-[300px]" />
-          </div>
-        ))}
-      </div>
-    );
+    return <FeedLoading />;
   }
 
   if (session?.user && !session?.user.username) {
