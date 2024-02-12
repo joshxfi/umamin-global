@@ -1,19 +1,15 @@
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { formatDistanceToNowStrict, formatRelative } from "date-fns";
 
 import { cn } from "@/lib/utils";
+import { Badge } from "../ui/badge";
 import type { PostData } from "@/types";
 import { useNanoid } from "@/hooks/use-nanoid";
 import { usePostStore } from "@/store/usePostStore";
 import { formatDistance } from "@/hooks/format-distance";
-import { Role } from "@umamin-global/codegen/__generated__/graphql";
-
-import { Icons } from "../icons";
-import { Badge } from "../ui/badge";
-import { ContentMod } from "../moderator/mod-dialog";
 
 import {
   Tooltip,
@@ -37,7 +33,6 @@ export function PostContent({
   postButtons,
   ...rest
 }: Props) {
-  const [modDialog, setModDialog] = useState(false);
   const _tempTags = usePostStore((state) => state.tags);
   const tempTags = useMemo(
     () =>
@@ -109,21 +104,6 @@ export function PostContent({
               </Tooltip>
             </TooltipProvider>
           </div>
-
-          {session?.user?.role === Role.Moderator && (
-            <>
-              <button type="button" onClick={() => setModDialog(true)}>
-                <Icons.exclamation className="w-4 h-4" />
-              </button>
-
-              <ContentMod
-                open={modDialog}
-                setOpen={setModDialog}
-                existingTags={tagsToDisplay}
-                {...rest}
-              />
-            </>
-          )}
 
           <PostDropdownMenu postId={rest.id} postAuthor={rest.author.id} />
         </div>

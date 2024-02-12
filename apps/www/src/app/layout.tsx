@@ -9,12 +9,13 @@ import NextAuthProvider from "@/context/NextAuthProvider";
 
 import "./globals.css";
 import { ApolloWrapper } from "./ApolloWrapper";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Umamin Global",
-  description: "A global channel for the umam.in ecosystem.",
+  description: "A Social Platform for the Umamin Community",
 };
 
 export default function RootLayout({
@@ -37,6 +38,12 @@ export default function RootLayout({
           </ApolloWrapper>
         </NextAuthProvider>
       </body>
+
+      <Script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4274133898976040"
+        crossOrigin="anonymous"
+      />
     </html>
   );
 }
