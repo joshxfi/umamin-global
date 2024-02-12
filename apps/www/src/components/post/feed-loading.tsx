@@ -9,7 +9,7 @@ export default function Loading() {
   );
 
   return (
-    <section className="mx-auto flex h-screen w-full max-w-lg flex-col items-center justify-center gap-20 text-white xl:max-w-xl absolute top-0 left-0 right-0">
+    <section className="mx-auto flex h-screen w-full max-w-lg flex-col items-center justify-center gap-20 text-white xl:max-w-xl container">
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center gap-4">
           <Skeleton className="h-10 w-10 rounded-full" />
