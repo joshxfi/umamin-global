@@ -35,7 +35,7 @@ export default function UserProfile({ username }: { username: string }) {
     return param.startsWith("%40") ? param.split("%40").at(1) : param;
   };
 
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const isCurrentUser = username === session?.user.username;
 
   const { data, loading } = useQuery(GET_USER, {
@@ -64,7 +64,7 @@ export default function UserProfile({ username }: { username: string }) {
     }
   }, [username, isCurrentUser]);
 
-  if (loading) return <Loading />;
+  if (loading || status === "loading") return <Loading />;
   if (!data?.getUser && !isCurrentUser) return <NotFound />;
 
   return (

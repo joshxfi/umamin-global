@@ -1,17 +1,15 @@
 "use client";
 
 import { useEffect } from "react";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useInView } from "react-intersection-observer";
 import { gql } from "@umamin-global/codegen/__generated__";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
 import { Post } from "@/components/post/post";
-import { useNanoid } from "@/hooks/use-nanoid";
-import { Skeleton } from "@/components/ui/skeleton";
 import { usePostStore } from "@/store/usePostStore";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
 import FeedLoading from "@/components/post/feed-loading";
 
 const AdSense = dynamic(() => import("@/components/adsense"), {
@@ -56,8 +54,6 @@ export default function Home() {
   const tempPosts = usePostStore((state) => state.posts);
   const removedPosts = usePostStore((state) => state.removedPosts);
 
-  const ids = useNanoid(6);
-
   useEffect(() => {
     if (inView) {
       fetchMore({
@@ -78,7 +74,7 @@ export default function Home() {
 
   return (
     <section className="pb-24">
-      {/** umg-feed */}
+      {/* umg-feed */}
       <AdSense slotId="6296403271" />
 
       {Object.entries(tempPosts)
