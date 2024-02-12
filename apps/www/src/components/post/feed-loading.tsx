@@ -1,12 +1,8 @@
-import { useMemo } from "react";
-import { nanoid } from "nanoid";
+import { useNanoid } from "@/hooks/use-nanoid";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Loading() {
-  const nanoKey = useMemo(
-    () => Array.from({ length: 5 }).map(() => nanoid()),
-    []
-  );
+  const ids = useNanoid(5);
 
   return (
     <section className="mx-auto flex h-screen w-full max-w-lg flex-col items-center justify-center gap-20 text-white xl:max-w-xl container">
@@ -23,7 +19,7 @@ export default function Loading() {
 
       <div className="flex w-full flex-col gap-20">
         {Array.from({ length: 5 }).map((_, i) => (
-          <LoadingSkeleton key={nanoKey[i]} />
+          <LoadingSkeleton key={ids[i]} />
         ))}
       </div>
     </section>
