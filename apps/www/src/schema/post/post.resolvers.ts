@@ -18,15 +18,61 @@ export class PostResolver {
   @Directive("@cacheControl(maxAge: 60)")
   async getPosts(
     @Ctx() ctx: TContext,
-    @Arg("isComment", () => Boolean, { nullable: true }) isComment?: boolean,
     @Arg("cursorId", () => ID, { nullable: true }) cursorId?: string | null,
   ): Promise<PostsWithCursor> {
     try {
       const posts = await ctx.prisma.post.findMany({
-        where: {
-          parentId: isComment ? { not: null } : null,
-        },
         orderBy: { createdAt: "desc" },
+
+        take: 10,
+        include: {
+          author: true,
+          tags: true,
+          upvotes: true,
+          _count: {
+            select: {
+              comments: true,
+            },
+          },
+        },
+        ...(cursorId && {
+          skip: 1,
+          cursor: {
+            id: cursorId,
+          },
+        }),
+      });
+
+      if (posts.length === 0) {
+        return {
+          data: [],
+          cursorId: "",
+        };
+      }
+
+      return {
+        data: posts,
+        cursorId: posts[posts.length - 1].id,
+      };
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
+
+  @Query(() => PostsWithCursor)
+  @Directive("@cacheControl(maxAge: 60)")
+  async getTopPosts(
+    @Ctx() ctx: TContext,
+    @Arg("cursorId", () => ID, { nullable: true }) cursorId?: string | null,
+  ): Promise<PostsWithCursor> {
+    try {
+      const posts = await ctx.prisma.post.findMany({
+        orderBy: {
+          upvotes: {
+            _count: "desc",
+          },
+        },
         take: 10,
         include: {
           author: true,
