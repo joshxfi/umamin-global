@@ -5,7 +5,7 @@ export default function Loading() {
   const ids = useNanoid(5);
 
   return (
-    <section className="mx-auto flex h-screen w-full max-w-lg flex-col items-center justify-center gap-20 text-white xl:max-w-xl container">
+    <section className="mx-auto flex pt-8 w-full max-w-lg flex-col items-center justify-center gap-20 text-white xl:max-w-xl container">
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center gap-4">
           <Skeleton className="h-10 w-10 rounded-full" />
