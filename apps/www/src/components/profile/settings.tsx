@@ -1,9 +1,6 @@
-import { signOut } from "next-auth/react";
-
-import { Button } from "../ui/button";
+import { BioSettings } from "../settings/bio";
 import { DialogDrawer } from "../dialog-drawer";
 import { UsernameSettings } from "../settings/username";
-import { BioSettings } from "../settings/bio";
 
 export function Settings({
   open,
@@ -18,16 +15,6 @@ export function Settings({
         <UsernameSettings />
         <BioSettings />
       </div>
-
-      <Button
-        title="Sign Out"
-        type="button"
-        variant="outline"
-        onClick={() => signOut()}
-        className="w-full mt-4"
-      >
-        Sign Out
-      </Button>
     </DialogDrawer>
   );
 }
