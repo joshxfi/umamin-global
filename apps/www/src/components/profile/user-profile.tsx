@@ -15,6 +15,7 @@ import { UserPosts } from "./user-posts";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ProfileDropdownMenu } from "./profile-dropdown-menu";
+import { cn } from "@/lib/utils";
 
 const GET_USER = gql(`
 query GetUser($username: String!) {
@@ -59,7 +60,7 @@ export default function UserProfile({ username }: { username: string }) {
       window.history.replaceState(
         { ...window.history.state, as: newUrl, url: newUrl },
         "",
-        newUrl
+        newUrl,
       );
     }
   }, [username, isCurrentUser]);
@@ -71,38 +72,18 @@ export default function UserProfile({ username }: { username: string }) {
     mounted && (
       <main>
         <section className="container">
-          <div className="flex items-center justify-between py-5">
-            <div className="flex gap-3 items-center">
-              <Avatar className="h-20 w-20">
-                <AvatarImage
-                  className="rounded-full"
-                  src={_user?.image as string | undefined}
-                  alt={`${_user?.username}'s avatar`}
-                />
-                <AvatarFallback className="text-xs">
-                  {_user?.username?.split(" ").at(0)}
-                </AvatarFallback>
-              </Avatar>
+          <div className="flex justify-between py-5">
+            <Avatar className="h-20 w-20">
+              <AvatarImage
+                className="rounded-full"
+                src={_user?.image as string | undefined}
+                alt={`${_user?.username}'s avatar`}
+              />
+              <AvatarFallback className="text-xs">
+                {_user?.username?.split(" ").at(0)}
+              </AvatarFallback>
+            </Avatar>
 
-              <div>
-                <span className="font-semibold text-xl">
-                  @{_user?.username ?? "user"}
-                </span>
-                {_user?.createdAt && (
-                  <p className="text-muted-foreground text-sm mt-1">
-                    Joined{" "}
-                    {formatDistanceToNow(new Date(_user?.createdAt), {
-                      addSuffix: true,
-                    })}
-                  </p>
-                )}
-                <p className="mt-3 text-sm">{_user?.bio}</p>
-              </div>
-            </div>
-
-            {/**
-             * Change user button if profile is current user
-             */}
             {isCurrentUser ? (
               <div className="flex flex-col gap-2">
                 <ProfileDropdownMenu />
@@ -124,6 +105,29 @@ export default function UserProfile({ username }: { username: string }) {
                 </Button>
               </div>
             )}
+          </div>
+
+          <div className="flex gap-3 min-w-0">
+            <div>
+              <span className="font-semibold text-xl">
+                @{_user?.username ?? "user"}
+              </span>
+              {_user?.createdAt && (
+                <p className="text-muted-foreground text-sm mt-1">
+                  Joined{" "}
+                  {formatDistanceToNow(new Date(_user?.createdAt), {
+                    addSuffix: true,
+                  })}
+                </p>
+              )}
+              <p
+                className={cn("mt-3 text-sm break-words", {
+                  "break-all": _user?.bio?.split(" ").length === 1,
+                })}
+              >
+                {_user?.bio}
+              </p>
+            </div>
           </div>
         </section>
 
