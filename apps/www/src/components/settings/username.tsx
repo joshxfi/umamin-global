@@ -34,7 +34,11 @@ export function UsernameSettings() {
       },
       onError: (err) => {
         console.log(err);
-        toast.error(err.message);
+        if (err.message.includes("User_username_key")) {
+          toast.error("Username already taken");
+        } else {
+          toast.error(err.message);
+        }
       },
     });
   };
@@ -44,15 +48,20 @@ export function UsernameSettings() {
       <p className="text-sm mb-2">Username</p>
       <form className="flex space-x-4" onSubmit={handleSetUsername}>
         <Input
-          type="text"
-          disabled={loading}
           required
+          type="text"
+          minLength={3}
+          maxLength={15}
           value={username}
+          disabled={loading}
           placeholder="Enter your username"
           onChange={(e) => setUsername(e.target.value)}
         />
 
-        <Button disabled={loading} type="submit">
+        <Button
+          disabled={loading || username === session?.user.username}
+          type="submit"
+        >
           Update
         </Button>
       </form>

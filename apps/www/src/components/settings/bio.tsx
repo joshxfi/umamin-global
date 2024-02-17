@@ -1,5 +1,3 @@
-"use client";
-
 import { toast } from "sonner";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
@@ -46,12 +44,13 @@ export function BioSettings() {
         <Textarea
           required
           value={bio}
+          maxLength={160}
           disabled={loading}
           placeholder="Enter your bio"
           onChange={(e) => setBio(e.target.value)}
         />
 
-        <Button disabled={loading} type="submit">
+        <Button disabled={loading || bio === session?.user.bio} type="submit">
           Update
         </Button>
       </form>

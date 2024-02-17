@@ -13,8 +13,9 @@ import NotFound from "@/app/not-found";
 import Loading from "@/app/user/loading";
 import { UserPosts } from "./user-posts";
 import { Button } from "@/components/ui/button";
-import { Settings } from "@/components/profile/settings";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ProfileDropdownMenu } from "./profile-dropdown-menu";
+import { cn } from "@/lib/utils";
 
 const GET_USER = gql(`
 query GetUser($username: String!) {
@@ -35,7 +36,7 @@ export default function UserProfile({ username }: { username: string }) {
     return param.startsWith("%40") ? param.split("%40").at(1) : param;
   };
 
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const isCurrentUser = username === session?.user.username;
 
   const { data, loading } = useQuery(GET_USER, {
@@ -45,7 +46,6 @@ export default function UserProfile({ username }: { username: string }) {
 
   const _user = isCurrentUser ? session?.user : data?.getUser;
 
-  const [openSettings, setOpenSettings] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -65,14 +65,49 @@ export default function UserProfile({ username }: { username: string }) {
     }
   }, [username, isCurrentUser]);
 
-  if (loading) return <Loading />;
+  if (loading || status === "loading") return <Loading />;
   if (!data?.getUser && !isCurrentUser) return <NotFound />;
 
   return (
     mounted && (
       <main>
         <section className="container">
-          <div className="flex items-center justify-between py-5">
+          <div className="flex justify-between py-5">
+            <Avatar className="h-20 w-20">
+              <AvatarImage
+                className="rounded-full"
+                src={_user?.image as string | undefined}
+                alt={`${_user?.username}'s avatar`}
+              />
+              <AvatarFallback className="text-xs">
+                {_user?.username?.split(" ").at(0)}
+              </AvatarFallback>
+            </Avatar>
+
+            {isCurrentUser ? (
+              <div className="flex flex-col gap-2">
+                <ProfileDropdownMenu />
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <Button
+                  title="Follow"
+                  type="button"
+                  variant="outline"
+                  onClick={() =>
+                    toast.message("Follow User", {
+                      description: "Feature coming soon!",
+                    })
+                  }
+                  className=" w-full"
+                >
+                  Follow
+                </Button>
+              </div>
+            )}
+          </div>
+
+          <div className="flex gap-3 min-w-0">
             <div>
               <span className="font-semibold text-xl">
                 @{_user?.username ?? "user"}
@@ -85,77 +120,15 @@ export default function UserProfile({ username }: { username: string }) {
                   })}
                 </p>
               )}
-              <p className="mt-3 text-sm">{_user?.bio}</p>
+              <p
+                className={cn("mt-3 text-sm break-words", {
+                  "break-all": _user?.bio?.split(" ").length === 1,
+                })}
+              >
+                {_user?.bio}
+              </p>
             </div>
-            <Avatar className="h-20 w-20">
-              <AvatarImage
-                className="rounded-full"
-                src={_user?.image as string | undefined}
-                alt={`${_user?.username}'s avatar`}
-              />
-              <AvatarFallback className="text-xs">
-                {_user?.username?.split(" ").at(0)}
-              </AvatarFallback>
-            </Avatar>
           </div>
-
-          {/**
-           * Change user button if profile is current user
-           */}
-          {isCurrentUser ? (
-            <div className="flex gap-2">
-              <Settings open={openSettings} setOpen={setOpenSettings} />
-              <Button
-                title="Update Profile"
-                type="button"
-                variant="outline"
-                onClick={() => setOpenSettings(true)}
-                className=" w-full"
-              >
-                Update Profile
-              </Button>
-
-              <Button
-                title="Settings"
-                type="button"
-                variant="outline"
-                onClick={() => setOpenSettings(true)}
-                className=" w-full"
-              >
-                Settings
-              </Button>
-            </div>
-          ) : (
-            <div className="flex gap-2">
-              <Button
-                title="Follow"
-                type="button"
-                variant="outline"
-                onClick={() =>
-                  toast.message("Follow User", {
-                    description: "Feature coming soon!",
-                  })
-                }
-                className=" w-full"
-              >
-                Follow
-              </Button>
-
-              <Button
-                title="Mention"
-                type="button"
-                variant="outline"
-                onClick={() =>
-                  toast.message("Mention User", {
-                    description: "Feature coming soon!",
-                  })
-                }
-                className=" w-full"
-              >
-                Mention
-              </Button>
-            </div>
-          )}
         </section>
 
         <Tabs defaultValue="posts" className="mt-8 w-full">

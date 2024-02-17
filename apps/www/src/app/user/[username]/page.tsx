@@ -23,9 +23,5 @@ export default async function Page({
 }: {
   params: { username: string };
 }) {
-  /**
-   * If possible, it's better to fetch data in server components.
-   */
-
   return <UserProfile username={params.username} />;
 }

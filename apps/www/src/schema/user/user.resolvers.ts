@@ -1,3 +1,4 @@
+import { GraphQLError } from "graphql";
 import { Resolver, Query, Mutation, Ctx, Arg, Directive } from "type-graphql";
 
 import { User, Role } from "@generated/type-graphql";
@@ -71,7 +72,13 @@ export class UserResolver {
     @Arg("username", () => String) username: string,
     @Ctx() ctx: TContext,
   ): Promise<String> {
+    const usernameRegex = /^[a-zA-Z0-9]+$/;
+
     try {
+      if (!usernameRegex.test(username)) {
+        throw new GraphQLError("Username must be alphanumeric");
+      }
+
       await ctx.prisma.user.update({
         where: { id: ctx.id },
         data: {

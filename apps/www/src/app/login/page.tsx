@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardDescription,
 } from "@/components/ui/card";
+import FeedLoading from "@/components/post/feed-loading";
 
 export default function Login() {
   const { status } = useSession();
@@ -18,6 +19,10 @@ export default function Login() {
 
   if (status === "authenticated") {
     push("/");
+  }
+
+  if (status === "loading") {
+    return <FeedLoading />;
   }
 
   return (
