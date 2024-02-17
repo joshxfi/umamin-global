@@ -50,6 +50,8 @@ export function UsernameSettings() {
         <Input
           required
           type="text"
+          minLength={3}
+          maxLength={15}
           value={username}
           disabled={loading}
           placeholder="Enter your username"

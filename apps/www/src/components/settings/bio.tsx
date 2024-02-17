@@ -44,6 +44,7 @@ export function BioSettings() {
         <Textarea
           required
           value={bio}
+          maxLength={160}
           disabled={loading}
           placeholder="Enter your bio"
           onChange={(e) => setBio(e.target.value)}
