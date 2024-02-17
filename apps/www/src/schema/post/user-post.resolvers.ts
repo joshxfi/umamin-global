@@ -1,7 +1,7 @@
 import { Post } from "@generated/type-graphql";
 import type { TContext } from "@/app/api/graphql/_types";
-import { PostsWithCursor, UserPostsInput } from "./post.types";
-import { Resolver, Query, Ctx, Arg, Directive } from "type-graphql";
+import { PostsWithCursor, UserPostsArgs } from "./post.types";
+import { Resolver, Query, Ctx, Directive, Args } from "type-graphql";
 
 @Resolver(() => Post)
 export class UserPostResolver {
@@ -9,13 +9,13 @@ export class UserPostResolver {
   @Directive("@cacheControl(maxAge: 60)")
   async getUserPosts(
     @Ctx() ctx: TContext,
-    @Arg("input") input: UserPostsInput,
+    @Args() { isComment, authorId, cursorId }: UserPostsArgs,
   ): Promise<PostsWithCursor> {
     try {
       const posts = await ctx.prisma.post.findMany({
         where: {
-          parentId: input.isComment ? { not: null } : null,
-          authorId: input.authorId,
+          parentId: isComment ? { not: null } : null,
+          authorId: authorId,
         },
         orderBy: { createdAt: "desc" },
         take: 10,
@@ -29,10 +29,10 @@ export class UserPostResolver {
             },
           },
         },
-        ...(input.cursorId && {
+        ...(cursorId && {
           skip: 1,
           cursor: {
-            id: input.cursorId,
+            id: cursorId,
           },
         }),
       });

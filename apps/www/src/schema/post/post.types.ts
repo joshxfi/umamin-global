@@ -1,5 +1,5 @@
 import { Post, User, Upvote, Tag } from "@generated/type-graphql";
-import { Field, ID, InputType, ObjectType } from "type-graphql";
+import { ArgsType, Field, ID, ObjectType } from "type-graphql";
 
 @ObjectType()
 class Count {
@@ -61,8 +61,8 @@ export class PostsWithCursor {
   cursorId?: string;
 }
 
-@InputType()
-export class UserPostsInput {
+@ArgsType()
+export class UserPostsArgs {
   @Field(() => ID)
   authorId: string;
 
