@@ -25,7 +25,7 @@ export function ProfileDropdownMenu() {
         <DropdownMenuTrigger asChild>
           <Button variant="outline">Menu</Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
+        <DropdownMenuContent className="w-56 mr-8">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
