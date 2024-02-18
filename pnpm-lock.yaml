@@ -195,6 +195,9 @@ importers:
         specifier: ^4.4.7
         version: 4.4.7(@types/react@18.2.21)(immer@10.0.3)(react@18.2.0)
     devDependencies:
+      '@prisma/nextjs-monorepo-workaround-plugin':
+        specifier: ^5.9.1
+        version: 5.9.1
       '@tailwindcss/typography':
         specifier: ^0.5.10
         version: 0.5.10(tailwindcss@3.3.3)
@@ -2632,6 +2635,10 @@ packages:
       '@prisma/prisma-schema-wasm': 5.7.1-1.0ca5ccbcfa6bdc81c003cf549abe4269f59c41e5
       arg: 5.0.2
       prompts: 2.4.2
+    dev: true
+
+  /@prisma/nextjs-monorepo-workaround-plugin@5.9.1:
+    resolution: {integrity: sha512-eyhfdkGUtUyz8BxKocgl953KuC5WWLxL+EC2aJBUSSozh+l/COg1FjvCa4fGeNbiJPdFnBPybv5+M52jc+vV6Q==}
     dev: true
 
   /@prisma/prisma-schema-wasm@5.7.1-1.0ca5ccbcfa6bdc81c003cf549abe4269f59c41e5:
