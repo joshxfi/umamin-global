@@ -9,10 +9,7 @@ const nextConfig = {
 
   webpack: (config, { isServer }) => {
     if (isServer) {
-      config.plugins =
-        process.env.NODE_ENV === "production"
-          ? [...config.plugins, new PrismaPlugin()]
-          : [...config.plugins];
+      config.plugins = [...config.plugins, new PrismaPlugin()]
     }
 
     return config;
