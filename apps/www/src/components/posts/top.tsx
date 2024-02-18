@@ -71,10 +71,7 @@ export function TopPosts() {
   }
 
   return (
-    <section className="pb-24">
-      {/* umg-feed */}
-      <AdSense slotId="6296403271" />
-
+    <section>
       {Object.entries(tempPosts)
         .filter(([_, m]) => !removedPosts.includes(m.id))
         .reverse()

@@ -1,21 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
+import dynamic from "next/dynamic";
 import { TopPosts } from "@/components/posts/top";
 import { LatestPosts } from "@/components/posts/latest";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+const AdSense = dynamic(() => import("@/components/adsense"), {
+  ssr: false,
+});
+
 export default function Home() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
-    mounted && (
-      <Tabs defaultValue="latest" className="mt-8 w-full">
+    <>
+      {/* umg-feed */}
+      <AdSense slotId="6296403271" />
+
+      <Tabs defaultValue="latest" className="mt-8 w-full pb-24">
         <TabsList className="w-full border-b bg-transparent">
           <TabsTrigger value="latest" className="w-full">
             Latest
@@ -33,6 +33,6 @@ export default function Home() {
           <TopPosts />
         </TabsContent>
       </Tabs>
-    )
+    </>
   );
 }
