@@ -1,6 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { formatDistanceToNow } from "date-fns";
@@ -16,6 +17,10 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ProfileDropdownMenu } from "./profile-dropdown-menu";
 import { cn } from "@/lib/utils";
+
+const AdSense = dynamic(() => import("@/components/adsense"), {
+  ssr: false,
+});
 
 const GET_USER = gql(`
 query GetUser($username: String!) {
@@ -130,6 +135,9 @@ export default function UserProfile({ username }: { username: string }) {
             </div>
           </div>
         </section>
+
+        {/* umg-profile */}
+        <AdSense slotId="1121335316" />
 
         <Tabs defaultValue="posts" className="mt-8 w-full">
           <TabsList className="w-full border-b bg-transparent">
