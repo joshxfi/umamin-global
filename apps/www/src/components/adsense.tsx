@@ -1,12 +1,14 @@
+import { cn } from "@/lib/utils";
 import React, { useEffect } from "react";
 
 interface Props {
   slotId: string;
   className?: string;
+  test?: boolean;
   type?: "display" | "in-feed";
 }
 
-const AdSense = ({ slotId, className, type = "display" }: Props) => {
+const AdSense = ({ slotId, className, test, type = "display" }: Props) => {
   useEffect(() => {
     if (process.env.NODE_ENV === "production") {
       if (typeof window !== "undefined") {
@@ -16,7 +18,11 @@ const AdSense = ({ slotId, className, type = "display" }: Props) => {
   }, []);
 
   return (
-    <div className={className}>
+    <div
+      className={cn(className, {
+        "h-24 bg-blue-200": test,
+      })}
+    >
       {type === "in-feed" ? (
         <ins
           className="adsbygoogle block"
