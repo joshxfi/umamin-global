@@ -13,7 +13,7 @@ export default function NewUser() {
     if (session?.user.username) {
       router.push("/");
     }
-  }, [session?.user.username]);
+  }, [session?.user.username, router]);
 
   return (
     <section className="container">
