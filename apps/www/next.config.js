@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-const { PrismaPlugin } = require("@prisma/nextjs-monorepo-workaround-plugin");
 
 const nextConfig = {
   transpilePackages: ["@umamin-global/codegen", "@umamin-global/prisma"],
@@ -9,10 +8,7 @@ const nextConfig = {
 
   webpack: (config, { isServer }) => {
     if (isServer) {
-      config.plugins =
-        process.env.NODE_ENV === "production"
-          ? [...config.plugins, new PrismaPlugin()]
-          : [...config.plugins];
+      config.plugins = [...config.plugins];
     }
 
     return config;

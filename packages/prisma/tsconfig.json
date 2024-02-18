@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "@theforum/prisma",
+  "display": "@umamin-global/prisma",
   "compilerOptions": {
     "target": "ES6",
     "lib": ["ESNext"],
