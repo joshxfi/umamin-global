@@ -70,7 +70,7 @@
     "zustand": "^4.4.7"
   },
   "devDependencies": {
-    "@prisma/nextjs-monorepo-workaround-plugin": "^5.7.1",
+    "@prisma/nextjs-monorepo-workaround-plugin": "^5.9.1",
     "@tailwindcss/typography": "^0.5.10",
     "@types/bcrypt": "^5.0.0",
     "encoding": "^0.1.13"
