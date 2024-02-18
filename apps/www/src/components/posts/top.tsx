@@ -57,7 +57,6 @@ export function TopPosts() {
       fetchMore({
         variables: {
           cursorId: data?.getTopPosts.cursorId,
-          displayTop: true,
         },
       });
     }
@@ -85,7 +84,16 @@ export function TopPosts() {
 
       {data?.getTopPosts.data
         ?.filter((m) => !removedPosts.includes(m.id))
-        .map((m) => <Post type="post" key={m.id} {...m} />)}
+        .map((m, i) => (
+          <div key={m.id}>
+            {/* umg-in-feed */}
+            {(i + 1) % 5 === 0 && (
+              <AdSense type="in-feed" slotId="4444011962" />
+            )}
+
+            <Post type="post" {...m} />
+          </div>
+        ))}
 
       {!!data?.getTopPosts.data && data.getTopPosts.data.length >= 10 && (
         <div ref={ref}></div>

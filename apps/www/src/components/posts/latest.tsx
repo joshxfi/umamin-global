@@ -84,7 +84,16 @@ export function LatestPosts() {
 
       {data?.getPosts.data
         ?.filter((m) => !removedPosts.includes(m.id))
-        .map((m) => <Post type="post" key={m.id} {...m} />)}
+        .map((m, i) => (
+          <div key={m.id}>
+            {/* umg-in-feed */}
+            {(i + 1) % 5 === 0 && (
+              <AdSense type="in-feed" slotId="4444011962" />
+            )}
+
+            <Post type="post" {...m} />
+          </div>
+        ))}
 
       {!!data?.getPosts.data && data.getPosts.data.length >= 10 && (
         <div ref={ref}></div>

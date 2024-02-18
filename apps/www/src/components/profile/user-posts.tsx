@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import { useEffect, useMemo } from "react";
 import { useSession } from "next-auth/react";
 import { useInView } from "react-intersection-observer";
@@ -9,15 +10,18 @@ import { Skeleton } from "../ui/skeleton";
 import { useNanoid } from "@/hooks/use-nanoid";
 import { usePostStore } from "@/store/usePostStore";
 
+const AdSense = dynamic(() => import("@/components/adsense"), {
+  ssr: false,
+});
+
 type Props = {
   isComment?: boolean;
-  isUpvoted?: boolean;
   authorId: string;
 };
 
 const GET_USER_POSTS = gql(`
-query GetUserPosts($input: UserPostsInput!) {
-  getUserPosts(input: $input) {
+query GetUserPosts($authorId: ID!, $cursorId: ID, $isComment: Boolean) {
+  getUserPosts(authorId: $authorId, cursorId: $cursorId, isComment: $isComment) {
     cursorId
     data {
       id
@@ -45,21 +49,14 @@ query GetUserPosts($input: UserPostsInput!) {
 }
 `);
 
-export function UserPosts({
-  isComment = false,
-  isUpvoted = false,
-  authorId,
-}: Props) {
+export function UserPosts({ isComment = false, authorId }: Props) {
   const { ref, inView } = useInView();
   const { data: session } = useSession();
   const removedPosts = usePostStore((state) => state.removedPosts);
   const { data, loading, fetchMore } = useQuery(GET_USER_POSTS, {
     variables: {
-      input: {
-        authorId,
-        isComment,
-        isUpvoted,
-      },
+      authorId,
+      isComment,
     },
     skip: !authorId,
   });
@@ -68,23 +65,13 @@ export function UserPosts({
     if (inView) {
       fetchMore({
         variables: {
-          input: {
-            cursorId: data?.getUserPosts.cursorId,
-            isComment,
-            isUpvoted,
-            authorId,
-          },
+          cursorId: data?.getUserPosts.cursorId,
+          isComment,
+          authorId,
         },
       });
     }
-  }, [
-    inView,
-    fetchMore,
-    data?.getUserPosts.cursorId,
-    authorId,
-    isComment,
-    isUpvoted,
-  ]);
+  }, [inView, fetchMore, data?.getUserPosts.cursorId, authorId, isComment]);
 
   const ids = useNanoid(6);
   const userPosts = useMemo(
@@ -113,8 +100,19 @@ export function UserPosts({
 
   return (
     <section className="pb-24">
-      {userPosts?.length === 0 && <p className="text-center mt-8 text-muted-foreground text-sm">No posts to show</p>}
-      {userPosts?.map((m) => <Post type="post" key={m.id} {...m} />)}
+      {userPosts?.length === 0 && (
+        <p className="text-center mt-8 text-muted-foreground text-sm">
+          No posts to show
+        </p>
+      )}
+      {userPosts?.map((m, i) => (
+        <div key={m.id}>
+          {/* umg-in-feed */}
+          {(i + 1) % 5 === 0 && <AdSense type="in-feed" slotId="4444011962" />}
+
+          <Post type="post" {...m} />
+        </div>
+      ))}
       {!!userPosts && userPosts.length >= 10 && <div ref={ref}></div>}
     </section>
   );

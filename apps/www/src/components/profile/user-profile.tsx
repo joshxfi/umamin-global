@@ -1,21 +1,25 @@
 "use client";
 
 import { toast } from "sonner";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { formatDistanceToNow } from "date-fns";
 import { gql } from "@umamin-global/codegen/__generated__";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
+import { cn } from "@/lib/utils";
 import NotFound from "@/app/not-found";
 import Loading from "@/app/user/loading";
 import { UserPosts } from "./user-posts";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ProfileDropdownMenu } from "./profile-dropdown-menu";
-import { cn } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+const AdSense = dynamic(() => import("@/components/adsense"), {
+  ssr: false,
+});
 
 const GET_USER = gql(`
 query GetUser($username: String!) {
@@ -131,7 +135,10 @@ export default function UserProfile({ username }: { username: string }) {
           </div>
         </section>
 
-        <Tabs defaultValue="posts" className="mt-8 w-full">
+        {/* umg-profile */}
+        <AdSense slotId="1121335316" className="my-4" />
+
+        <Tabs defaultValue="posts" className="w-full">
           <TabsList className="w-full border-b bg-transparent">
             <TabsTrigger value="posts" className="w-full">
               Posts

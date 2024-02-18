@@ -140,7 +140,7 @@ export function PostDropdownMenu({
         <DropdownMenuTrigger title="post menu" className="outline-none">
           <Icons.menuDots className="h-5 w-5" />
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="font-semibold [&>*]:cursor-pointer [&>*]:border-b [&>*]:last:border-0">
+        <DropdownMenuContent className="font-semibold [&>*]:cursor-pointer [&>*]:border-b [&>*]:last:border-0 mr-8">
           {dropdownMenu.map((item, i) => (
             <React.Fragment key={item.title}>
               <DropdownMenuItem
