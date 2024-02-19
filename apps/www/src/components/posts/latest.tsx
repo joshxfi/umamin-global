@@ -83,9 +83,9 @@ export function LatestPosts() {
         ?.filter((m) => !removedPosts.includes(m.id))
         .map((m, i) => (
           <div key={m.id}>
-            {/* umg-in-feed */}
+            {/* umg-posts */}
             {(i + 1) % 5 === 0 && (
-              <AdSense type="in-feed" slotId="4444011962" />
+              <AdSense slotId="1301793554" />
             )}
 
             <Post type="post" {...m} />
