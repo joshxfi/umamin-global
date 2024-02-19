@@ -107,8 +107,8 @@ export function UserPosts({ isComment = false, authorId }: Props) {
       )}
       {userPosts?.map((m, i) => (
         <div key={m.id}>
-          {/* umg-in-feed */}
-          {(i + 1) % 5 === 0 && <AdSense type="in-feed" slotId="4444011962" />}
+          {/* umg-posts */}
+          {(i + 1) % 5 === 0 && <AdSense slotId="1301793554" />}
 
           <Post type="post" {...m} />
         </div>

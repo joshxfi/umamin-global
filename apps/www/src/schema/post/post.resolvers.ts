@@ -22,6 +22,9 @@ export class PostResolver {
   ): Promise<PostsWithCursor> {
     try {
       const posts = await ctx.prisma.post.findMany({
+        where: {
+          parentId: null,
+        },
         orderBy: { createdAt: "desc" },
 
         take: 10,

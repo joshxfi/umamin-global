@@ -71,10 +71,7 @@ export function TopPosts() {
   }
 
   return (
-    <section className="pb-24">
-      {/* umg-feed */}
-      <AdSense slotId="6296403271" />
-
+    <section>
       {Object.entries(tempPosts)
         .filter(([_, m]) => !removedPosts.includes(m.id))
         .reverse()
@@ -86,9 +83,9 @@ export function TopPosts() {
         ?.filter((m) => !removedPosts.includes(m.id))
         .map((m, i) => (
           <div key={m.id}>
-            {/* umg-in-feed */}
+            {/* umg-posts */}
             {(i + 1) % 5 === 0 && (
-              <AdSense type="in-feed" slotId="4444011962" />
+              <AdSense slotId="1301793554" />
             )}
 
             <Post type="post" {...m} />

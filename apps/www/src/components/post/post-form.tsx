@@ -63,7 +63,7 @@ export function PostForm({
     e.preventDefault();
 
     submitMessage({
-      variables: { content, isAnonymous },
+      variables: { content: content.trim(), isAnonymous },
       onCompleted: (data) => {
         setContent("");
         setOpen(false);

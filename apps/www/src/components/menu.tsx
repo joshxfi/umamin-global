@@ -40,9 +40,13 @@ export function Menu() {
       icon: "write",
       onClick: () => {
         if (status === "unauthenticated") {
-          router.push("/login");
-
-          toast.info("You need to be signed in to create a post.");
+          toast.message("Oops!", {
+            description: "You need to be signed in to create a post.",
+            action: {
+              label: "Login",
+              onClick: () => router.push("/login"),
+            },
+          });
 
           return;
         }
