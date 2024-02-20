@@ -49,7 +49,6 @@ export function TopPosts() {
   const { ref, inView } = useInView();
   const { data: session, status } = useSession();
   const { data, loading, fetchMore } = useQuery(GET_TOP_POSTS);
-  const tempPosts = usePostStore((state) => state.posts);
   const removedPosts = usePostStore((state) => state.removedPosts);
 
   useEffect(() => {
@@ -72,21 +71,12 @@ export function TopPosts() {
 
   return (
     <section>
-      {Object.entries(tempPosts)
-        .filter(([_, m]) => !removedPosts.includes(m.id))
-        .reverse()
-        .map(([_, m]) => (
-          <Post type="post" key={m.id} {...m} />
-        ))}
-
       {data?.getTopPosts.data
         ?.filter((m) => !removedPosts.includes(m.id))
         .map((m, i) => (
           <div key={m.id}>
             {/* umg-posts */}
-            {(i + 1) % 5 === 0 && (
-              <AdSense slotId="1301793554" />
-            )}
+            {(i + 1) % 5 === 0 && <AdSense slotId="1301793554" />}
 
             <Post type="post" {...m} />
           </div>
