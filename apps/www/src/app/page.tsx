@@ -11,7 +11,7 @@ const AdSense = dynamic(() => import("@/components/adsense"), {
 
 export default function Home() {
   return (
-    <>
+    <main>
       {/* umg-feed */}
       <AdSense slotId="6296403271" />
 
@@ -33,6 +33,6 @@ export default function Home() {
           <TopPosts />
         </TabsContent>
       </Tabs>
-    </>
+    </main>
   );
 }
