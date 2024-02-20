@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import { gql } from "@umamin-global/codegen/__generated__";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
@@ -7,6 +8,10 @@ import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import { Post } from "@/components/post/post";
 import { usePostStore } from "@/store/usePostStore";
 import { Skeleton } from "@/components/ui/skeleton";
+
+const AdSense = dynamic(() => import("@/components/adsense"), {
+  ssr: false,
+});
 
 const GET_POST = gql(`
 query GetPost($postId: ID!) {
@@ -86,14 +91,21 @@ export default function SinglePost({ params }: { params: { postId: string } }) {
     <div className="pb-12">
       <Post {...data.getPost} type="post" />
 
+      {/* umg-feed */}
+      <AdSense slotId="6296403271" />
+
       <div>
-        {data.getPost.comments?.map((comment) => (
-          <Post
-            key={comment.id}
-            type="comment"
-            {...comment}
-            isAuthor={data.getPost.author.id === comment.author.id}
-          />
+        {data.getPost.comments?.map((comment, i) => (
+          <div key={comment.id}>
+            {/* umg-posts */}
+            {(i + 1) % 5 === 0 && <AdSense slotId="1301793554" />}
+
+            <Post
+              type="comment"
+              {...comment}
+              isAuthor={data.getPost.author.id === comment.author.id}
+            />
+          </div>
         ))}
 
         {tempComments?.map((comment) => (
