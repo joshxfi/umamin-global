@@ -26,7 +26,6 @@ export class PostResolver {
           parentId: null,
         },
         orderBy: { createdAt: "desc" },
-
         take: 10,
         include: {
           author: true,
@@ -71,6 +70,9 @@ export class PostResolver {
   ): Promise<PostsWithCursor> {
     try {
       const posts = await ctx.prisma.post.findMany({
+        where: {
+          parentId: null,
+        },
         orderBy: {
           upvotes: {
             _count: "desc",
