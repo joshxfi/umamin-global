@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "@theforum/codegen",
+  "display": "@umamin-global/codegen",
   "compilerOptions": {
     "target": "ES6",
     "lib": ["ESNext"],
