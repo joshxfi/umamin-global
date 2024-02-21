@@ -33,7 +33,7 @@ export default function RootLayout({
           <ApolloWrapper>
             <div className="max-w-screen-sm mx-auto">
               <Navbar />
-              {process.env.NEXT_PUBLIC_MAINTENANCE ? (
+              {process.env.NEXT_PUBLIC_MAINTENANCE === "true" ? (
                 <Maintenance />
               ) : (
                 <>
