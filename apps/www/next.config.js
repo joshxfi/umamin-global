@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["@umamin-global/codegen", "@umamin-global/prisma"],
+  transpilePackages: ["@umamin-global/codegen"],
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
