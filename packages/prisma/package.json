@@ -1,9 +1,11 @@
 {
   "name": "@umamin-global/prisma",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "dev": "prisma generate",
-    "build": "prisma generate",
-    "generate": "prisma generate",
+    "dev": "prisma generate && tsc",
+    "build": "prisma generate && tsc",
+    "generate": "prisma generate && tsc",
     "seed": "prisma db seed",
     "db:push": "prisma db push"
   },
@@ -14,13 +16,13 @@
     "@faker-js/faker": "^8.3.1",
     "@types/node": "20.5.7",
     "nanoid": "^5.0.1",
-    "prisma": "^5.10.1",
+    "prisma": "^5.8.1",
     "ts-node": "^10.9.2",
     "typegraphql-prisma": "^0.27.1",
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "@prisma/client": "5.10.1",
+    "@prisma/client": "5.8.1",
     "@types/graphql-fields": "^1.3.9",
     "graphql-fields": "^2.0.3",
     "graphql-scalars": "^1.22.2",
