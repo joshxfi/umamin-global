@@ -83,6 +83,9 @@ importers:
       '@umamin-global/codegen':
         specifier: workspace:*
         version: link:../../packages/codegen
+      '@umamin-global/prisma':
+        specifier: workspace:*
+        version: link:../../packages/prisma
       autoprefixer:
         specifier: 10.4.15
         version: 10.4.15(postcss@8.4.29)
