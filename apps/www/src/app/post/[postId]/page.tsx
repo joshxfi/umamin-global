@@ -1,10 +1,17 @@
 "use client";
 
-import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
+import dynamic from "next/dynamic";
+import { useMemo } from "react";
 import { gql } from "@umamin-global/codegen/__generated__";
+import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
-import { PostContainer } from "@/components/post/post-container";
+import { Post } from "@/components/post/post";
+import { usePostStore } from "@/store/usePostStore";
 import { Skeleton } from "@/components/ui/skeleton";
+
+const AdSense = dynamic(() => import("@/components/adsense"), {
+  ssr: false,
+});
 
 const GET_POST = gql(`
 query GetPost($postId: ID!) {
@@ -45,12 +52,24 @@ query GetPost($postId: ID!) {
 }
 `);
 
-export default function Post({ params }: { params: { postId: string } }) {
+export default function SinglePost({ params }: { params: { postId: string } }) {
   const { data, loading } = useQuery(GET_POST, {
     variables: {
       postId: params.postId,
     },
   });
+
+  const _tempComments = usePostStore((state) => state.comments);
+
+  const tempComments = useMemo(
+    () =>
+      _tempComments[data?.getPost.id ?? ""]
+        ? Object.entries(_tempComments[data?.getPost.id ?? ""]).map(
+            ([_, v]) => v,
+          )
+        : [],
+    [_tempComments, data?.getPost.id],
+  );
 
   if (loading) {
     return (
@@ -69,10 +88,35 @@ export default function Post({ params }: { params: { postId: string } }) {
   if (!data) return null;
 
   return (
-    <PostContainer
-      showComments={true}
-      key={data?.getPost.id}
-      {...data?.getPost}
-    />
+    <div className="pb-12">
+      <Post {...data.getPost} type="post" />
+
+      {/* umg-feed */}
+      <AdSense slotId="6296403271" />
+
+      <div>
+        {data.getPost.comments?.map((comment, i) => (
+          <div key={comment.id}>
+            {/* umg-posts */}
+            {(i + 1) % 5 === 0 && <AdSense slotId="1301793554" />}
+
+            <Post
+              type="comment"
+              {...comment}
+              isAuthor={data.getPost.author.id === comment.author.id}
+            />
+          </div>
+        ))}
+
+        {tempComments?.map((comment) => (
+          <Post
+            key={comment.id}
+            type="comment"
+            {...comment}
+            isAuthor={data.getPost.author.id === comment.author.id}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
