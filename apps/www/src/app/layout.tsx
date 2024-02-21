@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 
-import { Menu } from "@/components/menu";
 import { Navbar } from "@/components/navbar";
 import { Toaster } from "@/components/ui/sonner";
 import NextAuthProvider from "@/context/NextAuthProvider";
@@ -10,6 +9,7 @@ import NextAuthProvider from "@/context/NextAuthProvider";
 import "./globals.css";
 import { ApolloWrapper } from "./ApolloWrapper";
 import Script from "next/script";
+import { Maintenance } from "@/components/maintenance";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,8 +32,7 @@ export default function RootLayout({
           <ApolloWrapper>
             <div className="max-w-screen-sm mx-auto">
               <Navbar />
-              {children}
-              <Menu />
+              {process.env.NEXT_PUBLIC_MAINTENANCE ? <Maintenance /> : children}
             </div>
           </ApolloWrapper>
         </NextAuthProvider>
