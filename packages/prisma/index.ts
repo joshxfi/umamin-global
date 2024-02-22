@@ -1,1 +1,1 @@
-export * from "__generated__/client";
+export * from "@prisma/client";
