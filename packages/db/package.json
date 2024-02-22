@@ -1,7 +1,6 @@
 {
-  "name": "@umamin-global/prisma",
+  "name": "@umamin-global/db",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "prisma generate && tsc",
     "build": "prisma generate && tsc",

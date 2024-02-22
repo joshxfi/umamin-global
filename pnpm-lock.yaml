@@ -35,6 +35,9 @@ importers:
       '@next-auth/prisma-adapter':
         specifier: ^1.0.7
         version: 1.0.7(@prisma/client@5.10.2)(next-auth@4.24.6)
+      '@prisma/client':
+        specifier: ^5.10.2
+        version: 5.10.2(prisma@5.10.2)
       '@radix-ui/react-alert-dialog':
         specifier: ^1.0.5
         version: 1.0.5(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)
@@ -83,9 +86,9 @@ importers:
       '@umamin-global/codegen':
         specifier: workspace:*
         version: link:../../packages/codegen
-      '@umamin-global/prisma':
+      '@umamin-global/db':
         specifier: workspace:*
-        version: link:../../packages/prisma
+        version: link:../../packages/db
       autoprefixer:
         specifier: 10.4.15
         version: 10.4.15(postcss@8.4.29)
@@ -195,6 +198,9 @@ importers:
         specifier: ^4.4.7
         version: 4.4.7(@types/react@18.2.21)(immer@10.0.3)(react@18.2.0)
     devDependencies:
+      '@prisma/nextjs-monorepo-workaround-plugin':
+        specifier: ^5.10.2
+        version: 5.10.2
       '@tailwindcss/typography':
         specifier: ^0.5.10
         version: 0.5.10(tailwindcss@3.3.3)
@@ -230,7 +236,7 @@ importers:
         specifier: ^5.2.2
         version: 5.2.2
 
-  packages/prisma:
+  packages/db:
     dependencies:
       '@prisma/client':
         specifier: 5.10.2
@@ -2632,6 +2638,10 @@ packages:
       '@prisma/prisma-schema-wasm': 5.7.1-1.0ca5ccbcfa6bdc81c003cf549abe4269f59c41e5
       arg: 5.0.2
       prompts: 2.4.2
+    dev: true
+
+  /@prisma/nextjs-monorepo-workaround-plugin@5.10.2:
+    resolution: {integrity: sha512-eZnYMgmiZfW3beqvkA+Xerubi9J//S/CSGevzbd+E48sKSjiRysKq91PWcdoENOSYZirdsAdGCx+q+sgXxqR9w==}
     dev: true
 
   /@prisma/prisma-schema-wasm@5.7.1-1.0ca5ccbcfa6bdc81c003cf549abe4269f59c41e5:
