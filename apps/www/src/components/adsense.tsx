@@ -11,21 +11,19 @@ interface Props {
 const AdSense = ({ slotId, className, test, type = "display" }: Props) => {
   useEffect(() => {
     if (process.env.NODE_ENV === "production") {
-      if (typeof window !== "undefined") {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      }
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
     }
   }, []);
 
   return (
     <div
-      className={cn(className, {
+      className={cn("adsbygoogle", className, {
         "h-24 bg-blue-200": test,
       })}
     >
       {type === "in-feed" ? (
         <ins
-          className="adsbygoogle block"
+          style={{ display: "block" }}
           data-ad-client="ca-pub-4274133898976040"
           data-ad-slot={slotId}
           data-ad-format="fluid"
@@ -33,7 +31,7 @@ const AdSense = ({ slotId, className, test, type = "display" }: Props) => {
         />
       ) : (
         <ins
-          className="adsbygoogle block"
+          style={{ display: "block" }}
           data-ad-client="ca-pub-4274133898976040"
           data-ad-slot={slotId}
           data-ad-format="auto"
