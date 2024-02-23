@@ -7,9 +7,9 @@
     "start": "turbo run start --filter=www",
     "generate": "turbo run generate",
     "generate:gql": "turbo run generate --filter=@umamin-global/codegen",
-    "generate:db": "turbo run generate --filter=@umamin-global/prisma",
-    "db:push": "pnpm --filter @umamin-global/prisma db:push",
-    "db:seed": "pnpm --filter @umamin-global/prisma seed",
+    "generate:db": "turbo run generate --filter=@umamin-global/db",
+    "db:push": "pnpm --filter @umamin-global/db db:push",
+    "db:seed": "pnpm --filter @umamin-global/db seed",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "docker:down": "docker-compose down",
     "docker:up": "docker-compose up -d"
