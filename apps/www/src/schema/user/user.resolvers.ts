@@ -1,7 +1,7 @@
 import { GraphQLError } from "graphql";
 import { Resolver, Query, Mutation, Ctx, Arg, Directive } from "type-graphql";
 
-import { User, Role } from "@generated/type-graphql";
+import { User, Role } from "@umamin-global/db";
 import type { TContext } from "@/app/api/graphql/_types";
 
 @Resolver(() => User)

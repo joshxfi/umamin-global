@@ -1,4 +1,4 @@
-import { Post } from "@generated/type-graphql";
+import { Post } from "@umamin-global/db";
 import type { TContext } from "@/app/api/graphql/_types";
 import { PostsWithCursor, UserPostsArgs } from "./post.types";
 import { Resolver, Query, Ctx, Directive, Args } from "type-graphql";
