@@ -4,13 +4,13 @@
   "compilerOptions": {
     "target": "ES6",
     "lib": ["ESNext"],
+    "moduleResolution": "node",
+    "allowJs": true,
     "declaration": true,
     "declarationMap": true,
     "esModuleInterop": true,
     "module": "commonjs",
-    "outDir": "dist",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    "baseUrl": "./src",
     "skipLibCheck": true,
     "strict": true
   },
