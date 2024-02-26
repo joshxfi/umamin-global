@@ -2,5 +2,6 @@ dist/
 .turbo/
 node_modules/
 
+generated/
 .env
 

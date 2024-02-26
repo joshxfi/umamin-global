@@ -1,7 +1,7 @@
 {
   "name": "@umamin-global/codegen",
   "scripts": {
-    "build": "graphql-codegen && tsc"
+    "build": "graphql-codegen && tsc",
     "generate": "graphql-codegen && tsc"
   },
   "devDependencies": {
