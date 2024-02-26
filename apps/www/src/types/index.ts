@@ -1,4 +1,4 @@
-import { GetPostsQuery } from "@umamin-global/codegen/__generated__/graphql";
+import { GetPostsQuery } from "@umamin-global/codegen/generated/graphql";
 
 declare global {
   interface Window {

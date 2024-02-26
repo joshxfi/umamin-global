@@ -1,6 +1,6 @@
 {
   "name": "@umamin-global/db",
-  "main": "./src/index.ts",
+  "main": "./dist/index.js",
   "scripts": {
     "build": "prisma generate && tsc",
     "generate": "prisma generate && tsc",
@@ -12,19 +12,19 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.3.1",
-    "@types/node": "20.5.7",
-    "nanoid": "^5.0.1",
-    "prisma": "^5.10.2",
-    "type-graphql": "2.0.0-beta.3",
-    "graphql": "^16.7.1",
     "@prisma/client": "5.10.2",
-    "ts-node": "^10.9.2",
-    "typegraphql-prisma": "^0.27.1",
-    "typescript": "^4.7.4",
     "@types/graphql-fields": "^1.3.9",
+    "@types/node": "20.5.7",
+    "graphql": "^16.7.1",
     "graphql-fields": "^2.0.3",
     "graphql-scalars": "^1.22.2",
+    "nanoid": "^5.0.1",
+    "prisma": "^5.10.2",
     "reflect-metadata": "^0.2.1",
-    "tslib": "^2.6.2"
+    "ts-node": "^10.9.2",
+    "tslib": "^2.6.2",
+    "type-graphql": "2.0.0-beta.3",
+    "typegraphql-prisma": "^0.27.1",
+    "typescript": "^4.7.4"
   }
 }

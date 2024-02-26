@@ -1,4 +1,4 @@
-import { Post, Upvote } from "@umamin-global/db";
+import { Post, Upvote } from "@umamin-global/db/dist/generated/type-graphql";
 import type { TContext } from "@/app/api/graphql/_types";
 import { PostData, PostWithComments, PostsWithCursor } from "./post.types";
 import {

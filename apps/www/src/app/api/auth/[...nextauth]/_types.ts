@@ -1,5 +1,5 @@
 import { type DefaultSession } from "next-auth";
-import { Role } from "@umamin-global/codegen/__generated__/graphql";
+import { Role } from "@umamin-global/codegen/generated/graphql";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {

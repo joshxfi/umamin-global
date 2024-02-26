@@ -3,7 +3,7 @@ import { produce } from "immer";
 import { useMutation } from "@apollo/client";
 import { usePostStore } from "@/store/usePostStore";
 import { useCallback, useMemo, useState } from "react";
-import { gql } from "@umamin-global/codegen/__generated__";
+import { gql } from "@umamin-global/codegen/generated";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
 import { Badge } from "../ui/badge";

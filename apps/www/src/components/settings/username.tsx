@@ -7,7 +7,7 @@ import { useMutation } from "@apollo/client";
 
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { gql } from "@umamin-global/codegen/__generated__";
+import { gql } from "@umamin-global/codegen/generated";
 
 const SET_USERNAME = gql(`
 mutation SetUsername($username: String!) {

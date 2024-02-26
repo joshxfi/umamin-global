@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useMutation } from "@apollo/client";
-import { gql } from "@umamin-global/codegen/__generated__";
+import { gql } from "@umamin-global/codegen/generated";
 
 import { PostData } from "@/types";
 import { Button } from "@/components/ui/button";

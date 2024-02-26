@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { PostData } from "@/types";
 import { immer } from "zustand/middleware/immer";
-import { AddPostMutation } from "@umamin-global/codegen/__generated__/graphql";
+import { AddPostMutation } from "@umamin-global/codegen/generated/graphql";
 
 type UpdateData<T> = (postId: string, data: T) => void;
 

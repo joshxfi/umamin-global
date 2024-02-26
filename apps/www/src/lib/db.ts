@@ -1,4 +1,4 @@
-import { PrismaClient } from "@umamin-global/db";
+import { PrismaClient } from "@umamin-global/db/dist/generated/client";
 
 const prismaClientSingleton = () => {
   return new PrismaClient();

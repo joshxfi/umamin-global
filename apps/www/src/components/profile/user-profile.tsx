@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { formatDistanceToNow } from "date-fns";
-import { gql } from "@umamin-global/codegen/__generated__";
+import { gql } from "@umamin-global/codegen/generated";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
 import { cn } from "@/lib/utils";

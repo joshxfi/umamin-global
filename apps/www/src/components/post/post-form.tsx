@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useMutation } from "@apollo/client";
-import { gql } from "@umamin-global/codegen/__generated__";
+import { gql } from "@umamin-global/codegen/generated";
 
 import { Icons } from "@/components/icons";
 import { Label } from "@/components/ui/label";

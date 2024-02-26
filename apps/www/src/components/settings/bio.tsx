@@ -5,7 +5,7 @@ import { useMutation } from "@apollo/client";
 
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
-import { gql } from "@umamin-global/codegen/__generated__";
+import { gql } from "@umamin-global/codegen/generated";
 
 const SET_BIO = gql(`
 mutation SetBio($bio: String!) {
