@@ -2,8 +2,8 @@
   "name": "@umamin-global/db",
   "main": "./src/index.ts",
   "scripts": {
-    "build": "prisma generate",
-    "generate": "prisma generate",
+    "build": "prisma generate && tsc",
+    "generate": "prisma generate && tsc",
     "seed": "prisma db seed",
     "db:push": "prisma db push"
   },
