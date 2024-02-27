@@ -247,9 +247,6 @@ importers:
       graphql-scalars:
         specifier: ^1.22.2
         version: 1.22.4(graphql@16.8.1)
-      reflect-metadata:
-        specifier: ^0.2.1
-        version: 0.2.1
       tslib:
         specifier: ^2.6.2
         version: 2.6.2
