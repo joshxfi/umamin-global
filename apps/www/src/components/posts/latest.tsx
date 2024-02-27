@@ -84,9 +84,7 @@ export function LatestPosts() {
         .map((m, i) => (
           <div key={m.id}>
             {/* umg-posts */}
-            {(i + 1) % 5 === 0 && (
-              <AdSense slotId="1301793554" />
-            )}
+            {(i + 1) % 5 === 0 && <AdSense slotId="1301793554" />}
 
             <Post type="post" {...m} />
           </div>

@@ -9,11 +9,12 @@
     "declarationMap": true,
     "esModuleInterop": true,
     "module": "commonjs",
-    "outDir": "dist/generated/type-graphql",
+    "outDir": "dist",
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "strict": true
   },
-  "include": ["generated"],
+  "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }

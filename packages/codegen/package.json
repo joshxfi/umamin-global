@@ -1,14 +1,17 @@
 {
   "name": "@umamin-global/codegen",
+  "main": "./dist/generated/index.js",
   "scripts": {
-    "build": "graphql-codegen && tsc",
+    "build": "tsc",
     "generate": "graphql-codegen && tsc"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.0",
     "@graphql-codegen/client-preset": "^4.1.0",
     "@graphql-typed-document-node/core": "^3.2.0",
-    "typescript": "^5.2.2",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
     "graphql": "^16.7.1",
     "graphql-request": "^6.1.0",
     "graphql-tag": "^2.12.6"

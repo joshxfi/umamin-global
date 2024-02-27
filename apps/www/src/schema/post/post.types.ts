@@ -1,4 +1,4 @@
-import { Post, User, Upvote, Tag } from "@umamin-global/db/dist/generated/type-graphql";
+import { Post, User, Upvote, Tag } from "@umamin-global/db";
 import { ArgsType, Field, ID, ObjectType } from "type-graphql";
 
 @ObjectType()

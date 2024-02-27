@@ -1,4 +1,4 @@
-import { Tag } from "@umamin-global/db/dist/generated/type-graphql";
+import { Tag } from "@umamin-global/db";
 import type { TContext } from "@/app/api/graphql/_types";
 import { Arg, Ctx, ID, Mutation, Query, Resolver } from "type-graphql";
 

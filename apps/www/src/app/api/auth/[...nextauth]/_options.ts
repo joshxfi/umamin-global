@@ -29,7 +29,6 @@ export const authOptions: NextAuthOptions = {
     },
   },
 
-  // @ts-ignore
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
