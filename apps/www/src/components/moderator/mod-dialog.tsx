@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 
 import { PostData } from "@/types";
 import { usePostStore } from "@/store/usePostStore";
-import { gql } from "@umamin-global/codegen/__generated__";
+import { gql } from "@umamin-global/codegen/generated";
 
 import { ModTags } from "./mod-tags";
 import { ConfirmButton } from "../confirm-button";

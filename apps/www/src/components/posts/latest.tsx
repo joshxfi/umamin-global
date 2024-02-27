@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { gql } from "@umamin-global/codegen/generated";
 import { useInView } from "react-intersection-observer";
-import { gql } from "@umamin-global/codegen/__generated__";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
 import { Post } from "@/components/post/post";
@@ -84,9 +84,7 @@ export function LatestPosts() {
         .map((m, i) => (
           <div key={m.id}>
             {/* umg-posts */}
-            {(i + 1) % 5 === 0 && (
-              <AdSense slotId="1301793554" />
-            )}
+            {(i + 1) % 5 === 0 && <AdSense slotId="1301793554" />}
 
             <Post type="post" {...m} />
           </div>

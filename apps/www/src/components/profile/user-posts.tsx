@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useMemo } from "react";
 import { useSession } from "next-auth/react";
 import { useInView } from "react-intersection-observer";
-import { gql } from "@umamin-global/codegen/__generated__";
+import { gql } from "@umamin-global/codegen/generated";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
 import { Post } from "../post/post";

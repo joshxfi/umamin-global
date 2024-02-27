@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { Icons } from "../icons";
 import { useSession } from "next-auth/react";
 import { useMutation } from "@apollo/client";
-import { gql } from "@umamin-global/codegen/__generated__/";
+import { gql } from "@umamin-global/codegen/generated/";
 
 import {
   DropdownMenu,

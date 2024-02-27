@@ -1,4 +1,4 @@
-import { gql } from "@umamin-global/codegen/__generated__/";
+import { gql } from "@umamin-global/codegen/generated/";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";

@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
-import { gql } from "@umamin-global/codegen/__generated__";
+import { gql } from "@umamin-global/codegen/generated";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
 import { Post } from "@/components/post/post";

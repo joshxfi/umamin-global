@@ -1,7 +1,7 @@
 {
   "name": "@umamin-global/codegen",
+  "main": "./dist/generated/index.js",
   "scripts": {
-    "dev": "tsc",
     "build": "tsc",
     "generate": "graphql-codegen && tsc"
   },

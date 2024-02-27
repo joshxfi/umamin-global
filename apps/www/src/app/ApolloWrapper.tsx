@@ -7,7 +7,7 @@ import {
   NextSSRApolloClient,
   SSRMultipartLink,
 } from "@apollo/experimental-nextjs-app-support/ssr";
-import { PostsWithCursor } from "@umamin-global/codegen/__generated__/graphql";
+import { PostsWithCursor } from "@umamin-global/codegen/generated/graphql";
 
 export function makeClient() {
   const httpLink = new HttpLink({
