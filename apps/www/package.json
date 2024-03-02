@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "clean": "rimraf ./.next ./tsconfig.tsbuildinfo ./node_modules/.cache",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -74,6 +75,7 @@
     "@prisma/nextjs-monorepo-workaround-plugin": "^5.10.2",
     "@tailwindcss/typography": "^0.5.10",
     "@types/bcrypt": "^5.0.0",
-    "encoding": "^0.1.13"
+    "encoding": "^0.1.13",
+    "rimraf": "^5.0.5"
   }
 }

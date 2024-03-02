@@ -4,6 +4,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
+    "clean": "turbo run clean",
     "start": "turbo run start --filter=www",
     "generate": "turbo run generate",
     "generate:gql": "turbo run generate --filter=@umamin-global/codegen",

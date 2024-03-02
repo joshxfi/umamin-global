@@ -3,12 +3,14 @@
   "main": "./dist/generated/index.js",
   "scripts": {
     "build": "tsc",
+    "clean": "rimraf ./dist ./tsconfig.tsbuildinfo ./node_modules/.cache",
     "generate": "graphql-codegen && tsc"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.0",
     "@graphql-codegen/client-preset": "^4.1.0",
     "@graphql-typed-document-node/core": "^3.2.0",
+    "rimraf": "^5.0.5",
     "typescript": "^5.2.2"
   },
   "dependencies": {
