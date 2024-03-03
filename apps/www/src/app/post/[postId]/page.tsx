@@ -96,7 +96,7 @@ export default function SinglePost({ params }: { params: { postId: string } }) {
   );
 
   useEffect(() => {
-    if (inView) {
+    if (inView && commentsData && commentsData.getPosts.cursorId) {
       fetchMore({
         variables: {
           parentId: params.postId,
@@ -104,7 +104,7 @@ export default function SinglePost({ params }: { params: { postId: string } }) {
         },
       });
     }
-  }, [inView, fetchMore, commentsData?.getPosts.cursorId]);
+  }, [inView]);
 
   if (loading || commentsLoading) {
     return (

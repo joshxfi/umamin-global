@@ -9,6 +9,7 @@ import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import { Post } from "@/components/post/post";
 import { usePostStore } from "@/store/usePostStore";
 import FeedLoading from "@/components/post/feed-loading";
+import { toast } from "sonner";
 
 const AdSense = dynamic(() => import("@/components/adsense"), {
   ssr: false,
@@ -53,14 +54,14 @@ export function LatestPosts() {
   const removedPosts = usePostStore((state) => state.removedPosts);
 
   useEffect(() => {
-    if (inView) {
+    if (inView && data && data.getPosts.cursorId) {
       fetchMore({
         variables: {
           cursorId: data?.getPosts.cursorId,
         },
       });
     }
-  }, [inView, fetchMore, data?.getPosts.cursorId]);
+  }, [inView]);
 
   if (loading || status === "loading") {
     return <FeedLoading />;
