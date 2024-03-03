@@ -23,7 +23,7 @@ const nextConfig = {
           { key: "Access-Control-Allow-Credentials", value: "true" },
           {
             key: "Access-Control-Allow-Origin",
-            value: process.env.NEXTAUTH_URL,
+            value: process.env.NEXTAUTH_URL ?? "https://global.umamin.link",
           },
           {
             key: "Access-Control-Allow-Methods",
