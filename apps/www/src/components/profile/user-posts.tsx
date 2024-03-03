@@ -65,9 +65,9 @@ export function UserPosts({ isComment = false, authorId }: Props) {
     if (inView) {
       fetchMore({
         variables: {
-          cursorId: data?.getUserPosts.cursorId,
-          isComment,
           authorId,
+          isComment,
+          cursorId: data?.getUserPosts.cursorId,
         },
       });
     }

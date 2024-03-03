@@ -60,18 +60,3 @@ export class PostsWithCursor {
   @Field(() => ID, { nullable: true })
   cursorId?: string;
 }
-
-@ArgsType()
-export class UserPostsArgs {
-  @Field(() => ID)
-  authorId: string;
-
-  @Field(() => ID, { nullable: true })
-  cursorId?: string;
-
-  @Field({ nullable: true })
-  isComment?: boolean;
-
-  @Field({ nullable: true })
-  isUpvoted?: boolean;
-}

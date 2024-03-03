@@ -392,7 +392,6 @@ export type QueryGetUserPostsArgs = {
   authorId: Scalars['ID']['input'];
   cursorId?: InputMaybe<Scalars['ID']['input']>;
   isComment?: InputMaybe<Scalars['Boolean']['input']>;
-  isUpvoted?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
