@@ -7,8 +7,6 @@ export default function Info() {
 Our system has detected that you've made too many requests within a short period. This is likely due to reaching the limit set for accessing our services.
 
 ## What Can You Do?
-- **Wait a Moment**: Take a breather and wait for a short while before trying your request again.
-- **Check Your Usage**: Consider optimizing your usage patterns to avoid hitting the rate limit in the future.
 - **Contact Support**: If you believe this message is a mistake or if you need urgent assistance, don't hesitate to reach out to our support team for help.
 
 We appreciate your understanding and cooperation in maintaining the quality and reliability of our services.
