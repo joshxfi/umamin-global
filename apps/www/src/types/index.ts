@@ -1,4 +1,4 @@
-import { GetPostsQuery } from "@umamin-global/codegen/generated/graphql";
+import { GetLatestPostsQuery } from "@umamin-global/codegen/generated/graphql";
 
 declare global {
   interface Window {
@@ -6,4 +6,7 @@ declare global {
   }
 }
 
-export type PostData = Omit<NonNullable<Required<GetPostsQuery["getPosts"]["data"]>>[0], '__typename'>
+export type PostData = Omit<
+  NonNullable<Required<GetLatestPostsQuery["getPosts"]["data"]>>[0],
+  "__typename"
+>;
