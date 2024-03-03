@@ -62,7 +62,7 @@ export function UserPosts({ isComment = false, authorId }: Props) {
   });
 
   useEffect(() => {
-    if (inView) {
+    if (inView && data && data.getUserPosts.cursorId) {
       fetchMore({
         variables: {
           authorId,
@@ -71,7 +71,8 @@ export function UserPosts({ isComment = false, authorId }: Props) {
         },
       });
     }
-  }, [inView, fetchMore, data?.getUserPosts.cursorId, authorId, isComment]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView]);
 
   const ids = useNanoid(6);
   const userPosts = useMemo(

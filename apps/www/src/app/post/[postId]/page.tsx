@@ -104,6 +104,7 @@ export default function SinglePost({ params }: { params: { postId: string } }) {
         },
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
 
   if (loading || commentsLoading) {

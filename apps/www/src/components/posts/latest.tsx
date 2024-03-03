@@ -9,7 +9,6 @@ import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import { Post } from "@/components/post/post";
 import { usePostStore } from "@/store/usePostStore";
 import FeedLoading from "@/components/post/feed-loading";
-import { toast } from "sonner";
 
 const AdSense = dynamic(() => import("@/components/adsense"), {
   ssr: false,
@@ -61,6 +60,7 @@ export function LatestPosts() {
         },
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
 
   if (loading || status === "loading") {
