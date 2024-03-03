@@ -1,5 +1,5 @@
 import { Post, User, Upvote, Tag } from "@umamin-global/db";
-import { ArgsType, Field, ID, ObjectType } from "type-graphql";
+import { Field, ID, ObjectType } from "type-graphql";
 
 @ObjectType()
 class Count {
@@ -47,31 +47,10 @@ export class PostData {
 }
 
 @ObjectType()
-export class PostWithComments extends PostData {
-  @Field(() => [PostData], { nullable: true })
-  comments?: PostData[];
-}
-
-@ObjectType()
 export class PostsWithCursor {
   @Field(() => [PostData])
   data: PostData[];
 
   @Field(() => ID, { nullable: true })
   cursorId?: string;
-}
-
-@ArgsType()
-export class UserPostsArgs {
-  @Field(() => ID)
-  authorId: string;
-
-  @Field(() => ID, { nullable: true })
-  cursorId?: string;
-
-  @Field({ nullable: true })
-  isComment?: boolean;
-
-  @Field({ nullable: true })
-  isUpvoted?: boolean;
 }

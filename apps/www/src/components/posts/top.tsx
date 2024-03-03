@@ -52,14 +52,15 @@ export function TopPosts() {
   const removedPosts = usePostStore((state) => state.removedPosts);
 
   useEffect(() => {
-    if (inView) {
+    if (inView && data && data.getTopPosts.cursorId) {
       fetchMore({
         variables: {
           cursorId: data?.getTopPosts.cursorId,
         },
       });
     }
-  }, [inView, fetchMore, data?.getTopPosts.cursorId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView]);
 
   if (loading || status === "loading") {
     return <FeedLoading />;

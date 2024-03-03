@@ -15,7 +15,7 @@ const AdSense = dynamic(() => import("@/components/adsense"), {
 });
 
 const GET_POSTS = gql(`
-query GetPosts($cursorId: ID) {
+query GetLatestPosts($cursorId: ID) {
   getPosts(cursorId: $cursorId) {
     cursorId
     data {
@@ -53,14 +53,15 @@ export function LatestPosts() {
   const removedPosts = usePostStore((state) => state.removedPosts);
 
   useEffect(() => {
-    if (inView) {
+    if (inView && data && data.getPosts.cursorId) {
       fetchMore({
         variables: {
           cursorId: data?.getPosts.cursorId,
         },
       });
     }
-  }, [inView, fetchMore, data?.getPosts.cursorId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView]);
 
   if (loading || status === "loading") {
     return <FeedLoading />;

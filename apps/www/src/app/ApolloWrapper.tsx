@@ -1,6 +1,7 @@
 "use client";
 
 import { ApolloLink, HttpLink } from "@apollo/client";
+import { ReadFieldFunction } from "@apollo/client/cache/core/types/common";
 import {
   ApolloNextAppProvider,
   NextSSRInMemoryCache,
@@ -8,6 +9,37 @@ import {
   SSRMultipartLink,
 } from "@apollo/experimental-nextjs-app-support/ssr";
 import { PostsWithCursor } from "@umamin-global/codegen/generated/graphql";
+
+function createField() {
+  return {
+    merge(
+      existing: PostsWithCursor,
+      incoming: PostsWithCursor,
+      { readField }: { readField: ReadFieldFunction },
+    ) {
+      const posts = existing ? { ...existing.data } : {};
+
+      incoming.data?.forEach((msg) => {
+        // @ts-ignore
+        posts[readField("id", msg)] = msg;
+      });
+
+      return {
+        cursorId: incoming.cursorId,
+        data: posts,
+      };
+    },
+
+    read(existing: PostsWithCursor) {
+      if (existing) {
+        return {
+          cursorId: existing.cursorId,
+          data: Object.values(existing.data),
+        };
+      }
+    },
+  };
+}
 
 export function makeClient() {
   const httpLink = new HttpLink({
@@ -21,34 +53,16 @@ export function makeClient() {
         Query: {
           fields: {
             getPosts: {
+              keyArgs: ["parentId"],
+              ...createField(),
+            },
+            getTopPosts: {
               keyArgs: false,
-
-              merge(
-                existing: PostsWithCursor,
-                incoming: PostsWithCursor,
-                { readField }
-              ) {
-                const posts = existing ? { ...existing.data } : {};
-
-                incoming.data?.forEach((msg) => {
-                  // @ts-ignore
-                  posts[readField("id", msg)] = msg;
-                });
-
-                return {
-                  cursorId: incoming.cursorId,
-                  data: posts,
-                };
-              },
-
-              read(existing) {
-                if (existing) {
-                  return {
-                    cursorId: existing.cursorId,
-                    data: Object.values(existing.data),
-                  };
-                }
-              },
+              ...createField(),
+            },
+            getUserPosts: {
+              keyArgs: ["isComment"],
+              ...createField(),
             },
           },
         },

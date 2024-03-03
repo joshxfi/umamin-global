@@ -25,7 +25,7 @@ type Props = {
   type?: "post" | "comment";
   additionalTags?: React.ReactNode;
   postButtons?: React.ReactNode;
-} & Omit<PostData, "comments">;
+} & PostData;
 
 export function PostContent({
   type,

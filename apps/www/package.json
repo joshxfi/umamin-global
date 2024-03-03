@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "clean": "rimraf ./.next ./tsconfig.tsbuildinfo ./node_modules/.cache",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -33,6 +34,8 @@
     "@types/react-dom": "18.2.7",
     "@umamin-global/codegen": "workspace:*",
     "@umamin-global/db": "workspace:*",
+    "@upstash/ratelimit": "^1.0.1",
+    "@vercel/kv": "^1.0.1",
     "autoprefixer": "10.4.15",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
@@ -49,7 +52,7 @@
     "immer": "^10.0.3",
     "lucide-react": "^0.272.0",
     "nanoid": "^5.0.1",
-    "next": "14.1.0",
+    "next": "14.1.1",
     "next-auth": "4.24.6",
     "next-themes": "^0.2.1",
     "nextjs-toploader": "^1.6.4",
@@ -74,6 +77,7 @@
     "@prisma/nextjs-monorepo-workaround-plugin": "^5.10.2",
     "@tailwindcss/typography": "^0.5.10",
     "@types/bcrypt": "^5.0.0",
-    "encoding": "^0.1.13"
+    "encoding": "^0.1.13",
+    "rimraf": "^5.0.5"
   }
 }
