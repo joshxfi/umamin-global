@@ -1,5 +1,5 @@
 import { Post, User, Upvote, Tag } from "@umamin-global/db";
-import { ArgsType, Field, ID, ObjectType } from "type-graphql";
+import { Field, ID, ObjectType } from "type-graphql";
 
 @ObjectType()
 class Count {
@@ -44,12 +44,6 @@ export class PostData {
 
   @Field(() => Count, { nullable: true })
   _count?: Count | null;
-}
-
-@ObjectType()
-export class PostWithComments extends PostData {
-  @Field(() => [PostData], { nullable: true })
-  comments?: PostData[];
 }
 
 @ObjectType()

@@ -15,7 +15,7 @@ const AdSense = dynamic(() => import("@/components/adsense"), {
 });
 
 const GET_POSTS = gql(`
-query GetPosts($cursorId: ID) {
+query GetLatestPosts($cursorId: ID) {
   getPosts(cursorId: $cursorId) {
     cursorId
     data {

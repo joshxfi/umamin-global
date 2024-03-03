@@ -1,6 +1,6 @@
 import { Post, Upvote } from "@umamin-global/db";
 import type { TContext } from "@/app/api/graphql/_types";
-import { PostData, PostWithComments, PostsWithCursor } from "./post.types";
+import { PostData, PostsWithCursor } from "./post.types";
 import {
   Resolver,
   Query,
@@ -18,12 +18,13 @@ export class PostResolver {
   @Directive("@cacheControl(maxAge: 60)")
   async getPosts(
     @Ctx() ctx: TContext,
+    @Arg("parentId", () => ID, { nullable: true }) parentId?: string | null,
     @Arg("cursorId", () => ID, { nullable: true }) cursorId?: string | null,
   ): Promise<PostsWithCursor> {
     try {
       const posts = await ctx.prisma.post.findMany({
         where: {
-          parentId: null,
+          parentId: parentId ?? null,
         },
         orderBy: { createdAt: "desc" },
         take: 10,
@@ -31,11 +32,13 @@ export class PostResolver {
           author: true,
           tags: true,
           upvotes: true,
-          _count: {
-            select: {
-              comments: true,
+          ...(!parentId && {
+            _count: {
+              select: {
+                comments: true,
+              },
             },
-          },
+          }),
         },
         ...(cursorId && {
           skip: 1,
@@ -114,12 +117,12 @@ export class PostResolver {
     }
   }
 
-  @Query(() => PostWithComments)
+  @Query(() => PostData)
   @Directive("@cacheControl(maxAge: 60)")
   async getPost(
     @Arg("postId", () => ID) postId: string,
     @Ctx() ctx: TContext,
-  ): Promise<PostWithComments> {
+  ): Promise<PostData> {
     try {
       return await ctx.prisma.post.findUniqueOrThrow({
         where: { id: postId },
@@ -127,9 +130,6 @@ export class PostResolver {
           author: true,
           tags: true,
           upvotes: true,
-          comments: {
-            include: { author: true, upvotes: true },
-          },
         },
       });
     } catch (err) {

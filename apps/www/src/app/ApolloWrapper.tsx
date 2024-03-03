@@ -53,7 +53,7 @@ export function makeClient() {
         Query: {
           fields: {
             getPosts: {
-              keyArgs: false,
+              keyArgs: ["parentId"],
               ...createField(),
             },
             getTopPosts: {
